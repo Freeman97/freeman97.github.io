@@ -7,18 +7,18 @@
   
   <title>LeetCode-Weekly-Contest-128-题解 | Freeman&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="部分问题的题解是自己在比赛时实现的，有些题解的效率并不高，有些题解可能只是因为测试用例太弱而勉强AC，如果有人看到希望能够赐教。所有题目都使用C++作答">
+  <meta name="description" content="部分问题的题解是自己在比赛时实现的，有些题解的效率并不高，有些题解可能只是因为测试用例太弱而勉强AC，如果有人看到希望能够赐教。所有题目都使用C++作答Q4由于本人太鶸还没搞懂，搞懂了一定更新一定不鸽！">
 <meta name="keywords" content="LeetCode,Algorithm,动态规划,C++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LeetCode-Weekly-Contest-128-题解">
 <meta property="og:url" content="http://yoursite.com/2019/03/18/LeetCode-Weekly-Contest-128-题解/index.html">
 <meta property="og:site_name" content="Freeman&#39;s Blog">
-<meta property="og:description" content="部分问题的题解是自己在比赛时实现的，有些题解的效率并不高，有些题解可能只是因为测试用例太弱而勉强AC，如果有人看到希望能够赐教。所有题目都使用C++作答">
+<meta property="og:description" content="部分问题的题解是自己在比赛时实现的，有些题解的效率并不高，有些题解可能只是因为测试用例太弱而勉强AC，如果有人看到希望能够赐教。所有题目都使用C++作答Q4由于本人太鶸还没搞懂，搞懂了一定更新一定不鸽！">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2019-03-18T11:38:08.631Z">
+<meta property="og:updated_time" content="2019-03-18T15:07:48.590Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LeetCode-Weekly-Contest-128-题解">
-<meta name="twitter:description" content="部分问题的题解是自己在比赛时实现的，有些题解的效率并不高，有些题解可能只是因为测试用例太弱而勉强AC，如果有人看到希望能够赐教。所有题目都使用C++作答">
+<meta name="twitter:description" content="部分问题的题解是自己在比赛时实现的，有些题解的效率并不高，有些题解可能只是因为测试用例太弱而勉强AC，如果有人看到希望能够赐教。所有题目都使用C++作答Q4由于本人太鶸还没搞懂，搞懂了一定更新一定不鸽！">
   
     <link rel="alternate" href="/atom.xml" title="Freeman&#39;s Blog" type="application/atom+xml">
   
@@ -94,7 +94,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><strong>部分问题的题解是自己在比赛时实现的，有些题解的效率并不高，有些题解可能只是因为测试用例太弱而勉强AC，如果有人看到希望能够赐教。</strong><br><strong>所有题目都使用C++作答</strong><br><a id="more"></a></p>
+        <p><strong>部分问题的题解是自己在比赛时实现的，有些题解的效率并不高，有些题解可能只是因为测试用例太弱而勉强AC，如果有人看到希望能够赐教。</strong><br><strong>所有题目都使用C++作答</strong><br><strong>Q4由于本人太鶸还没搞懂，搞懂了一定更新一定不鸽！</strong><br><a id="more"></a></p>
 <h1 id="Q1-1012-Complement-of-Base-10-Integer"><a href="#Q1-1012-Complement-of-Base-10-Integer" class="headerlink" title="Q1 1012. Complement of Base 10 Integer"></a>Q1 1012. Complement of Base 10 Integer</h1><h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>给出一个非负整数，求这个数在二进制表示方式下按位取反得到的十进制数。</p>
 <h2 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h2><p>直接将此数字按位取反。由于输入是非负数，取反后正确答案的最高位必定为0，且最高位之后的所有位都是1。以此为依据可以将正确答案从低到高地还原出来。</p>
 <h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
@@ -129,72 +129,74 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h1 id="Q2-1013-Pairs-of-Songs-With-Total-Durations-Divisible-by-60"><a href="#Q2-1013-Pairs-of-Songs-With-Total-Durations-Divisible-by-60" class="headerlink" title="Q2 1013. Pairs of Songs With Total Durations Divisible by 60"></a>Q2 1013. Pairs of Songs With Total Durations Divisible by 60</h1><h2 id="题意-1"><a href="#题意-1" class="headerlink" title="题意"></a>题意</h2><p>给出一列正整数，其中存在正整数对<code>time[i], time[j]</code>，满足<code>(time[i] + time[j]) % 60 == 0</code>且<code>i &gt; j</code>，求这一列正整数中所有的正整数对的数量。</p>
 <h2 id="解法-1"><a href="#解法-1" class="headerlink" title="解法"></a>解法</h2><p>直接暴力会超时。考虑到正整数的可能个数（60000）远大于正整数的可能取值数（500），在遍历时记录下所有与当前<code>time[i]</code>相同的<code>time[j]</code>数量n，遇到下一个符合条件的<code>time[j]</code>时，计数器自加n。</p>
-<h2 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h2><pre><code>class Solution {
-public:
-    int numPairsDivisibleBy60(vector&lt;int&gt;&amp; time) {
-        int num = 0;
-        int ifChecked[60000] = {0};
-        for(int i = 0; i &lt; time.size(); i++)
-        {
-            if(ifChecked[i] == 1)
-            {
-                continue;
-            }
-            int currentNum = 1;
-            for(int j = i + 1; j &lt; time.size(); j++)
-            {
-                if((time[j] + time[i]) % 60 == 0)
-                {
-                    num += currentNum;
-                }
-                if(time[j] == time[i])
-                {
-                    ifChecked[j] = 1;
-                    currentNum += 1;
-                }
-            }
-        }
-        return num;
-    }
-};
-</code></pre><h1 id="Q3-1014-Capacity-To-Ship-Packages-Within-D-Days"><a href="#Q3-1014-Capacity-To-Ship-Packages-Within-D-Days" class="headerlink" title="Q3 1014. Capacity To Ship Packages Within D Days"></a>Q3 1014. Capacity To Ship Packages Within D Days</h1><h2 id="题意-2"><a href="#题意-2" class="headerlink" title="题意"></a>题意</h2><p>给定所有货物的重量<code>i</code>，求出运输船的最小载重量，使得这些货物能在<code>D</code>天内按顺序被运走</p>
+<h2 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h2><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token keyword">int</span> <span class="token function">numPairsDivisibleBy60</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">&amp;</span> time<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> num <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> ifChecked<span class="token punctuation">[</span><span class="token number">60000</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> time<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>ifChecked<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">continue</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">int</span> currentNum <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> time<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span>time<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">+</span> time<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token number">60</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    num <span class="token operator">+</span><span class="token operator">=</span> currentNum<span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                <span class="token keyword">if</span><span class="token punctuation">(</span>time<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">==</span> time<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    ifChecked<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+                    currentNum <span class="token operator">+</span><span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> num<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="Q3-1014-Capacity-To-Ship-Packages-Within-D-Days"><a href="#Q3-1014-Capacity-To-Ship-Packages-Within-D-Days" class="headerlink" title="Q3 1014. Capacity To Ship Packages Within D Days"></a>Q3 1014. Capacity To Ship Packages Within D Days</h1><h2 id="题意-2"><a href="#题意-2" class="headerlink" title="题意"></a>题意</h2><p>给定所有货物的重量<code>i</code>，求出运输船的最小载重量，使得这些货物能在<code>D</code>天内按顺序被运走</p>
 <h2 id="解法-2"><a href="#解法-2" class="headerlink" title="解法"></a>解法</h2><p>直接枚举船的载重量，下限为最重的货物的的重量。（慢）</p>
-<h2 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h2><pre><code>class Solution {
-public:
-    int shipWithinDays(vector&lt;int&gt;&amp; weights, int D) {
-        int max = 0;
-        int capacity;
-        for(int i = 0; i &lt; weights.size(); i++)
-        {
-            if(weights[i] &gt; max)
-            {
-                max = weights[i];
-            }
-        }
-        for(capacity = max; ; capacity++)
-        {
-            int currentIndex = 0;
-            for(int i = 0; i &lt; D; i++)
-            {
-                int currentLoad = 0;
-                for(int j = currentIndex; ; j++) 
-                {
-                    if(j &gt;= weights.size())
-                    {
-                        return capacity;
-                    }
-                    currentLoad += weights[j];
-                    if(currentLoad &gt; capacity)
-                    {
-                        currentIndex = j;
-                        break;
-                    }
-                }
-            }
-        }
-    }
-};
-</code></pre><h1 id="Q4-1015-Numbers-With-Repeated-Digits"><a href="#Q4-1015-Numbers-With-Repeated-Digits" class="headerlink" title="Q4 1015. Numbers With Repeated Digits"></a>Q4 1015. Numbers With Repeated Digits</h1><h2 id="题意-3"><a href="#题意-3" class="headerlink" title="题意"></a>题意</h2><p>输入整数N，求不大于N的至少有一个重复数字的整数的数目。</p>
+<h2 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h2><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token keyword">int</span> <span class="token function">shipWithinDays</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">&amp;</span> weights<span class="token punctuation">,</span> <span class="token keyword">int</span> D<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> max <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> capacity<span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> weights<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>weights<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">></span> max<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                max <span class="token operator">=</span> weights<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span>capacity <span class="token operator">=</span> max<span class="token punctuation">;</span> <span class="token punctuation">;</span> capacity<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">int</span> currentIndex <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> D<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">int</span> currentLoad <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> currentIndex<span class="token punctuation">;</span> <span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> 
+                <span class="token punctuation">{</span>
+                    <span class="token keyword">if</span><span class="token punctuation">(</span>j <span class="token operator">>=</span> weights<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                    <span class="token punctuation">{</span>
+                        <span class="token keyword">return</span> capacity<span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span>
+                    currentLoad <span class="token operator">+</span><span class="token operator">=</span> weights<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
+                    <span class="token keyword">if</span><span class="token punctuation">(</span>currentLoad <span class="token operator">></span> capacity<span class="token punctuation">)</span>
+                    <span class="token punctuation">{</span>
+                        currentIndex <span class="token operator">=</span> j<span class="token punctuation">;</span>
+                        <span class="token keyword">break</span><span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="Q4-1015-Numbers-With-Repeated-Digits"><a href="#Q4-1015-Numbers-With-Repeated-Digits" class="headerlink" title="Q4 1015. Numbers With Repeated Digits"></a>Q4 1015. Numbers With Repeated Digits</h1><h2 id="题意-3"><a href="#题意-3" class="headerlink" title="题意"></a>题意</h2><p>输入整数N，求不大于N的至少有一个重复数字的整数的数目。</p>
 <h2 id="解法-3"><a href="#解法-3" class="headerlink" title="解法"></a>解法</h2><p>考虑DP，等我真的搞懂了再更新（</p>
 
       
