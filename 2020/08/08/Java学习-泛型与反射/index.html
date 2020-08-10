@@ -5,18 +5,20 @@
   
 
   
-  <title>Freeman&#39;s Blog</title>
+  <title>Java学习 - 泛型与反射 | Freeman&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Self-talking of a noob">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Freeman&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="反射Class类Class类用于保存及获取对象的运行时类型信息。程序在运行时对自身信息（元数据）进行检测进而修改自己的行为被称为反射。Object类中的getClass()方法返回一个Class类型的实例。Class的静态方法forName()可以根据类名获得对应Class对象，注意要为这个方法提供异常处理。如果有一个Class类型的对象，可以使用getConstructor()方法得到一个Con">
+<meta name="keywords" content="Java,泛型,反射">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java学习 - 泛型与反射">
+<meta property="og:url" content="http://yoursite.com/2020/08/08/Java学习-泛型与反射/index.html">
 <meta property="og:site_name" content="Freeman&#39;s Blog">
-<meta property="og:description" content="Self-talking of a noob">
+<meta property="og:description" content="反射Class类Class类用于保存及获取对象的运行时类型信息。程序在运行时对自身信息（元数据）进行检测进而修改自己的行为被称为反射。Object类中的getClass()方法返回一个Class类型的实例。Class的静态方法forName()可以根据类名获得对应Class对象，注意要为这个方法提供异常处理。如果有一个Class类型的对象，可以使用getConstructor()方法得到一个Con">
 <meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2020-08-10T08:19:59.301Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Freeman&#39;s Blog">
-<meta name="twitter:description" content="Self-talking of a noob">
+<meta name="twitter:title" content="Java学习 - 泛型与反射">
+<meta name="twitter:description" content="反射Class类Class类用于保存及获取对象的运行时类型信息。程序在运行时对自身信息（元数据）进行检测进而修改自己的行为被称为反射。Object类中的getClass()方法返回一个Class类型的实例。Class的静态方法forName()可以根据类名获得对应Class对象，注意要为这个方法提供异常处理。如果有一个Class类型的对象，可以使用getConstructor()方法得到一个Con">
   
     <link rel="alternate" href="/atom.xml" title="Freeman&#39;s Blog" type="application/atom+xml">
   
@@ -66,9 +68,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-Java学习-泛型与反射" class="article article-type-post" itemscope="" itemprop="blogPost">
+        <section id="main"><article id="post-Java学习-泛型与反射" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/08/08/Java学习-泛型与反射/" class="article-date">
   <time datetime="2020-08-08T08:44:16.000Z" itemprop="datePublished">2020-08-08</time>
@@ -85,8 +85,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/08/08/Java学习-泛型与反射/">Java学习 - 泛型与反射</a>
+    <h1 class="article-title" itemprop="name">
+      Java学习 - 泛型与反射
     </h1>
   
 
@@ -375,195 +375,19 @@ String<span class="token punctuation">[</span><span class="token punctuation">]<
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-LeetCode-Weekly-Contest-129-题解" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/25/LeetCode-Weekly-Contest-129-题解/" class="article-date">
-  <time datetime="2019-03-24T16:00:47.000Z" itemprop="datePublished">2019-03-25</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/数据结构与算法/">数据结构与算法</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/25/LeetCode-Weekly-Contest-129-题解/">LeetCode-Weekly-Contest-129-题解</a>
-    </h1>
+    <a href="/2019/03/25/LeetCode-Weekly-Contest-129-题解/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">LeetCode-Weekly-Contest-129-题解</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>部分问题的题解是自己在比赛时实现的，有些题解的效率并不高，有些题解可能只是因为测试用例太弱而勉强AC，如果有人看到希望能够赐教。</strong><br><strong>所有题目都使用C++作答</strong><br>
-        
-          </p><p class="article-more-link">
-            <a href="/2019/03/25/LeetCode-Weekly-Contest-129-题解/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/25/LeetCode-Weekly-Contest-129-题解/" data-id="ckdo904520001pwvhqxpzr6ah" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/KMP/">KMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/动态规划/">动态规划</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
-
-
-  
-    <article id="post-LeetCode-Weekly-Contest-128-题解" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/18/LeetCode-Weekly-Contest-128-题解/" class="article-date">
-  <time datetime="2019-03-18T06:46:58.000Z" itemprop="datePublished">2019-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/数据结构与算法/">数据结构与算法</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/18/LeetCode-Weekly-Contest-128-题解/">LeetCode-Weekly-Contest-128-题解</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>部分问题的题解是自己在比赛时实现的，有些题解的效率并不高，有些题解可能只是因为测试用例太弱而勉强AC，如果有人看到希望能够赐教。</strong><br><strong>所有题目都使用C++作答</strong><br><strong>Q4由于本人太鶸还没搞懂，搞懂了一定更新一定不鸽！</strong><br>
-        
-          </p><p class="article-more-link">
-            <a href="/2019/03/18/LeetCode-Weekly-Contest-128-题解/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/18/LeetCode-Weekly-Contest-128-题解/" data-id="ckdo904590004pwvh1xlxo9gd" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/动态规划/">动态规划</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-LeetCode-Weekly-Contest-111-题解" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/11/21/LeetCode-Weekly-Contest-111-题解/" class="article-date">
-  <time datetime="2018-11-20T16:00:00.000Z" itemprop="datePublished">2018-11-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/数据结构与算法/">数据结构与算法</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/11/21/LeetCode-Weekly-Contest-111-题解/">LeetCode Weekly Contest #111 题解</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>部分问题的题解是自己在比赛时实现的，有些题解的效率并不高，有些题解可能只是因为测试用例太弱而勉强AC，如果有人看到希望能够赐教。</strong><br><strong>所有题目都使用C++作答</strong><br>
-        
-          </p><p class="article-more-link">
-            <a href="/2018/11/21/LeetCode-Weekly-Contest-111-题解/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/21/LeetCode-Weekly-Contest-111-题解/" data-id="ckdo9046j000wpwvhgs8wcplt" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/减治法/">减治法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/动态规划/">动态规划</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/10/26/hello-world/" class="article-date">
-  <time datetime="2018-10-25T16:00:00.000Z" itemprop="datePublished">2018-10-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Diary/">Diary</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/26/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>这是一个心血来潮搭建的个人博客。</strong><br>一直在零零碎碎地学习一些东西，之前完全没有把自己的学习系统地整理一遍的习惯。以搭个人博客为契机，今后将自己学习的各方面知识整理到这里吧。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/26/hello-world/" data-id="ckdo9044s0000pwvhn1te1c37" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nonsense/">nonsense</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/self-taking/">self-taking</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
 
 </section>
         
