@@ -68,6 +68,102 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-剑指offer题解" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/11/剑指offer题解/" class="article-date">
+  <time datetime="2020-08-11T12:39:49.000Z" itemprop="datePublished">2020-08-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/数据结构与算法/">数据结构与算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/11/剑指offer题解/">剑指offer题解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>二刷一下剑指offer的题顺便记录一下题解，日后再做分类整理（咕咕咕）</strong><br><strong>题目顺序和标号按照牛客网(<a href="https://www.nowcoder.com/ta/coding-interviews)，本文持续增量更新（" target="_blank" rel="noopener">https://www.nowcoder.com/ta/coding-interviews)，本文持续增量更新（</a></strong></p>
+<h1 id="JZ1-二维数组中的查找-查找-数组"><a href="#JZ1-二维数组中的查找-查找-数组" class="headerlink" title="JZ1 二维数组中的查找(查找, 数组)"></a>JZ1 二维数组中的查找(查找, 数组)</h1><h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>在一个二维数组中（每个一维数组的长度相同），每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。</p>
+<h2 id="解1"><a href="#解1" class="headerlink" title="解1"></a>解1</h2><p>对每一个一维数组进行二分查找，设二维数组的尺寸是m * n，那么复杂度为<code>O(mlogn)</code>。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">Find</span><span class="token punctuation">(</span><span class="token keyword">int</span> target<span class="token punctuation">,</span> <span class="token keyword">int</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> level <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> maxLevel <span class="token operator">=</span> array<span class="token punctuation">.</span>length<span class="token punctuation">,</span> n <span class="token operator">=</span> array<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>n <span class="token operator">&lt;=</span> <span class="token number">0</span> <span class="token operator">||</span> maxLevel <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> k <span class="token operator">=</span> n<span class="token punctuation">,</span> l <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> maxLevel<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">while</span><span class="token punctuation">(</span>j <span class="token operator">&lt;</span> k<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                l <span class="token operator">=</span> <span class="token punctuation">(</span>j <span class="token operator">+</span> k<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span><span class="token punctuation">(</span>array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>l<span class="token punctuation">]</span> <span class="token operator">==</span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>l<span class="token punctuation">]</span> <span class="token operator">></span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    k <span class="token operator">=</span> l <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                    j <span class="token operator">=</span> l <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">==</span> target<span class="token punctuation">)</span> 
+                <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+            <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">&lt;</span> target<span class="token punctuation">)</span> 
+                k <span class="token operator">=</span> n<span class="token punctuation">;</span>
+            <span class="token keyword">else</span>
+                j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="解2"><a href="#解2" class="headerlink" title="解2"></a>解2</h2><p>对于这一数组，从最左下角出发，向上数字减小，向右数字增大。该方法的时间复杂度为<code>O(m+n)</code>。<br>因此，若当前数字大于待查找整数，则向上查找。若当前数字小于待查找整数，则向右查找。可能存在的问题是“为什么在当前数字大于待查找整数时，不需要考虑向左查找”。对于这一问题，可以对“上一步操作”进行分情况讨论。</p>
+<ol>
+<li>上一步的操作是向右查找，那么这种情况必然不用考虑向左查找（走回头路）</li>
+<li>上一步的操作是向上查找，此时可以再次分情况讨论。如果之前此时的所有操作都不包括“向右查找”，那么此时当前位置位于数组的最左侧，无法继续向左查找。</li>
+<li>如果上一步的操作是向上查找，且之前的所有操作至少包含一次向右查找。记最近一次进行向右查找时的整数为<code>a[i][j]</code>，可以得知待查找整数必定比<code>a[i][j]</code>大。而二维数组向上时数字递减，则可知待查找整数比<code>a[i][0] ~ a[i][j]</code>都大，进而可知待查找整数<code>a[i][0] ~ a[i][j]</code>左侧的所有整数都大，因此不需要进行向左查找。<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
+ <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">Find</span><span class="token punctuation">(</span><span class="token keyword">int</span> target<span class="token punctuation">,</span> <span class="token keyword">int</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     <span class="token keyword">int</span> level <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> m <span class="token operator">=</span> array<span class="token punctuation">.</span>length<span class="token punctuation">,</span> n <span class="token operator">=</span> array<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+     <span class="token keyword">if</span><span class="token punctuation">(</span>n <span class="token operator">&lt;=</span> <span class="token number">0</span> <span class="token operator">||</span> m <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+     <span class="token keyword">int</span> i <span class="token operator">=</span> m <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">,</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+     <span class="token keyword">while</span><span class="token punctuation">(</span>i <span class="token operator">>=</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> j <span class="token operator">&lt;</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+         <span class="token keyword">if</span><span class="token punctuation">(</span>array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">></span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+             i<span class="token operator">--</span><span class="token punctuation">;</span>
+         <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">&lt;</span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+             j<span class="token operator">++</span><span class="token punctuation">;</span>
+         <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+             <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+         <span class="token punctuation">}</span>
+     <span class="token punctuation">}</span>
+     <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/08/11/剑指offer题解/" data-id="ckdq22le3000z6kvhnz0sww2u" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Java学习-泛型与反射" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/08/08/Java学习-泛型与反射/" class="article-date">
@@ -367,7 +463,7 @@ String<span class="token punctuation">[</span><span class="token punctuation">]<
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/08/Java学习-泛型与反射/" data-id="ckdo9046g000vpwvhuk4ms1r2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/08/Java学习-泛型与反射/" data-id="ckdq22le0000v6kvhrybkl1at" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/反射/">反射</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/泛型/">泛型</a></li></ul>
@@ -414,7 +510,7 @@ String<span class="token punctuation">[</span><span class="token punctuation">]<
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/25/LeetCode-Weekly-Contest-129-题解/" data-id="ckdo904520001pwvhqxpzr6ah" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/25/LeetCode-Weekly-Contest-129-题解/" data-id="ckdq22ld700016kvhxszv7pd3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/KMP/">KMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/动态规划/">动态规划</a></li></ul>
@@ -461,7 +557,7 @@ String<span class="token punctuation">[</span><span class="token punctuation">]<
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/18/LeetCode-Weekly-Contest-128-题解/" data-id="ckdo904590004pwvh1xlxo9gd" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/18/LeetCode-Weekly-Contest-128-题解/" data-id="ckdq22ldc00046kvh2msa5o46" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/动态规划/">动态规划</a></li></ul>
@@ -508,7 +604,7 @@ String<span class="token punctuation">[</span><span class="token punctuation">]<
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/21/LeetCode-Weekly-Contest-111-题解/" data-id="ckdo9046j000wpwvhgs8wcplt" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/11/21/LeetCode-Weekly-Contest-111-题解/" data-id="ckdq22le1000w6kvhxylieobv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/减治法/">减治法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/动态规划/">动态规划</a></li></ul>
@@ -551,7 +647,7 @@ String<span class="token punctuation">[</span><span class="token punctuation">]<
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/26/hello-world/" data-id="ckdo9044s0000pwvhn1te1c37" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/26/hello-world/" data-id="ckdq22ld200006kvhcudxp23i" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nonsense/">nonsense</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/self-taking/">self-taking</a></li></ul>
@@ -593,7 +689,7 @@ String<span class="token punctuation">[</span><span class="token punctuation">]<
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Algorithm/" style="font-size: 20px;">Algorithm</a> <a href="/tags/C/" style="font-size: 20px;">C++</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/KMP/" style="font-size: 10px;">KMP</a> <a href="/tags/LeetCode/" style="font-size: 20px;">LeetCode</a> <a href="/tags/nonsense/" style="font-size: 10px;">nonsense</a> <a href="/tags/self-taking/" style="font-size: 10px;">self-taking</a> <a href="/tags/减治法/" style="font-size: 10px;">减治法</a> <a href="/tags/动态规划/" style="font-size: 20px;">动态规划</a> <a href="/tags/反射/" style="font-size: 10px;">反射</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a>
+      <a href="/tags/Algorithm/" style="font-size: 20px;">Algorithm</a> <a href="/tags/C/" style="font-size: 16.67px;">C++</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/KMP/" style="font-size: 10px;">KMP</a> <a href="/tags/LeetCode/" style="font-size: 16.67px;">LeetCode</a> <a href="/tags/nonsense/" style="font-size: 10px;">nonsense</a> <a href="/tags/self-taking/" style="font-size: 10px;">self-taking</a> <a href="/tags/减治法/" style="font-size: 10px;">减治法</a> <a href="/tags/动态规划/" style="font-size: 16.67px;">动态规划</a> <a href="/tags/反射/" style="font-size: 10px;">反射</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a>
     </div>
   </div>
 
@@ -615,6 +711,10 @@ String<span class="token punctuation">[</span><span class="token punctuation">]<
       <ul>
         
           <li>
+            <a href="/2020/08/11/剑指offer题解/">剑指offer题解</a>
+          </li>
+        
+          <li>
             <a href="/2020/08/08/Java学习-泛型与反射/">Java学习 - 泛型与反射</a>
           </li>
         
@@ -628,10 +728,6 @@ String<span class="token punctuation">[</span><span class="token punctuation">]<
         
           <li>
             <a href="/2018/11/21/LeetCode-Weekly-Contest-111-题解/">LeetCode Weekly Contest #111 题解</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/26/hello-world/">Hello World</a>
           </li>
         
       </ul>
