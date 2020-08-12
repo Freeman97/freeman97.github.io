@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Freeman&#39;s Blog">
 <meta property="og:description" content="二刷一下剑指offer的题顺便记录一下题解，日后再做分类整理（咕咕咕）题目顺序和标号按照牛客网(https://www.nowcoder.com/ta/coding-interviews)，本文持续增量更新（ JZ1 二维数组中的查找(查找, 数组)题目描述在一个二维数组中（每个一维数组的长度相同），每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2020-08-11T14:43:45.735Z">
+<meta property="og:updated_time" content="2020-08-12T13:48:34.936Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="剑指offer题解">
 <meta name="twitter:description" content="二刷一下剑指offer的题顺便记录一下题解，日后再做分类整理（咕咕咕）题目顺序和标号按照牛客网(https://www.nowcoder.com/ta/coding-interviews)，本文持续增量更新（ JZ1 二维数组中的查找(查找, 数组)题目描述在一个二维数组中（每个一维数组的长度相同），每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的">
@@ -148,6 +148,68 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 </ol>
+<h1 id="JZ2-替换空格-字符串"><a href="#JZ2-替换空格-字符串" class="headerlink" title="JZ2 替换空格(字符串)"></a>JZ2 替换空格(字符串)</h1><h2 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h2><p>请实现一个函数，将一个字符串中的每个空格替换成“%20”。例如，当字符串为We Are Happy.则经过替换之后的字符串为We%20Are%20Happy。</p>
+<h2 id="解"><a href="#解" class="headerlink" title="解"></a>解</h2><p>没啥好说的字符串题，注意从后往前进行替换就行。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> String <span class="token function">replaceSpace</span><span class="token punctuation">(</span>StringBuffer str<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 不使用额外存储空间</span>
+        <span class="token comment" spellcheck="true">// 从后往前移动更有效率</span>
+        <span class="token comment" spellcheck="true">// 首先计算空格数</span>
+        <span class="token keyword">int</span> spaceNum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> oldLength <span class="token operator">=</span> str<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> oldLength<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>str<span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">' '</span><span class="token punctuation">)</span>
+                spaceNum<span class="token operator">++</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 根据空格数扩大字符串</span>
+        str<span class="token punctuation">.</span><span class="token function">setLength</span><span class="token punctuation">(</span>str<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> spaceNum <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 从尾部开始替换较容易计算移动</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> oldLength <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>str<span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token string">' '</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                str<span class="token punctuation">.</span><span class="token function">setCharAt</span><span class="token punctuation">(</span>i <span class="token operator">+</span> spaceNum <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">,</span> str<span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                str<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span>i <span class="token operator">+</span> spaceNum <span class="token operator">*</span> <span class="token number">2</span> <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">,</span> i <span class="token operator">+</span> spaceNum <span class="token operator">*</span> <span class="token number">2</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"%20"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                spaceNum<span class="token operator">--</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> str<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="JZ3-从尾到头打印链表-链表"><a href="#JZ3-从尾到头打印链表-链表" class="headerlink" title="JZ3 从尾到头打印链表(链表)"></a>JZ3 从尾到头打印链表(链表)</h1><h2 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h2><p>输入一个链表，按链表从尾到头的顺序返回一个ArrayList。</p>
+<h2 id="解-1"><a href="#解-1" class="headerlink" title="解"></a>解</h2><p>原地反转链表后输出，基本功。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+*    public class ListNode {
+*        int val;
+*        ListNode next = null;
+*
+*        ListNode(int val) {
+*            this.val = val;
+*        }
+*    }
+*
+*/</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>ArrayList<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> ArrayList<span class="token operator">&lt;</span>Integer<span class="token operator">></span> <span class="token function">printListFromTailToHead</span><span class="token punctuation">(</span>ListNode listNode<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 反转链表之后就能顺序输出了</span>
+        ListNode newHead <span class="token operator">=</span> null<span class="token punctuation">,</span> p <span class="token operator">=</span> listNode<span class="token punctuation">,</span> q<span class="token punctuation">;</span>
+        ArrayList<span class="token operator">&lt;</span>Integer<span class="token operator">></span> res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>Integer<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span><span class="token punctuation">(</span>p <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            q <span class="token operator">=</span> p<span class="token punctuation">;</span>
+            p <span class="token operator">=</span> p<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+            q<span class="token punctuation">.</span>next <span class="token operator">=</span> newHead<span class="token punctuation">;</span>
+            newHead <span class="token operator">=</span> q<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        p <span class="token operator">=</span> newHead<span class="token punctuation">;</span>
+        <span class="token keyword">while</span><span class="token punctuation">(</span>p <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            res<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>val<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            p <span class="token operator">=</span> p<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> res<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
       
     </div>
