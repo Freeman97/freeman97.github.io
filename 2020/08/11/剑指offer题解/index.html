@@ -5,20 +5,20 @@
   
 
   
-  <title>剑指offer题解 | Freeman&#39;s Blog</title>
+  <title>剑指offer题解（一） - JZ1 ~ JZ10 | Freeman&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="二刷一下剑指offer的题顺便记录一下题解，日后再做分类整理（咕咕咕）题目顺序和标号按照牛客网(https://www.nowcoder.com/ta/coding-interviews)，本文持续增量更新（ JZ1 二维数组中的查找(查找, 数组)题目描述在一个二维数组中（每个一维数组的长度相同），每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的">
+  <meta name="description" content="二刷一下剑指offer的题顺便记录一下题解，日后再做分类整理（咕咕咕）题目顺序和标号按照牛客网(https://www.nowcoder.com/ta/coding-interviews)，本文持续增量更新（">
 <meta name="keywords" content="Algorithm,Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="剑指offer题解">
+<meta property="og:title" content="剑指offer题解（一） - JZ1 ~ JZ10">
 <meta property="og:url" content="http://yoursite.com/2020/08/11/剑指offer题解/index.html">
 <meta property="og:site_name" content="Freeman&#39;s Blog">
-<meta property="og:description" content="二刷一下剑指offer的题顺便记录一下题解，日后再做分类整理（咕咕咕）题目顺序和标号按照牛客网(https://www.nowcoder.com/ta/coding-interviews)，本文持续增量更新（ JZ1 二维数组中的查找(查找, 数组)题目描述在一个二维数组中（每个一维数组的长度相同），每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的">
+<meta property="og:description" content="二刷一下剑指offer的题顺便记录一下题解，日后再做分类整理（咕咕咕）题目顺序和标号按照牛客网(https://www.nowcoder.com/ta/coding-interviews)，本文持续增量更新（">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2020-08-12T13:48:34.936Z">
+<meta property="og:updated_time" content="2020-09-08T08:21:27.435Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="剑指offer题解">
-<meta name="twitter:description" content="二刷一下剑指offer的题顺便记录一下题解，日后再做分类整理（咕咕咕）题目顺序和标号按照牛客网(https://www.nowcoder.com/ta/coding-interviews)，本文持续增量更新（ JZ1 二维数组中的查找(查找, 数组)题目描述在一个二维数组中（每个一维数组的长度相同），每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的">
+<meta name="twitter:title" content="剑指offer题解（一） - JZ1 ~ JZ10">
+<meta name="twitter:description" content="二刷一下剑指offer的题顺便记录一下题解，日后再做分类整理（咕咕咕）题目顺序和标号按照牛客网(https://www.nowcoder.com/ta/coding-interviews)，本文持续增量更新（">
   
     <link rel="alternate" href="/atom.xml" title="Freeman&#39;s Blog" type="application/atom+xml">
   
@@ -86,7 +86,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      剑指offer题解
+      剑指offer题解（一） - JZ1 ~ JZ10
     </h1>
   
 
@@ -94,91 +94,82 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><strong>二刷一下剑指offer的题顺便记录一下题解，日后再做分类整理（咕咕咕）</strong><br><strong>题目顺序和标号按照牛客网(<a href="https://www.nowcoder.com/ta/coding-interviews)，本文持续增量更新（" target="_blank" rel="noopener">https://www.nowcoder.com/ta/coding-interviews)，本文持续增量更新（</a></strong></p>
+        <p><strong>二刷一下剑指offer的题顺便记录一下题解，日后再做分类整理（咕咕咕）</strong><br><strong>题目顺序和标号按照牛客网(<a href="https://www.nowcoder.com/ta/coding-interviews)，本文持续增量更新（" target="_blank" rel="noopener">https://www.nowcoder.com/ta/coding-interviews)，本文持续增量更新（</a></strong><br><a id="more"></a></p>
 <h1 id="JZ1-二维数组中的查找-查找-数组"><a href="#JZ1-二维数组中的查找-查找-数组" class="headerlink" title="JZ1 二维数组中的查找(查找, 数组)"></a>JZ1 二维数组中的查找(查找, 数组)</h1><h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>在一个二维数组中（每个一维数组的长度相同），每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。</p>
 <h2 id="解1"><a href="#解1" class="headerlink" title="解1"></a>解1</h2><p>对每一个一维数组进行二分查找，设二维数组的尺寸是m * n，那么复杂度为<code>O(mlogn)</code>。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">Find</span><span class="token punctuation">(</span><span class="token keyword">int</span> target<span class="token punctuation">,</span> <span class="token keyword">int</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">int</span> level <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> maxLevel <span class="token operator">=</span> array<span class="token punctuation">.</span>length<span class="token punctuation">,</span> n <span class="token operator">=</span> array<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>n <span class="token operator">&lt;=</span> <span class="token number">0</span> <span class="token operator">||</span> maxLevel <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> k <span class="token operator">=</span> n<span class="token punctuation">,</span> l <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> maxLevel<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">while</span><span class="token punctuation">(</span>j <span class="token operator">&lt;</span> k<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                l <span class="token operator">=</span> <span class="token punctuation">(</span>j <span class="token operator">+</span> k<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
-                <span class="token keyword">if</span><span class="token punctuation">(</span>array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>l<span class="token punctuation">]</span> <span class="token operator">==</span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>l<span class="token punctuation">]</span> <span class="token operator">></span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    k <span class="token operator">=</span> l <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-                    j <span class="token operator">=</span> l <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-            <span class="token punctuation">}</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">==</span> target<span class="token punctuation">)</span> 
-                <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-            <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">&lt;</span> target<span class="token punctuation">)</span> 
-                k <span class="token operator">=</span> n<span class="token punctuation">;</span>
-            <span class="token keyword">else</span>
-                j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution {
+    public boolean Find(int target, int [][] array) {
+        int level = 0, maxLevel = array.length, n = array[0].length - 1;
+        if(n <= 0="" ||="" maxlevel="" <="0)" return="" false;="" int="" j="0," k="n," l="0;" for(int="" i="0;" maxlevel;="" i++)="" {="" while(j="" k)="" +="" 2;="" if(array[i][l]="=" target)="" true;="" }="" else=""> target) {
+                    k = l - 1;
+                } else {
+                    j = l + 1;
+                }
+            }
+            if(array[i][j] == target) 
+                return true;
+            else if(array[i][j] < target) 
+                k = n;
+            else
+                j = 0;
+        }
+        return false;
+    }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></=></code></pre>
 <h2 id="解2"><a href="#解2" class="headerlink" title="解2"></a>解2</h2><p>对于这一数组，从最左下角出发，向上数字减小，向右数字增大。该方法的时间复杂度为<code>O(m+n)</code>。<br>因此，若当前数字大于待查找整数，则向上查找。若当前数字小于待查找整数，则向右查找。可能存在的问题是“为什么在当前数字大于待查找整数时，不需要考虑向左查找”。对于这一问题，可以对“上一步操作”进行分情况讨论。</p>
 <ol>
 <li>上一步的操作是向右查找，那么这种情况必然不用考虑向左查找（走回头路）</li>
 <li>上一步的操作是向上查找，此时可以再次分情况讨论。如果之前此时的所有操作都不包括“向右查找”，那么此时当前位置位于数组的最左侧，无法继续向左查找。</li>
-<li>如果上一步的操作是向上查找，且之前的所有操作至少包含一次向右查找。记最近一次进行向右查找时的整数为<code>a[i][j]</code>，可以得知待查找整数必定比<code>a[i][j]</code>大。而二维数组向上时数字递减，则可知待查找整数比<code>a[i][0] ~ a[i][j]</code>都大，进而可知待查找整数<code>a[i][0] ~ a[i][j]</code>左侧的所有整数都大，因此不需要进行向左查找。<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
- <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">Find</span><span class="token punctuation">(</span><span class="token keyword">int</span> target<span class="token punctuation">,</span> <span class="token keyword">int</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-     <span class="token keyword">int</span> level <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> m <span class="token operator">=</span> array<span class="token punctuation">.</span>length<span class="token punctuation">,</span> n <span class="token operator">=</span> array<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span>
-     <span class="token keyword">if</span><span class="token punctuation">(</span>n <span class="token operator">&lt;=</span> <span class="token number">0</span> <span class="token operator">||</span> m <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-     <span class="token keyword">int</span> i <span class="token operator">=</span> m <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">,</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-     <span class="token keyword">while</span><span class="token punctuation">(</span>i <span class="token operator">>=</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> j <span class="token operator">&lt;</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-         <span class="token keyword">if</span><span class="token punctuation">(</span>array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">></span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-             i<span class="token operator">--</span><span class="token punctuation">;</span>
-         <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">&lt;</span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-             j<span class="token operator">++</span><span class="token punctuation">;</span>
-         <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-             <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-         <span class="token punctuation">}</span>
-     <span class="token punctuation">}</span>
-     <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
- <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<li>如果上一步的操作是向上查找，且之前的所有操作至少包含一次向右查找。记最近一次进行向右查找时的整数为<code>a[i][j]</code>，可以得知待查找整数必定比<code>a[i][j]</code>大。而二维数组向上时数字递减，则可知待查找整数比<code>a[i][0] ~ a[i][j]</code>都大，进而可知待查找整数<code>a[i][0] ~ a[i][j]</code>左侧的所有整数都大，因此不需要进行向左查找。<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution {
+ public boolean Find(int target, int [][] array) {
+     int level = 0, m = array.length, n = array[0].length;
+     if(n <= 0="" ||="" m="" <="0)" return="" false;="" int="" i="m" -="" 1,="" j="0;" while(i="">= 0 && j < n) {
+         if(array[i][j] > target) {
+             i--;
+         } else if(array[i][j] < target) {
+             j++;
+         } else {
+             return true;
+         }
+     }
+     return false;
+ }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></=></code></pre>
 </li>
 </ol>
 <h1 id="JZ2-替换空格-字符串"><a href="#JZ2-替换空格-字符串" class="headerlink" title="JZ2 替换空格(字符串)"></a>JZ2 替换空格(字符串)</h1><h2 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h2><p>请实现一个函数，将一个字符串中的每个空格替换成“%20”。例如，当字符串为We Are Happy.则经过替换之后的字符串为We%20Are%20Happy。</p>
 <h2 id="解"><a href="#解" class="headerlink" title="解"></a>解</h2><p>没啥好说的字符串题，注意从后往前进行替换就行。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> String <span class="token function">replaceSpace</span><span class="token punctuation">(</span>StringBuffer str<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">// 不使用额外存储空间</span>
-        <span class="token comment" spellcheck="true">// 从后往前移动更有效率</span>
-        <span class="token comment" spellcheck="true">// 首先计算空格数</span>
-        <span class="token keyword">int</span> spaceNum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> oldLength <span class="token operator">=</span> str<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> oldLength<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>str<span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">' '</span><span class="token punctuation">)</span>
-                spaceNum<span class="token operator">++</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token comment" spellcheck="true">// 根据空格数扩大字符串</span>
-        str<span class="token punctuation">.</span><span class="token function">setLength</span><span class="token punctuation">(</span>str<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> spaceNum <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 从尾部开始替换较容易计算移动</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> oldLength <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>str<span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token string">' '</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                str<span class="token punctuation">.</span><span class="token function">setCharAt</span><span class="token punctuation">(</span>i <span class="token operator">+</span> spaceNum <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">,</span> str<span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-                str<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span>i <span class="token operator">+</span> spaceNum <span class="token operator">*</span> <span class="token number">2</span> <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">,</span> i <span class="token operator">+</span> spaceNum <span class="token operator">*</span> <span class="token number">2</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"%20"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                spaceNum<span class="token operator">--</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">return</span> str<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution {
+    public String replaceSpace(StringBuffer str) {
+        // 不使用额外存储空间
+        // 从后往前移动更有效率
+        // 首先计算空格数
+        int spaceNum = 0;
+        int oldLength = str.length();
+        for(int i = 0; i < oldLength; i++) {
+            if(str.charAt(i) == ' ')
+                spaceNum++;
+        }
+        // 根据空格数扩大字符串
+        str.setLength(str.length() + spaceNum * 2);
+        // 从尾部开始替换较容易计算移动
+        for(int i = oldLength - 1; i >= 0; i--) {
+            if(str.charAt(i) != ' ') {
+                str.setCharAt(i + spaceNum * 2, str.charAt(i));
+            } else {
+                str.replace(i + spaceNum * 2 - 2, i + spaceNum * 2 + 1, "%20");
+                spaceNum--;
+            }
+        }
+        return str.toString();
+    }
+}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h1 id="JZ3-从尾到头打印链表-链表"><a href="#JZ3-从尾到头打印链表-链表" class="headerlink" title="JZ3 从尾到头打印链表(链表)"></a>JZ3 从尾到头打印链表(链表)</h1><h2 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h2><p>输入一个链表，按链表从尾到头的顺序返回一个ArrayList。</p>
 <h2 id="解-1"><a href="#解-1" class="headerlink" title="解"></a>解</h2><p>原地反转链表后输出，基本功。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">/**
 *    public class ListNode {
 *        int val;
 *        ListNode next = null;
@@ -188,33 +179,179 @@
 *        }
 *    }
 *
-*/</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>ArrayList<span class="token punctuation">;</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> ArrayList<span class="token operator">&lt;</span>Integer<span class="token operator">></span> <span class="token function">printListFromTailToHead</span><span class="token punctuation">(</span>ListNode listNode<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">// 反转链表之后就能顺序输出了</span>
-        ListNode newHead <span class="token operator">=</span> null<span class="token punctuation">,</span> p <span class="token operator">=</span> listNode<span class="token punctuation">,</span> q<span class="token punctuation">;</span>
-        ArrayList<span class="token operator">&lt;</span>Integer<span class="token operator">></span> res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>Integer<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">while</span><span class="token punctuation">(</span>p <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            q <span class="token operator">=</span> p<span class="token punctuation">;</span>
-            p <span class="token operator">=</span> p<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-            q<span class="token punctuation">.</span>next <span class="token operator">=</span> newHead<span class="token punctuation">;</span>
-            newHead <span class="token operator">=</span> q<span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        p <span class="token operator">=</span> newHead<span class="token punctuation">;</span>
-        <span class="token keyword">while</span><span class="token punctuation">(</span>p <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            res<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>val<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            p <span class="token operator">=</span> p<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">return</span> res<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+*/
+import java.util.ArrayList;
+public class Solution {
+    public ArrayList<integer> printListFromTailToHead(ListNode listNode) {
+        // 反转链表之后就能顺序输出了
+        ListNode newHead = null, p = listNode, q;
+        ArrayList<integer> res = new ArrayList<integer>();
+        while(p != null) {
+            q = p;
+            p = p.next;
+            q.next = newHead;
+            newHead = q;
+        }
+        p = newHead;
+        while(p != null) {
+            res.add(p.val);
+            p = p.next;
+        }
+        return res;
+    }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></integer></integer></integer></code></pre>
+<h1 id="JZ4-重建二叉树-树，数组，DFS"><a href="#JZ4-重建二叉树-树，数组，DFS" class="headerlink" title="JZ4 重建二叉树(树，数组，DFS)"></a>JZ4 重建二叉树(树，数组，DFS)</h1><h2 id="题目描述-3"><a href="#题目描述-3" class="headerlink" title="题目描述"></a>题目描述</h2><p>输入某二叉树的前序遍历和中序遍历的结果，请重建出该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。例如输入前序遍历序列{1,2,4,7,3,5,6,8}和中序遍历序列{4,7,2,1,5,3,8,6}，则重建二叉树并返回。</p>
+<h2 id="解-2"><a href="#解-2" class="headerlink" title="解"></a>解</h2><p>利用递归。将递归的每一步归纳为“找到根并确定左右子树的前序序列和中序序列”的过程，假设左右子树都已经构建好了，那么把左右子树连接到根节点上即可。</p>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode reConstructBinaryTree(int [] pre,int [] in) {
+        if(pre.length <= 0="" ||="" in.length="" <="0)" return="" null;="" treenode="" res="reconstruct(pre," in,="" 0,="" pre.length="" -="" 1,="" 1);="" res;="" }="" 递归="" public="" reconstruct(int="" []="" pre,="" int="" premin,="" premax,="" inmin,="" inmax)="" {="" if(premin=""> preMax || inMin > inMax) return null;
+        // 构造根
+        TreeNode root = new TreeNode(pre[preMin]);
+        int leftCount = 0, rightCount = 0, i = inMin;
+        while(in[i++] != pre[preMin]) {
+            leftCount++;
+        }
+        rightCount = inMax - leftCount - 1;
+        root.left = reconstruct(pre, in, preMin + 1, preMin + leftCount, inMin, inMin + leftCount - 1);
+        root.right = reconstruct(pre, in, preMin + leftCount + 1, preMax, inMin + leftCount + 1, inMax);
+        return root;
+    }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></=></code></pre>
+<h1 id="JZ5-用两个栈实现队列-栈"><a href="#JZ5-用两个栈实现队列-栈" class="headerlink" title="JZ5 用两个栈实现队列(栈)"></a>JZ5 用两个栈实现队列(栈)</h1><h2 id="题目描述-4"><a href="#题目描述-4" class="headerlink" title="题目描述"></a>题目描述</h2><p>用两个栈来实现一个队列，完成队列的Push和Pop操作。 队列中的元素为int类型。</p>
+<h2 id="解-3"><a href="#解-3" class="headerlink" title="解"></a>解</h2><pre class="line-numbers language-lang-java"><code class="language-lang-java">import java.util.Stack;
+
+public class Solution {
+    Stack<integer> stack1 = new Stack<integer>();
+    Stack<integer> stack2 = new Stack<integer>();
+
+    public void push(int node) {
+        stack1.push(node);
+    }
+
+    public int pop() {
+        if(stack1.isEmpty() && stack2.isEmpty())
+            throw new RuntimeException("Stack is Empty");
+        if(stack2.isEmpty()) {
+            while(!stack1.isEmpty()) {
+                stack2.push(stack1.pop());
+            }
+        }
+        return stack2.pop();
+    }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></integer></integer></integer></integer></code></pre>
+<h1 id="JZ6-旋转数组的最小数字-二分，数组"><a href="#JZ6-旋转数组的最小数字-二分，数组" class="headerlink" title="JZ6 旋转数组的最小数字(二分，数组)"></a>JZ6 旋转数组的最小数字(二分，数组)</h1><h2 id="题目描述-5"><a href="#题目描述-5" class="headerlink" title="题目描述"></a>题目描述</h2><p>把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。<br>输入一个非递减排序的数组的一个旋转，输出旋转数组的最小元素。<br>例如数组<code>[3,4,5,1,2]</code>为<code>[1,2,3,4,5]</code>的一个旋转，该数组的最小值为1。<br>NOTE：给出的所有元素都大于0，若数组大小为0，请返回0。</p>
+<h2 id="解-4"><a href="#解-4" class="headerlink" title="解"></a>解</h2><p>旋转后的数组可以看作一前一后两个非递减序列，找到最小数字即找到第二个非递减序列的起点，可以考虑使用二分查找。如果不考虑相同数字，设数组<code>array</code>的查找起点为<code>min</code>，终点为<code>max</code>：</p>
+<ul>
+<li>令<code>mid = (min + max) / 2</code>，若<code>array[min] &lt;= array[mid] &amp;&amp; array[max] &lt;= array[mid]</code>，可知此时<code>mid</code>落在了前一个非递减序列，进而可知最小值点在<code>mid</code>之后。</li>
+<li>若<code>array[mid] &lt;= array[min] &amp;&amp; array[mid] &lt;= array[max]</code>，可知此时<code>mid</code>落在了后一个非递减序列，进而可知最小值点在<code>mid</code>之前。</li>
+<li>若<code>array</code>在区间<code>[min, max]</code>上非递减，则已经定位到了第二个非递减序列，直接取<code>array[min]</code>即为整个数组的最小值<br>在此基础上考虑相同数字。如果<code>array</code>在<code>min, max, mid</code>三个位置的值都相等，则难以判断此时<code>mid</code>落在了哪一个非递减序列，此时只能顺序查找（牛客上的测试用例不够强，不考虑这一点也能AC）。<pre class="line-numbers language-lang-java"><code class="language-lang-java">import java.util.ArrayList;
+public class Solution {
+  public int minNumberInRotateArray(int [] array) {
+      if(array.length <= 0)="" {="" return="" 0;="" }="" int="" min="0," max="array.length" -="" 1;="" while(min="" <="" max)="" mid="(min" +="" 2;="" if(array[min]="=" array[mid]="" &&="" array[max])="" find="" by="" order="" res="array[min];" res)="" min++;="" array[min];="" else="">= array[max]){
+              min = mid + 1;
+          } else {
+              max = mid;
+              min++;
+          }
+      }
+      return array[min];
+  }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></=></code></pre>
+</li>
+</ul>
+<h1 id="JZ7-斐波那契数列"><a href="#JZ7-斐波那契数列" class="headerlink" title="JZ7 斐波那契数列"></a>JZ7 斐波那契数列</h1><h2 id="题目描述-6"><a href="#题目描述-6" class="headerlink" title="题目描述"></a>题目描述</h2><p>大家都知道斐波那契数列，现在要求输入一个整数n，请你输出斐波那契数列的第n项（从0开始，第0项为0，第1项是1）。<br>n&lt;=39</p>
+<h2 id="解-5"><a href="#解-5" class="headerlink" title="解"></a>解</h2><p>非常的简单。不过这算不算有一点DP的思想呢（</p>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution {
+    public int Fibonacci(int n) {
+        if(n == 0 || n == 1) return n;
+        int res = 1, pre = 1;
+        n -= 2;
+        int temp = 0;
+        while(n-- > 0) {
+            temp = res + pre;
+            pre = res;
+            res = temp;
+        }
+        return res;
+    }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="JZ8-跳台阶-递归，动态规划"><a href="#JZ8-跳台阶-递归，动态规划" class="headerlink" title="JZ8 跳台阶(递归，动态规划)"></a>JZ8 跳台阶(递归，动态规划)</h1><h2 id="题目描述-7"><a href="#题目描述-7" class="headerlink" title="题目描述"></a>题目描述</h2><p>一只青蛙一次可以跳上1级台阶，也可以跳上2级。求该青蛙跳上一个n级的台阶总共有多少种跳法（先后次序不同算不同的结果）。</p>
+<h2 id="解-6"><a href="#解-6" class="headerlink" title="解"></a>解</h2><p>可以先观察一下n比较小的情况。设<code>N(k)</code>为<code>k</code>级台阶的跳法数：</p>
+<ul>
+<li>跳0级: 0种跳法</li>
+<li>跳1级: 1种跳法</li>
+<li>跳2级: 2种跳法</li>
+<li>跳3级: N(2) + N(1)</li>
+<li>跳4级: N(3) + N(2)<br>进而知道，需要跳<code>n</code>级时，前一步要么跳了1级，要么跳了2级。那么只需要知道跳<code>n-1</code>级和跳<code>n-2</code>级分别有几种跳法，即可算出<code>N(n) = N(n - 1) + N(n - 2)</code><br>需要注意的是，不要认为“跳2级有2种跳法”，进而得到<code>N(n) = N(n - 1) + 2 * N(n - 2)</code>的结论，因为“先跳<code>n - 2</code>级，再跳两次1级”的情况与“先跳<code>n - 1</code>级，再跳1级”的情况有重复。<br>本题的非递归做法比较容易看出，因此使用非递归做法以节省空间。<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution {
+  public int JumpFloor(int target) {
+      if(target >= 0 && target <= 2)="" return="" target;="" int="" res="2," pre="1," temp="0;" target="" -="2;" while(target--=""> 0) {
+          temp = res + pre;
+          pre = res;
+          res = temp;
+      }
+      return res;
+  }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></=></code></pre>
+</li>
+</ul>
+<h1 id="JZ9-变态跳台阶-递归"><a href="#JZ9-变态跳台阶-递归" class="headerlink" title="JZ9 变态跳台阶(递归)"></a>JZ9 变态跳台阶(递归)</h1><h2 id="题目描述-8"><a href="#题目描述-8" class="headerlink" title="题目描述"></a>题目描述</h2><p>一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法。</p>
+<h2 id="解-7"><a href="#解-7" class="headerlink" title="解"></a>解</h2><p>还是可以先观察一下<code>n</code>比较小的情况。</p>
+<ul>
+<li>跳0级: 0种跳法</li>
+<li>跳1级: 1种跳法</li>
+<li>跳2级: 2种跳法 = N(1) + 1</li>
+<li>跳3级: 4种跳法 = N(2) + N(1) + 1 = 2 * N(2)</li>
+<li>跳4级: 8种跳法 = N(3) + N(2) + 1 = 2 <em> N(3)<br>需要跳<code>n</code>级时，前一步可以跳<code>0, 1, 2, ..., n - 1</code>级。可知<code>N(n) = 1 + N(1) + N(2) + ... + N(n - 1)</code>，进一步化简得`N(n) = [1 + N(1) + … + N(n - 2)] + N(n - 1) = 2 </em> N(n - 1)`。转换为非递归做法也比较容易。<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution {
+  public int JumpFloorII(int target) {
+      if(target == 0 || target == 1) return target;
+      target -= 2;
+      int res = 2;
+      while(target-- > 0) {
+          res *= 2;
+      }
+      return res; 
+  }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<h1 id="JZ10-矩形覆盖"><a href="#JZ10-矩形覆盖" class="headerlink" title="JZ10 矩形覆盖"></a>JZ10 矩形覆盖</h1><h2 id="题目描述-9"><a href="#题目描述-9" class="headerlink" title="题目描述"></a>题目描述</h2><p>我们可以用2<em>1的小矩形横着或者竖着去覆盖更大的矩形。请问用n个2</em>1的小矩形无重叠地覆盖一个2<em>n的大矩形，总共有多少种方法？<br>比如n=3时，2</em>3的矩形块有3种覆盖方法</p>
+<h2 id="解-8"><a href="#解-8" class="headerlink" title="解"></a>解</h2><p><code>2 * n</code>的矩形可以视为由两种“块”填满：</p>
+<ul>
+<li>竖着摆的2 * 1</li>
+<li>两条上下摆放的横向2 <em> 1构成的2 </em> 2块<br>需要注意的是没有第三种，两条左右摆的纵向2 * 1就变成了两个第一种块。<br>于是本题的做法就和JZ8 跳台阶一样了。<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution {
+  public int RectCover(int target) {
+      if(target >= 0 && target <= 2)="" return="" target;="" target="" -="2;" int="" res="2," pre="1," temp="0;" while(target--=""> 0) {
+          temp = res + pre;
+          pre = res;
+          res = temp;
+      }
+      return res;
+  }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></=></code></pre>
+</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/11/剑指offer题解/" data-id="ckdq22le3000z6kvhnz0sww2u" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/11/剑指offer题解/" data-id="cketor9i900150gvhkxvtlo6e" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
@@ -224,6 +361,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2020/09/07/算法题中的数学类型题归集/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          算法题中的数学类型题归集
+        
+      </div>
+    </a>
   
   
     <a href="/2020/08/08/Java学习-泛型与反射/" id="article-nav-older" class="article-nav-link-wrap">
@@ -264,7 +410,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Algorithm/" style="font-size: 20px;">Algorithm</a> <a href="/tags/C/" style="font-size: 16.67px;">C++</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/KMP/" style="font-size: 10px;">KMP</a> <a href="/tags/LeetCode/" style="font-size: 16.67px;">LeetCode</a> <a href="/tags/nonsense/" style="font-size: 10px;">nonsense</a> <a href="/tags/self-taking/" style="font-size: 10px;">self-taking</a> <a href="/tags/减治法/" style="font-size: 10px;">减治法</a> <a href="/tags/动态规划/" style="font-size: 16.67px;">动态规划</a> <a href="/tags/反射/" style="font-size: 10px;">反射</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a>
+      <a href="/tags/Algorithm/" style="font-size: 20px;">Algorithm</a> <a href="/tags/C/" style="font-size: 16.67px;">C++</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/KMP/" style="font-size: 10px;">KMP</a> <a href="/tags/LeetCode/" style="font-size: 13.33px;">LeetCode</a> <a href="/tags/nonsense/" style="font-size: 10px;">nonsense</a> <a href="/tags/self-taking/" style="font-size: 10px;">self-taking</a> <a href="/tags/减治法/" style="font-size: 10px;">减治法</a> <a href="/tags/动态规划/" style="font-size: 13.33px;">动态规划</a> <a href="/tags/反射/" style="font-size: 10px;">反射</a> <a href="/tags/泛型/" style="font-size: 10px;">泛型</a>
     </div>
   </div>
 
@@ -273,7 +419,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li></ul>
     </div>
   </div>
 
@@ -286,7 +432,11 @@
       <ul>
         
           <li>
-            <a href="/2020/08/11/剑指offer题解/">剑指offer题解</a>
+            <a href="/2020/09/07/算法题中的数学类型题归集/">算法题中的数学类型题归集</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/11/剑指offer题解/">剑指offer题解（一） - JZ1 ~ JZ10</a>
           </li>
         
           <li>
@@ -299,10 +449,6 @@
         
           <li>
             <a href="/2019/03/18/LeetCode-Weekly-Contest-128-题解/">LeetCode-Weekly-Contest-128-题解</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/21/LeetCode-Weekly-Contest-111-题解/">LeetCode Weekly Contest #111 题解</a>
           </li>
         
       </ul>
@@ -344,5 +490,20 @@
 
 
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

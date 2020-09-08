@@ -5,18 +5,20 @@
   
 
   
-  <title>Category: Diary | Freeman&#39;s Blog</title>
+  <title>算法题中的数学类型题归集 | Freeman&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Self-talking of a noob">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Freeman&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/categories/Diary/index.html">
+  <meta name="description" content="非科班鶸遇到数学题总是比较头疼，于是做一点整理">
+<meta name="keywords" content="Algorithm,C++,Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法题中的数学类型题归集">
+<meta property="og:url" content="http://yoursite.com/2020/09/07/算法题中的数学类型题归集/index.html">
 <meta property="og:site_name" content="Freeman&#39;s Blog">
-<meta property="og:description" content="Self-talking of a noob">
+<meta property="og:description" content="非科班鶸遇到数学题总是比较头疼，于是做一点整理">
 <meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2020-09-08T01:29:29.093Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Freeman&#39;s Blog">
-<meta name="twitter:description" content="Self-talking of a noob">
+<meta name="twitter:title" content="算法题中的数学类型题归集">
+<meta name="twitter:description" content="非科班鶸遇到数学题总是比较头疼，于是做一点整理">
   
     <link rel="alternate" href="/atom.xml" title="Freeman&#39;s Blog" type="application/atom+xml">
   
@@ -66,40 +68,112 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/10/26/hello-world/" class="archive-article-date">
-  <time datetime="2018-10-25T16:00:00.000Z" itemprop="datePublished">10月 26</time>
+        <section id="main"><article id="post-算法题中的数学类型题归集" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/07/算法题中的数学类型题归集/" class="article-date">
+  <time datetime="2020-09-07T03:13:17.000Z" itemprop="datePublished">2020-09-07</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/数据结构与算法/">数据结构与算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/10/26/hello-world/">Hello World</a>
+    <h1 class="article-title" itemprop="name">
+      算法题中的数学类型题归集
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>非科班鶸遇到数学题总是比较头疼，于是做一点整理</strong></p>
+<a id="more"></a>
+<h1 id="乘法快速幂"><a href="#乘法快速幂" class="headerlink" title="乘法快速幂"></a>乘法快速幂</h1><h2 id="思想"><a href="#思想" class="headerlink" title="思想"></a>思想</h2><p>乘法快速幂主要是用于求一个数的n次幂，使用循环的时间复杂度是$O(n)$。如果n比较大的话这个时间复杂度是不能满足要求的。使用乘法快速幂可以让计算的时间复杂度达到$O(logn)$</p>
+<p>对于$a^n$，若$n$是偶数，则当已经求出$a^\frac{n}{2}$时，则可以通过$a^\frac{n}{2} \times a^\frac{n}{2}$求出$a^n$，而不必接着一个一个地让当前结果乘以$a$。如果$a$是奇数，则可以通过$a ^ {\lfloor \frac{n}{2} \rfloor} \times a ^ {\lfloor \frac{n}{2} \rfloor} \times a$求出$a^n$。以此类推，最终需要解决的问题是求$a^0$，而$a^0 = 1$。显然这是一个可以通过递归实现的算法。</p>
+<p>对于非递归算法，可以考虑倍增的想法：在算出$a^1$的时候马上可以算出$a^2$，进而可以算出$a^4, a^8, … , a^{2^n}$。但是单纯的倍增可能会直接跨过$a^n$。那么我们可以考虑如何使用$a^{2^k}, k=0, 1, 2…$来凑出$a^n$。对于每个$n$，我们可以求出它的二进制形式，进而得到它的二进制分解：通过判断二进制的第$k$位是否为0而判断$n$是否包含$2^k$，进而判断在求$a^n$时是否要把$a^{2^k}$加入结果。</p>
+<h2 id="例题1-（剑指offer-JZ12）数值的整数次方"><a href="#例题1-（剑指offer-JZ12）数值的整数次方" class="headerlink" title="例题1 （剑指offer JZ12）数值的整数次方"></a>例题1 （剑指offer JZ12）数值的整数次方</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个double类型的浮点数base和int类型的整数exponent。求base的exponent次方。<br>保证base和exponent不同时为0</p>
+<h3 id="解"><a href="#解" class="headerlink" title="解"></a>解</h3><p>递归版本</p>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution {
+    public double Power(double base, int exponent) {
+        if(base == 0)
+            return 0;
+        double res = absPower(base, exponent);
+        if(exponent >= 0)
+            return res;
+        else
+            return 1 / res;
+    }
+    public double absPower(double base, int exponent) {
+        if(exponent == 0) 
+            return 1;
+        double temp = 1;
+        // exponent绝对值为奇数的时候，对2求模可能为1或-1
+        // 这么表达更简洁
+        if((exponent & 1) == 1) {
+            temp = base;
+        }
+        double ret = absPower(base, exponent / 2);
+        return ret * ret * temp;
+    }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>非递归版本<br>（Java版在鹿上了11111）</p>
+<pre class="line-numbers language-lang-cpp"><code class="language-lang-cpp">class Solution {
+public:
+    double Power(double base, int exponent) {
+        // 本题是一个简单的乘法快速幂
+        // 二进制分解exponent，达到log(exponent)的时间复杂度
+        if(exponent == 0) return 1;
+        if(base == 0) return 0;
+        if(exponent < 0) exponent--;
+        double res = 1;
+        int length = sizeof(int) * 8;
+        while(length--) {
+            if((exponent & 1) && exponent > 0) {
+                res *= base;
+            } else if(!(exponent & 1) && exponent < 0) {
+                res = res / base;
+            }
+            base *= base;
+            exponent >>= 1;
+        }
+        return res;
+    }
+};
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/09/07/算法题中的数学类型题归集/" data-id="cketor9hd00040gvhb7h437ua" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/08/11/剑指offer题解/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">剑指offer题解（一） - JZ1 ~ JZ10</div>
+    </a>
+  
+</nav>
+
+  
+</article>
 
 </section>
         
