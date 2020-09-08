@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="二刷一下剑指offer的题顺便记录一下题解，日后再做分类整理（咕咕咕）题目顺序和标号按照牛客网( https:&#x2F;&#x2F;www.nowcoder.com&#x2F;ta&#x2F;coding-interviews )，本文持续增量更新（">
+<meta property="og:type" content="article">
+<meta property="og:title" content="剑指offer题解（一） - JZ1 ~ JZ10">
+<meta property="og:url" content="http://yoursite.com/2020/08/11/%E5%89%91%E6%8C%87offer%E9%A2%98%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89%20-%20JZ1%20~%20JZ10/index.html">
+<meta property="og:site_name" content="Freeman&#39;s Blog">
+<meta property="og:description" content="二刷一下剑指offer的题顺便记录一下题解，日后再做分类整理（咕咕咕）题目顺序和标号按照牛客网( https:&#x2F;&#x2F;www.nowcoder.com&#x2F;ta&#x2F;coding-interviews )，本文持续增量更新（">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-11T12:39:49.000Z">
+<meta property="article:modified_time" content="2020-09-08T08:33:59.454Z">
+<meta property="article:author" content="Freeman Huang">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/08/11/%E5%89%91%E6%8C%87offer%E9%A2%98%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89%20-%20JZ1%20~%20JZ10/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>剑指offer题解（一） - JZ1 ~ JZ10 | Freeman's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Freeman's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个菜鸡心血来潮搭建的个人博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/%E5%89%91%E6%8C%87offer%E9%A2%98%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89%20-%20JZ1%20~%20JZ10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Freeman Huang">
+      <meta itemprop="description" content="Self-talking of a noob">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Freeman's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          剑指offer题解（一） - JZ1 ~ JZ10
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-11 20:39:49" itemprop="dateCreated datePublished" datetime="2020-08-11T20:39:49+08:00">2020-08-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-08 16:33:59" itemprop="dateModified" datetime="2020-09-08T16:33:59+08:00">2020-09-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>二刷一下剑指offer的题顺便记录一下题解，日后再做分类整理（咕咕咕）</strong><br><strong>题目顺序和标号按照牛客网( <a target="_blank" rel="noopener" href="https://www.nowcoder.com/ta/coding-interviews">https://www.nowcoder.com/ta/coding-interviews</a> )，本文持续增量更新（</strong><br><a id="more"></a></p>
+<h1 id="JZ1-二维数组中的查找-查找-数组"><a href="#JZ1-二维数组中的查找-查找-数组" class="headerlink" title="JZ1 二维数组中的查找(查找, 数组)"></a>JZ1 二维数组中的查找(查找, 数组)</h1><h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>在一个二维数组中（每个一维数组的长度相同），每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。</p>
+<h2 id="解1"><a href="#解1" class="headerlink" title="解1"></a>解1</h2><p>对每一个一维数组进行二分查找，设二维数组的尺寸是m * n，那么复杂度为<code>O(mlogn)</code>。</p>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution &#123;
+    public boolean Find(int target, int [][] array) &#123;
+        int level = 0, maxLevel = array.length, n = array[0].length - 1;
+        if(n <= 0 || maxLevel <= 0) return false;
+        int j = 0, k = n, l = 0;
+        for(int i = 0; i < maxLevel; i++) &#123;
+            while(j < k) &#123;
+                l = (j + k) / 2;
+                if(array[i][l] == target) &#123;
+                    return true;
+                &#125; else if(array[i][l] > target) &#123;
+                    k = l - 1;
+                &#125; else &#123;
+                    j = l + 1;
+                &#125;
+            &#125;
+            if(array[i][j] == target) 
+                return true;
+            else if(array[i][j] < target) 
+                k = n;
+            else
+                j = 0;
+        &#125;
+        return false;
+    &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="解2"><a href="#解2" class="headerlink" title="解2"></a>解2</h2><p>对于这一数组，从最左下角出发，向上数字减小，向右数字增大。该方法的时间复杂度为<code>O(m+n)</code>。<br>因此，若当前数字大于待查找整数，则向上查找。若当前数字小于待查找整数，则向右查找。可能存在的问题是“为什么在当前数字大于待查找整数时，不需要考虑向左查找”。对于这一问题，可以对“上一步操作”进行分情况讨论。</p>
+<ol>
+<li>上一步的操作是向右查找，那么这种情况必然不用考虑向左查找（走回头路）</li>
+<li>上一步的操作是向上查找，此时可以再次分情况讨论。如果之前此时的所有操作都不包括“向右查找”，那么此时当前位置位于数组的最左侧，无法继续向左查找。</li>
+<li>如果上一步的操作是向上查找，且之前的所有操作至少包含一次向右查找。记最近一次进行向右查找时的整数为<code>a[i][j]</code>，可以得知待查找整数必定比<code>a[i][j]</code>大。而二维数组向上时数字递减，则可知待查找整数比<code>a[i][0] ~ a[i][j]</code>都大，进而可知待查找整数<code>a[i][0] ~ a[i][j]</code>左侧的所有整数都大，因此不需要进行向左查找。<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution &#123;
+ public boolean Find(int target, int [][] array) &#123;
+     int level = 0, m = array.length, n = array[0].length;
+     if(n <= 0 || m <= 0) return false;
+     int i = m - 1, j = 0;
+     while(i >= 0 && j < n) &#123;
+         if(array[i][j] > target) &#123;
+             i--;
+         &#125; else if(array[i][j] < target) &#123;
+             j++;
+         &#125; else &#123;
+             return true;
+         &#125;
+     &#125;
+     return false;
+ &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
+<h1 id="JZ2-替换空格-字符串"><a href="#JZ2-替换空格-字符串" class="headerlink" title="JZ2 替换空格(字符串)"></a>JZ2 替换空格(字符串)</h1><h2 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h2><p>请实现一个函数，将一个字符串中的每个空格替换成“%20”。例如，当字符串为We Are Happy.则经过替换之后的字符串为We%20Are%20Happy。</p>
+<h2 id="解"><a href="#解" class="headerlink" title="解"></a>解</h2><p>没啥好说的字符串题，注意从后往前进行替换就行。</p>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution &#123;
+    public String replaceSpace(StringBuffer str) &#123;
+        // 不使用额外存储空间
+        // 从后往前移动更有效率
+        // 首先计算空格数
+        int spaceNum = 0;
+        int oldLength = str.length();
+        for(int i = 0; i < oldLength; i++) &#123;
+            if(str.charAt(i) == ' ')
+                spaceNum++;
+        &#125;
+        // 根据空格数扩大字符串
+        str.setLength(str.length() + spaceNum * 2);
+        // 从尾部开始替换较容易计算移动
+        for(int i = oldLength - 1; i >= 0; i--) &#123;
+            if(str.charAt(i) != ' ') &#123;
+                str.setCharAt(i + spaceNum * 2, str.charAt(i));
+            &#125; else &#123;
+                str.replace(i + spaceNum * 2 - 2, i + spaceNum * 2 + 1, "%20");
+                spaceNum--;
+            &#125;
+        &#125;
+        return str.toString();
+    &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="JZ3-从尾到头打印链表-链表"><a href="#JZ3-从尾到头打印链表-链表" class="headerlink" title="JZ3 从尾到头打印链表(链表)"></a>JZ3 从尾到头打印链表(链表)</h1><h2 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h2><p>输入一个链表，按链表从尾到头的顺序返回一个ArrayList。</p>
+<h2 id="解-1"><a href="#解-1" class="headerlink" title="解"></a>解</h2><p>原地反转链表后输出，基本功。</p>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">/**
+*    public class ListNode &#123;
+*        int val;
+*        ListNode next = null;
+*
+*        ListNode(int val) &#123;
+*            this.val = val;
+*        &#125;
+*    &#125;
+*
+*/
+import java.util.ArrayList;
+public class Solution &#123;
+    public ArrayList<Integer> printListFromTailToHead(ListNode listNode) &#123;
+        // 反转链表之后就能顺序输出了
+        ListNode newHead = null, p = listNode, q;
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        while(p != null) &#123;
+            q = p;
+            p = p.next;
+            q.next = newHead;
+            newHead = q;
+        &#125;
+        p = newHead;
+        while(p != null) &#123;
+            res.add(p.val);
+            p = p.next;
+        &#125;
+        return res;
+    &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="JZ4-重建二叉树-树，数组，DFS"><a href="#JZ4-重建二叉树-树，数组，DFS" class="headerlink" title="JZ4 重建二叉树(树，数组，DFS)"></a>JZ4 重建二叉树(树，数组，DFS)</h1><h2 id="题目描述-3"><a href="#题目描述-3" class="headerlink" title="题目描述"></a>题目描述</h2><p>输入某二叉树的前序遍历和中序遍历的结果，请重建出该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。例如输入前序遍历序列{1,2,4,7,3,5,6,8}和中序遍历序列{4,7,2,1,5,3,8,6}，则重建二叉树并返回。</p>
+<h2 id="解-2"><a href="#解-2" class="headerlink" title="解"></a>解</h2><p>利用递归。将递归的每一步归纳为“找到根并确定左右子树的前序序列和中序序列”的过程，假设左右子树都已经构建好了，那么把左右子树连接到根节点上即可。</p>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">/**
+ * Definition for binary tree
+ * public class TreeNode &#123;
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) &#123; val = x; &#125;
+ * &#125;
+ */
+public class Solution &#123;
+    public TreeNode reConstructBinaryTree(int [] pre,int [] in) &#123;
+        if(pre.length <= 0 || in.length <= 0) return null;
+        TreeNode res = reconstruct(pre, in, 0, pre.length - 1, 0, in.length - 1);
+        return res;
+    &#125;
+    // 递归
+    public TreeNode reconstruct(int [] pre, int [] in, int preMin, int preMax, int inMin, int inMax) &#123;
+        if(preMin > preMax || inMin > inMax) return null;
+        // 构造根
+        TreeNode root = new TreeNode(pre[preMin]);
+        int leftCount = 0, rightCount = 0, i = inMin;
+        while(in[i++] != pre[preMin]) &#123;
+            leftCount++;
+        &#125;
+        rightCount = inMax - leftCount - 1;
+        root.left = reconstruct(pre, in, preMin + 1, preMin + leftCount, inMin, inMin + leftCount - 1);
+        root.right = reconstruct(pre, in, preMin + leftCount + 1, preMax, inMin + leftCount + 1, inMax);
+        return root;
+    &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="JZ5-用两个栈实现队列-栈"><a href="#JZ5-用两个栈实现队列-栈" class="headerlink" title="JZ5 用两个栈实现队列(栈)"></a>JZ5 用两个栈实现队列(栈)</h1><h2 id="题目描述-4"><a href="#题目描述-4" class="headerlink" title="题目描述"></a>题目描述</h2><p>用两个栈来实现一个队列，完成队列的Push和Pop操作。 队列中的元素为int类型。</p>
+<h2 id="解-3"><a href="#解-3" class="headerlink" title="解"></a>解</h2><pre class="line-numbers language-lang-java"><code class="language-lang-java">import java.util.Stack;
+
+public class Solution &#123;
+    Stack<Integer> stack1 = new Stack<Integer>();
+    Stack<Integer> stack2 = new Stack<Integer>();
+
+    public void push(int node) &#123;
+        stack1.push(node);
+    &#125;
+
+    public int pop() &#123;
+        if(stack1.isEmpty() && stack2.isEmpty())
+            throw new RuntimeException("Stack is Empty");
+        if(stack2.isEmpty()) &#123;
+            while(!stack1.isEmpty()) &#123;
+                stack2.push(stack1.pop());
+            &#125;
+        &#125;
+        return stack2.pop();
+    &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="JZ6-旋转数组的最小数字-二分，数组"><a href="#JZ6-旋转数组的最小数字-二分，数组" class="headerlink" title="JZ6 旋转数组的最小数字(二分，数组)"></a>JZ6 旋转数组的最小数字(二分，数组)</h1><h2 id="题目描述-5"><a href="#题目描述-5" class="headerlink" title="题目描述"></a>题目描述</h2><p>把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。<br>输入一个非递减排序的数组的一个旋转，输出旋转数组的最小元素。<br>例如数组<code>[3,4,5,1,2]</code>为<code>[1,2,3,4,5]</code>的一个旋转，该数组的最小值为1。<br>NOTE：给出的所有元素都大于0，若数组大小为0，请返回0。</p>
+<h2 id="解-4"><a href="#解-4" class="headerlink" title="解"></a>解</h2><p>旋转后的数组可以看作一前一后两个非递减序列，找到最小数字即找到第二个非递减序列的起点，可以考虑使用二分查找。如果不考虑相同数字，设数组<code>array</code>的查找起点为<code>min</code>，终点为<code>max</code>：</p>
+<ul>
+<li>令<code>mid = (min + max) / 2</code>，若<code>array[min] &lt;= array[mid] &amp;&amp; array[max] &lt;= array[mid]</code>，可知此时<code>mid</code>落在了前一个非递减序列，进而可知最小值点在<code>mid</code>之后。</li>
+<li>若<code>array[mid] &lt;= array[min] &amp;&amp; array[mid] &lt;= array[max]</code>，可知此时<code>mid</code>落在了后一个非递减序列，进而可知最小值点在<code>mid</code>之前。</li>
+<li>若<code>array</code>在区间<code>[min, max]</code>上非递减，则已经定位到了第二个非递减序列，直接取<code>array[min]</code>即为整个数组的最小值<br>在此基础上考虑相同数字。如果<code>array</code>在<code>min, max, mid</code>三个位置的值都相等，则难以判断此时<code>mid</code>落在了哪一个非递减序列，此时只能顺序查找（牛客上的测试用例不够强，不考虑这一点也能AC）。<pre class="line-numbers language-lang-java"><code class="language-lang-java">import java.util.ArrayList;
+public class Solution &#123;
+  public int minNumberInRotateArray(int [] array) &#123;
+      if(array.length <= 0) &#123;
+          return 0;
+      &#125;
+      int min = 0, max = array.length - 1;
+      while(min < max) &#123;
+          int mid = (min + max) / 2;
+          if(array[min] == array[mid] && array[mid] == array[max]) &#123;
+              // find by order
+              int res = array[min];
+              while(min < max) &#123;
+                  if(array[min] < res) &#123;
+                      res = array[min];
+                  &#125;
+                  min++;
+              &#125;
+          &#125;
+          if(array[min] <= array[mid] && array[mid] <= array[max]) &#123;
+              return array[min];
+          &#125; else if(array[min] <= array[mid] && array[mid] >= array[max])&#123;
+              min = mid + 1;
+          &#125; else &#123;
+              max = mid;
+              min++;
+          &#125;
+      &#125;
+      return array[min];
+  &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<h1 id="JZ7-斐波那契数列"><a href="#JZ7-斐波那契数列" class="headerlink" title="JZ7 斐波那契数列"></a>JZ7 斐波那契数列</h1><h2 id="题目描述-6"><a href="#题目描述-6" class="headerlink" title="题目描述"></a>题目描述</h2><p>大家都知道斐波那契数列，现在要求输入一个整数n，请你输出斐波那契数列的第n项（从0开始，第0项为0，第1项是1）。<br>n&lt;=39</p>
+<h2 id="解-5"><a href="#解-5" class="headerlink" title="解"></a>解</h2><p>非常的简单。不过这算不算有一点DP的思想呢（</p>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution &#123;
+    public int Fibonacci(int n) &#123;
+        if(n == 0 || n == 1) return n;
+        int res = 1, pre = 1;
+        n -= 2;
+        int temp = 0;
+        while(n-- > 0) &#123;
+            temp = res + pre;
+            pre = res;
+            res = temp;
+        &#125;
+        return res;
+    &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="JZ8-跳台阶-递归，动态规划"><a href="#JZ8-跳台阶-递归，动态规划" class="headerlink" title="JZ8 跳台阶(递归，动态规划)"></a>JZ8 跳台阶(递归，动态规划)</h1><h2 id="题目描述-7"><a href="#题目描述-7" class="headerlink" title="题目描述"></a>题目描述</h2><p>一只青蛙一次可以跳上1级台阶，也可以跳上2级。求该青蛙跳上一个n级的台阶总共有多少种跳法（先后次序不同算不同的结果）。</p>
+<h2 id="解-6"><a href="#解-6" class="headerlink" title="解"></a>解</h2><p>可以先观察一下n比较小的情况。设<code>N(k)</code>为<code>k</code>级台阶的跳法数：</p>
+<ul>
+<li>跳0级: 0种跳法</li>
+<li>跳1级: 1种跳法</li>
+<li>跳2级: 2种跳法</li>
+<li>跳3级: N(2) + N(1)</li>
+<li>跳4级: N(3) + N(2)<br>进而知道，需要跳<code>n</code>级时，前一步要么跳了1级，要么跳了2级。那么只需要知道跳<code>n-1</code>级和跳<code>n-2</code>级分别有几种跳法，即可算出<code>N(n) = N(n - 1) + N(n - 2)</code><br>需要注意的是，不要认为“跳2级有2种跳法”，进而得到<code>N(n) = N(n - 1) + 2 * N(n - 2)</code>的结论，因为“先跳<code>n - 2</code>级，再跳两次1级”的情况与“先跳<code>n - 1</code>级，再跳1级”的情况有重复。<br>本题的非递归做法比较容易看出，因此使用非递归做法以节省空间。<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution &#123;
+  public int JumpFloor(int target) &#123;
+      if(target >= 0 && target <= 2) return target;
+      int res = 2, pre = 1, temp = 0;
+      target -= 2;
+      while(target-- > 0) &#123;
+          temp = res + pre;
+          pre = res;
+          res = temp;
+      &#125;
+      return res;
+  &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<h1 id="JZ9-变态跳台阶-递归"><a href="#JZ9-变态跳台阶-递归" class="headerlink" title="JZ9 变态跳台阶(递归)"></a>JZ9 变态跳台阶(递归)</h1><h2 id="题目描述-8"><a href="#题目描述-8" class="headerlink" title="题目描述"></a>题目描述</h2><p>一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法。</p>
+<h2 id="解-7"><a href="#解-7" class="headerlink" title="解"></a>解</h2><p>还是可以先观察一下<code>n</code>比较小的情况。</p>
+<ul>
+<li>跳0级: 0种跳法</li>
+<li>跳1级: 1种跳法</li>
+<li>跳2级: 2种跳法 = N(1) + 1</li>
+<li>跳3级: 4种跳法 = N(2) + N(1) + 1 = 2 * N(2)</li>
+<li>跳4级: 8种跳法 = N(3) + N(2) + 1 = 2 <em> N(3)<br>需要跳<code>n</code>级时，前一步可以跳<code>0, 1, 2, ..., n - 1</code>级。可知<code>N(n) = 1 + N(1) + N(2) + ... + N(n - 1)</code>，进一步化简得`N(n) = [1 + N(1) + … + N(n - 2)] + N(n - 1) = 2 </em> N(n - 1)`。转换为非递归做法也比较容易。<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution &#123;
+  public int JumpFloorII(int target) &#123;
+      if(target == 0 || target == 1) return target;
+      target -= 2;
+      int res = 2;
+      while(target-- > 0) &#123;
+          res *= 2;
+      &#125;
+      return res; 
+  &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<h1 id="JZ10-矩形覆盖"><a href="#JZ10-矩形覆盖" class="headerlink" title="JZ10 矩形覆盖"></a>JZ10 矩形覆盖</h1><h2 id="题目描述-9"><a href="#题目描述-9" class="headerlink" title="题目描述"></a>题目描述</h2><p>我们可以用2<em>1的小矩形横着或者竖着去覆盖更大的矩形。请问用n个2</em>1的小矩形无重叠地覆盖一个2<em>n的大矩形，总共有多少种方法？<br>比如n=3时，2</em>3的矩形块有3种覆盖方法</p>
+<h2 id="解-8"><a href="#解-8" class="headerlink" title="解"></a>解</h2><p><code>2 * n</code>的矩形可以视为由两种“块”填满：</p>
+<ul>
+<li>竖着摆的2 * 1</li>
+<li>两条上下摆放的横向2 <em> 1构成的2 </em> 2块<br>需要注意的是没有第三种，两条左右摆的纵向2 * 1就变成了两个第一种块。<br>于是本题的做法就和JZ8 跳台阶一样了。<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution &#123;
+  public int RectCover(int target) &#123;
+      if(target >= 0 && target <= 2) return target;
+      target -= 2;
+      int res = 2, pre = 1, temp = 0;
+      while(target-- > 0) &#123;
+          temp = res + pre;
+          pre = res;
+          res = temp;
+      &#125;
+      return res;
+  &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/08/Java%E5%AD%A6%E4%B9%A0-%E6%B3%9B%E5%9E%8B%E4%B8%8E%E5%8F%8D%E5%B0%84/" rel="prev" title="Java学习 - 泛型与反射">
+      <i class="fa fa-chevron-left"></i> Java学习 - 泛型与反射
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/07/%E7%AE%97%E6%B3%95%E9%A2%98%E4%B8%AD%E7%9A%84%E6%95%B0%E5%AD%A6%E7%B1%BB%E5%9E%8B%E9%A2%98%E5%BD%92%E9%9B%86/" rel="next" title="算法题中的数学类型题归集">
+      算法题中的数学类型题归集 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JZ1-%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E6%9F%A5%E6%89%BE-%E6%9F%A5%E6%89%BE-%E6%95%B0%E7%BB%84"><span class="nav-number">1.</span> <span class="nav-text">JZ1 二维数组中的查找(查找, 数组)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A31"><span class="nav-number">1.2.</span> <span class="nav-text">解1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A32"><span class="nav-number">1.3.</span> <span class="nav-text">解2</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JZ2-%E6%9B%BF%E6%8D%A2%E7%A9%BA%E6%A0%BC-%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">2.</span> <span class="nav-text">JZ2 替换空格(字符串)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-1"><span class="nav-number">2.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3"><span class="nav-number">2.2.</span> <span class="nav-text">解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JZ3-%E4%BB%8E%E5%B0%BE%E5%88%B0%E5%A4%B4%E6%89%93%E5%8D%B0%E9%93%BE%E8%A1%A8-%E9%93%BE%E8%A1%A8"><span class="nav-number">3.</span> <span class="nav-text">JZ3 从尾到头打印链表(链表)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-2"><span class="nav-number">3.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3-1"><span class="nav-number">3.2.</span> <span class="nav-text">解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JZ4-%E9%87%8D%E5%BB%BA%E4%BA%8C%E5%8F%89%E6%A0%91-%E6%A0%91%EF%BC%8C%E6%95%B0%E7%BB%84%EF%BC%8CDFS"><span class="nav-number">4.</span> <span class="nav-text">JZ4 重建二叉树(树，数组，DFS)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-3"><span class="nav-number">4.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3-2"><span class="nav-number">4.2.</span> <span class="nav-text">解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JZ5-%E7%94%A8%E4%B8%A4%E4%B8%AA%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97-%E6%A0%88"><span class="nav-number">5.</span> <span class="nav-text">JZ5 用两个栈实现队列(栈)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-4"><span class="nav-number">5.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3-3"><span class="nav-number">5.2.</span> <span class="nav-text">解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JZ6-%E6%97%8B%E8%BD%AC%E6%95%B0%E7%BB%84%E7%9A%84%E6%9C%80%E5%B0%8F%E6%95%B0%E5%AD%97-%E4%BA%8C%E5%88%86%EF%BC%8C%E6%95%B0%E7%BB%84"><span class="nav-number">6.</span> <span class="nav-text">JZ6 旋转数组的最小数字(二分，数组)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-5"><span class="nav-number">6.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3-4"><span class="nav-number">6.2.</span> <span class="nav-text">解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JZ7-%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97"><span class="nav-number">7.</span> <span class="nav-text">JZ7 斐波那契数列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-6"><span class="nav-number">7.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3-5"><span class="nav-number">7.2.</span> <span class="nav-text">解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JZ8-%E8%B7%B3%E5%8F%B0%E9%98%B6-%E9%80%92%E5%BD%92%EF%BC%8C%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-number">8.</span> <span class="nav-text">JZ8 跳台阶(递归，动态规划)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-7"><span class="nav-number">8.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3-6"><span class="nav-number">8.2.</span> <span class="nav-text">解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JZ9-%E5%8F%98%E6%80%81%E8%B7%B3%E5%8F%B0%E9%98%B6-%E9%80%92%E5%BD%92"><span class="nav-number">9.</span> <span class="nav-text">JZ9 变态跳台阶(递归)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-8"><span class="nav-number">9.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3-7"><span class="nav-number">9.2.</span> <span class="nav-text">解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JZ10-%E7%9F%A9%E5%BD%A2%E8%A6%86%E7%9B%96"><span class="nav-number">10.</span> <span class="nav-text">JZ10 矩形覆盖</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-9"><span class="nav-number">10.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3-8"><span class="nav-number">10.2.</span> <span class="nav-text">解</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Freeman Huang</p>
+  <div class="site-description" itemprop="description">Self-talking of a noob</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Freeman Huang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

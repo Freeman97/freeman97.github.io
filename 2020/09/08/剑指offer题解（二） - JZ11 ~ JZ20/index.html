@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="非科班鶸遇到数学题总是比较头疼，于是做一点整理">
+  <meta name="description" content="二刷一下剑指offer的题顺便记录一下题解，日后再做分类整理（咕咕咕）题目顺序和标号按照牛客网( https:&#x2F;&#x2F;www.nowcoder.com&#x2F;ta&#x2F;coding-interviews )，本文持续增量更新（">
 <meta property="og:type" content="article">
-<meta property="og:title" content="算法题中的数学类型题归集">
-<meta property="og:url" content="http://yoursite.com/2020/09/07/%E7%AE%97%E6%B3%95%E9%A2%98%E4%B8%AD%E7%9A%84%E6%95%B0%E5%AD%A6%E7%B1%BB%E5%9E%8B%E9%A2%98%E5%BD%92%E9%9B%86/index.html">
+<meta property="og:title" content="剑指offer题解（二） - JZ11 ~ JZ20">
+<meta property="og:url" content="http://yoursite.com/2020/09/08/%E5%89%91%E6%8C%87offer%E9%A2%98%E8%A7%A3%EF%BC%88%E4%BA%8C%EF%BC%89%20-%20JZ11%20~%20JZ20/index.html">
 <meta property="og:site_name" content="Freeman&#39;s Blog">
-<meta property="og:description" content="非科班鶸遇到数学题总是比较头疼，于是做一点整理">
+<meta property="og:description" content="二刷一下剑指offer的题顺便记录一下题解，日后再做分类整理（咕咕咕）题目顺序和标号按照牛客网( https:&#x2F;&#x2F;www.nowcoder.com&#x2F;ta&#x2F;coding-interviews )，本文持续增量更新（">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-09-07T03:13:17.000Z">
-<meta property="article:modified_time" content="2020-09-08T12:11:16.242Z">
+<meta property="article:published_time" content="2020-09-08T08:33:26.000Z">
+<meta property="article:modified_time" content="2020-09-08T08:55:40.883Z">
 <meta property="article:author" content="Freeman Huang">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2020/09/07/%E7%AE%97%E6%B3%95%E9%A2%98%E4%B8%AD%E7%9A%84%E6%95%B0%E5%AD%A6%E7%B1%BB%E5%9E%8B%E9%A2%98%E5%BD%92%E9%9B%86/">
+<link rel="canonical" href="http://yoursite.com/2020/09/08/%E5%89%91%E6%8C%87offer%E9%A2%98%E8%A7%A3%EF%BC%88%E4%BA%8C%EF%BC%89%20-%20JZ11%20~%20JZ20/">
 
 
 <script id="page-configurations">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>算法题中的数学类型题归集 | Freeman's Blog</title>
+  <title>剑指offer题解（二） - JZ11 ~ JZ20 | Freeman's Blog</title>
   
 
 
@@ -156,7 +156,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/07/%E7%AE%97%E6%B3%95%E9%A2%98%E4%B8%AD%E7%9A%84%E6%95%B0%E5%AD%A6%E7%B1%BB%E5%9E%8B%E9%A2%98%E5%BD%92%E9%9B%86/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/08/%E5%89%91%E6%8C%87offer%E9%A2%98%E8%A7%A3%EF%BC%88%E4%BA%8C%EF%BC%89%20-%20JZ11%20~%20JZ20/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -169,7 +169,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          算法题中的数学类型题归集
+          剑指offer题解（二） - JZ11 ~ JZ20
         </h1>
 
         <div class="post-meta">
@@ -178,16 +178,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-09-07 11:13:17" itemprop="dateCreated datePublished" datetime="2020-09-07T11:13:17+08:00">2020-09-07</time>
+              <time title="创建时间：2020-09-08 16:33:26 / 修改时间：16:55:40" itemprop="dateCreated datePublished" datetime="2020-09-08T16:33:26+08:00">2020-09-08</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-08 20:11:16" itemprop="dateModified" datetime="2020-09-08T20:11:16+08:00">2020-09-08</time>
-              </span>
 
           
 
@@ -200,13 +194,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><strong>非科班鶸遇到数学题总是比较头疼，于是做一点整理</strong></p>
-<a id="more"></a>
-<h1 id="乘法快速幂"><a href="#乘法快速幂" class="headerlink" title="乘法快速幂"></a>乘法快速幂</h1><h2 id="思想"><a href="#思想" class="headerlink" title="思想"></a>思想</h2><p>乘法快速幂主要是用于求一个数的n次幂，使用循环的时间复杂度是$O(n)$。如果n比较大的话这个时间复杂度是不能满足要求的。使用乘法快速幂可以让计算的时间复杂度达到$O(logn)$</p>
-<p>对于$a^n$，若$n$是偶数，则当已经求出$a^\frac{n}{2}$时，则可以通过$a^\frac{n}{2} \times a^\frac{n}{2}$求出$a^n$，而不必接着一个一个地让当前结果乘以$a$。如果$a$是奇数，则可以通过$a ^ {\lfloor \frac{n}{2} \rfloor} \times a ^ {\lfloor \frac{n}{2} \rfloor} \times a$求出$a^n$。以此类推，最终需要解决的问题是求$a^0$，而$a^0 = 1$。显然这是一个可以通过递归实现的算法。</p>
-<p>对于非递归算法，可以考虑倍增的想法：在算出$a^1$的时候马上可以算出$a^2$，进而可以算出$a^4, a^8, … , a^{2^n}$。但是单纯的倍增可能会直接跨过$a^n$。那么我们可以考虑如何使用$a^{2^k}, k=0, 1, 2…$来凑出$a^n$。对于每个$n$，我们可以求出它的二进制形式，进而得到它的二进制分解：通过判断二进制的第$k$位是否为0而判断$n$是否包含$2^k$，进而判断在求$a^n$时是否要把$a^{2^k}$加入结果。</p>
-<h2 id="例题1-（剑指offer-JZ12）数值的整数次方"><a href="#例题1-（剑指offer-JZ12）数值的整数次方" class="headerlink" title="例题1 （剑指offer JZ12）数值的整数次方"></a>例题1 （剑指offer JZ12）数值的整数次方</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个double类型的浮点数base和int类型的整数exponent。求base的exponent次方。<br>保证base和exponent不同时为0</p>
-<h3 id="解"><a href="#解" class="headerlink" title="解"></a>解</h3><p>递归版本</p>
+        <p><strong>二刷一下剑指offer的题顺便记录一下题解，日后再做分类整理（咕咕咕）</strong><br><strong>题目顺序和标号按照牛客网( <a target="_blank" rel="noopener" href="https://www.nowcoder.com/ta/coding-interviews">https://www.nowcoder.com/ta/coding-interviews</a> )，本文持续增量更新（</strong><br><a id="more"></a></p>
+<h1 id="JZ11-二进制中1的个数-数学，数字的机器表示"><a href="#JZ11-二进制中1的个数-数学，数字的机器表示" class="headerlink" title="JZ11 二进制中1的个数(数学，数字的机器表示)"></a>JZ11 二进制中1的个数(数学，数字的机器表示)</h1><h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>输入一个整数，输出该数32位二进制表示中1的个数。其中负数用补码表示。</p>
+<h2 id="解"><a href="#解" class="headerlink" title="解"></a>解</h2><p>一般情况下整数的机器表示使用补码，便于实现减法和负数运算。于是直接用位运算数出来就好。</p>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution &#123;
+    // 可以稍微看一下java中的>>和>>>的区别
+    public int NumberOf1(int n) &#123;
+        int length = 32, mask = 1, count = 0;
+        while(length-- > 0) &#123;
+            if((n & mask) == 1) &#123;
+                count++;
+            &#125;
+            n = n >> 1;
+        &#125;
+        return count;
+    &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="JZ12-数值的整数次方-数学"><a href="#JZ12-数值的整数次方-数学" class="headerlink" title="JZ12 数值的整数次方(数学)"></a>JZ12 数值的整数次方(数学)</h1><h2 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定一个double类型的浮点数base和int类型的整数exponent。求base的exponent次方。<br>保证base和exponent不同时为0</p>
+<h2 id="解-1"><a href="#解-1" class="headerlink" title="解"></a>解</h2><p>基本思路是使用乘法快速幂，注意这题的<code>exponent</code>可以为负数。乘法快速幂的详解可以查看另一篇文章“算法中的数学类型题归集”。<br>递归版本</p>
 <pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution &#123;
     public double Power(double base, int exponent) &#123;
         if(base == 0)
@@ -231,7 +237,7 @@
     &#125;
 &#125;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>非递归版本<br>（Java版在鹿上了11111）</p>
+<p>非递归版本</p>
 <pre class="line-numbers language-lang-cpp"><code class="language-lang-cpp">class Solution &#123;
 public:
     double Power(double base, int exponent) &#123;
@@ -255,6 +261,66 @@ public:
     &#125;
 &#125;;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="JZ13-调整数组顺序使奇数位于偶数前面-数组"><a href="#JZ13-调整数组顺序使奇数位于偶数前面-数组" class="headerlink" title="JZ13 调整数组顺序使奇数位于偶数前面(数组)"></a>JZ13 调整数组顺序使奇数位于偶数前面(数组)</h1><h2 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="　题目描述"></a>　题目描述</h2><p>输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有的奇数位于数组的前半部分，所有的偶数位于数组的后半部分，并保证奇数和奇数，偶数和偶数之间的相对位置不变。</p>
+<h2 id="解-2"><a href="#解-2" class="headerlink" title="解"></a>解</h2><p>因为要保持数据的稳定性，没办法借鉴快速排序的想法了。不考虑以空间换时间的话，可以借鉴一下插入排序的思想：先从前往后找到第一个偶数，再从此处开始向后找到第一个奇数，将奇数插入到偶数之前。时间复杂度$O(n^2)$。</p>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution &#123;
+    public void reOrderArray(int [] array) &#123;
+        int n = array.length;
+        for(int i = 0; i < n; ) &#123;
+            if(array[i] % 2 == 0) &#123;
+                int j = i + 1;
+                while(j < n) &#123;
+                    if(array[j] % 2 != 0) &#123;
+                        break;
+                    &#125;
+                    j++;
+                &#125;
+                if(j < n) &#123;
+                    int temp = array[j], index = j;
+                    while(j > i) &#123;
+                        array[j] = array[j - 1];
+                        j--;
+                    &#125;
+                    array[i] = temp;
+                &#125; else &#123;
+                    break;
+                &#125;
+                i = j + 1;
+            &#125; else &#123;
+                i++;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="JZ14-链表中倒数第k个节点-链表"><a href="#JZ14-链表中倒数第k个节点-链表" class="headerlink" title="JZ14 链表中倒数第k个节点(链表)"></a>JZ14 链表中倒数第k个节点(链表)</h1><h2 id="题目描述-3"><a href="#题目描述-3" class="headerlink" title="题目描述"></a>题目描述</h2><p>输入一个链表，输出该链表中倒数第k个结点。</p>
+<h2 id="解-3"><a href="#解-3" class="headerlink" title="解"></a>解</h2><p>很朴素的双指针。</p>
+<pre class="line-numbers language-lang-java"><code class="language-lang-java">/*
+public class ListNode &#123;
+    int val;
+    ListNode next = null;
+
+    ListNode(int val) &#123;
+        this.val = val;
+    &#125;
+&#125;*/
+public class Solution &#123;
+    public ListNode FindKthToTail(ListNode head,int k) &#123;
+        ListNode p = head, q = head;
+        while(k > 0 && p != null) &#123;
+            p = p.next;
+            k--;
+        &#125;
+        if(k > 0)
+            return null;
+        while(p != null) &#123;
+            p = p.next;
+            q = q.next;
+        &#125;
+        return q;
+    &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
     </div>
 
@@ -270,13 +336,10 @@ public:
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/08/11/%E5%89%91%E6%8C%87offer%E9%A2%98%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89%20-%20JZ1%20~%20JZ10/" rel="prev" title="剑指offer题解（一） - JZ1 ~ JZ10">
-      <i class="fa fa-chevron-left"></i> 剑指offer题解（一） - JZ1 ~ JZ10
+    <a href="/2020/09/07/%E7%AE%97%E6%B3%95%E9%A2%98%E4%B8%AD%E7%9A%84%E6%95%B0%E5%AD%A6%E7%B1%BB%E5%9E%8B%E9%A2%98%E5%BD%92%E9%9B%86/" rel="prev" title="算法题中的数学类型题归集">
+      <i class="fa fa-chevron-left"></i> 算法题中的数学类型题归集
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/09/08/%E5%89%91%E6%8C%87offer%E9%A2%98%E8%A7%A3%EF%BC%88%E4%BA%8C%EF%BC%89%20-%20JZ11%20~%20JZ20/" rel="next" title="剑指offer题解（二） - JZ11 ~ JZ20">
-      剑指offer题解（二） - JZ11 ~ JZ20 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -335,7 +398,7 @@ public:
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B9%98%E6%B3%95%E5%BF%AB%E9%80%9F%E5%B9%82"><span class="nav-number">1.</span> <span class="nav-text">乘法快速幂</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E6%83%B3"><span class="nav-number">1.1.</span> <span class="nav-text">思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E9%A2%981-%EF%BC%88%E5%89%91%E6%8C%87offer-JZ12%EF%BC%89%E6%95%B0%E5%80%BC%E7%9A%84%E6%95%B4%E6%95%B0%E6%AC%A1%E6%96%B9"><span class="nav-number">1.2.</span> <span class="nav-text">例题1 （剑指offer JZ12）数值的整数次方</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.2.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3"><span class="nav-number">1.2.2.</span> <span class="nav-text">解</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JZ11-%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%B8%AD1%E7%9A%84%E4%B8%AA%E6%95%B0-%E6%95%B0%E5%AD%A6%EF%BC%8C%E6%95%B0%E5%AD%97%E7%9A%84%E6%9C%BA%E5%99%A8%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.</span> <span class="nav-text">JZ11 二进制中1的个数(数学，数字的机器表示)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3"><span class="nav-number">1.2.</span> <span class="nav-text">解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JZ12-%E6%95%B0%E5%80%BC%E7%9A%84%E6%95%B4%E6%95%B0%E6%AC%A1%E6%96%B9-%E6%95%B0%E5%AD%A6"><span class="nav-number">2.</span> <span class="nav-text">JZ12 数值的整数次方(数学)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-1"><span class="nav-number">2.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3-1"><span class="nav-number">2.2.</span> <span class="nav-text">解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JZ13-%E8%B0%83%E6%95%B4%E6%95%B0%E7%BB%84%E9%A1%BA%E5%BA%8F%E4%BD%BF%E5%A5%87%E6%95%B0%E4%BD%8D%E4%BA%8E%E5%81%B6%E6%95%B0%E5%89%8D%E9%9D%A2-%E6%95%B0%E7%BB%84"><span class="nav-number">3.</span> <span class="nav-text">JZ13 调整数组顺序使奇数位于偶数前面(数组)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-2"><span class="nav-number">3.1.</span> <span class="nav-text">　题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3-2"><span class="nav-number">3.2.</span> <span class="nav-text">解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JZ14-%E9%93%BE%E8%A1%A8%E4%B8%AD%E5%80%92%E6%95%B0%E7%AC%ACk%E4%B8%AA%E8%8A%82%E7%82%B9-%E9%93%BE%E8%A1%A8"><span class="nav-number">4.</span> <span class="nav-text">JZ14 链表中倒数第k个节点(链表)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-3"><span class="nav-number">4.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3-3"><span class="nav-number">4.2.</span> <span class="nav-text">解</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
