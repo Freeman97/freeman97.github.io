@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="非科班鶸遇到数学题总是比较头疼，于是做一点整理">
@@ -30,6 +30,9 @@
 <meta property="article:published_time" content="2020-09-07T03:13:17.000Z">
 <meta property="article:modified_time" content="2020-09-08T12:11:16.242Z">
 <meta property="article:author" content="Freeman Huang">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Algorithm">
+<meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2020/09/07/%E7%AE%97%E6%B3%95%E9%A2%98%E4%B8%AD%E7%9A%84%E6%95%B0%E5%AD%A6%E7%B1%BB%E5%9E%8B%E9%A2%98%E5%BD%92%E9%9B%86/">
@@ -188,6 +191,15 @@
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2020-09-08 20:11:16" itemprop="dateModified" datetime="2020-09-08T20:11:16+08:00">2020-09-08</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据结构与算法</span></a>
+                </span>
+            </span>
 
           
 
@@ -206,55 +218,8 @@
 <p>对于$a^n$，若$n$是偶数，则当已经求出$a^\frac{n}{2}$时，则可以通过$a^\frac{n}{2} \times a^\frac{n}{2}$求出$a^n$，而不必接着一个一个地让当前结果乘以$a$。如果$a$是奇数，则可以通过$a ^ {\lfloor \frac{n}{2} \rfloor} \times a ^ {\lfloor \frac{n}{2} \rfloor} \times a$求出$a^n$。以此类推，最终需要解决的问题是求$a^0$，而$a^0 = 1$。显然这是一个可以通过递归实现的算法。</p>
 <p>对于非递归算法，可以考虑倍增的想法：在算出$a^1$的时候马上可以算出$a^2$，进而可以算出$a^4, a^8, … , a^{2^n}$。但是单纯的倍增可能会直接跨过$a^n$。那么我们可以考虑如何使用$a^{2^k}, k=0, 1, 2…$来凑出$a^n$。对于每个$n$，我们可以求出它的二进制形式，进而得到它的二进制分解：通过判断二进制的第$k$位是否为0而判断$n$是否包含$2^k$，进而判断在求$a^n$时是否要把$a^{2^k}$加入结果。</p>
 <h2 id="例题1-（剑指offer-JZ12）数值的整数次方"><a href="#例题1-（剑指offer-JZ12）数值的整数次方" class="headerlink" title="例题1 （剑指offer JZ12）数值的整数次方"></a>例题1 （剑指offer JZ12）数值的整数次方</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个double类型的浮点数base和int类型的整数exponent。求base的exponent次方。<br>保证base和exponent不同时为0</p>
-<h3 id="解"><a href="#解" class="headerlink" title="解"></a>解</h3><p>递归版本</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Solution &#123;
-    public double Power(double base, int exponent) &#123;
-        if(base == 0)
-            return 0;
-        double res = absPower(base, exponent);
-        if(exponent >= 0)
-            return res;
-        else
-            return 1 / res;
-    &#125;
-    public double absPower(double base, int exponent) &#123;
-        if(exponent == 0) 
-            return 1;
-        double temp = 1;
-        // exponent绝对值为奇数的时候，对2求模可能为1或-1
-        // 这么表达更简洁
-        if((exponent & 1) == 1) &#123;
-            temp = base;
-        &#125;
-        double ret = absPower(base, exponent / 2);
-        return ret * ret * temp;
-    &#125;
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>非递归版本<br>（Java版在鹿上了11111）</p>
-<pre class="line-numbers language-lang-cpp"><code class="language-lang-cpp">class Solution &#123;
-public:
-    double Power(double base, int exponent) &#123;
-        // 本题是一个简单的乘法快速幂
-        // 二进制分解exponent，达到log(exponent)的时间复杂度
-        if(exponent == 0) return 1;
-        if(base == 0) return 0;
-        if(exponent < 0) exponent--;
-        double res = 1;
-        int length = sizeof(int) * 8;
-        while(length--) &#123;
-            if((exponent & 1) && exponent > 0) &#123;
-                res *= base;
-            &#125; else if(!(exponent & 1) && exponent < 0) &#123;
-                res = res / base;
-            &#125;
-            base *= base;
-            exponent >>= 1;
-        &#125;
-        return res;
-    &#125;
-&#125;;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="解"><a href="#解" class="headerlink" title="解"></a>解</h3><p>递归版本<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">Power</span><span class="params">(<span class="keyword">double</span> base, <span class="keyword">int</span> exponent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(base == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">double</span> res = absPower(base, exponent);</span><br><span class="line">        <span class="keyword">if</span>(exponent &gt;= <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span> / res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">absPower</span><span class="params">(<span class="keyword">double</span> base, <span class="keyword">int</span> exponent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(exponent == <span class="number">0</span>) </span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">double</span> temp = <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// exponent绝对值为奇数的时候，对2求模可能为1或-1</span></span><br><span class="line">        <span class="comment">// 这么表达更简洁</span></span><br><span class="line">        <span class="keyword">if</span>((exponent &amp; <span class="number">1</span>) == <span class="number">1</span>) &#123;</span><br><span class="line">            temp = base;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">double</span> ret = absPower(base, exponent / <span class="number">2</span>);</span><br><span class="line">        <span class="keyword">return</span> ret * ret * temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>非递归版本<br>（Java版在鹿上了11111）<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">Power</span><span class="params">(<span class="keyword">double</span> base, <span class="keyword">int</span> exponent)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 本题是一个简单的乘法快速幂</span></span><br><span class="line">        <span class="comment">// 二进制分解exponent，达到log(exponent)的时间复杂度</span></span><br><span class="line">        <span class="keyword">if</span>(exponent == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(base == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(exponent &lt; <span class="number">0</span>) exponent--;</span><br><span class="line">        <span class="keyword">double</span> res = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> length = <span class="keyword">sizeof</span>(<span class="keyword">int</span>) * <span class="number">8</span>;</span><br><span class="line">        <span class="keyword">while</span>(length--) &#123;</span><br><span class="line">            <span class="keyword">if</span>((exponent &amp; <span class="number">1</span>) &amp;&amp; exponent &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                res *= base;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span>(!(exponent &amp; <span class="number">1</span>) &amp;&amp; exponent &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                res = res / base;</span><br><span class="line">            &#125;</span><br><span class="line">            base *= base;</span><br><span class="line">            exponent &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
 
     </div>
 
@@ -263,6 +228,11 @@ public:
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+              <a href="/tags/C/" rel="tag"># C++</a>
+          </div>
 
         
 
@@ -352,6 +322,14 @@ public:
           <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>

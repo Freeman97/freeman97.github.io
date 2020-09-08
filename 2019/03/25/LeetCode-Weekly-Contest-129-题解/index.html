@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="部分问题的题解是自己在比赛时实现的，有些题解的效率并不高，有些题解可能只是因为测试用例太弱而勉强AC，如果有人看到希望能够赐教。所有题目都使用C++作答">
@@ -30,6 +30,11 @@
 <meta property="article:published_time" content="2019-03-24T16:00:47.000Z">
 <meta property="article:modified_time" content="2019-03-24T16:53:32.237Z">
 <meta property="article:author" content="Freeman Huang">
+<meta property="article:tag" content="LeetCode">
+<meta property="article:tag" content="Algorithm">
+<meta property="article:tag" content="动态规划">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="KMP">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2019/03/25/LeetCode-Weekly-Contest-129-%E9%A2%98%E8%A7%A3/">
@@ -182,6 +187,15 @@
 
               <time title="创建时间：2019-03-25 00:00:47 / 修改时间：00:53:32" itemprop="dateCreated datePublished" datetime="2019-03-25T00:00:47+08:00">2019-03-25</time>
             </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据结构与算法</span></a>
+                </span>
+            </span>
 
           
 
@@ -197,195 +211,16 @@
         <p><strong>部分问题的题解是自己在比赛时实现的，有些题解的效率并不高，有些题解可能只是因为测试用例太弱而勉强AC，如果有人看到希望能够赐教。</strong><br><strong>所有题目都使用C++作答</strong><br><a id="more"></a></p>
 <h1 id="Q1-1020-Partition-Array-Into-Three-Parts-With-Equal-Sum"><a href="#Q1-1020-Partition-Array-Into-Three-Parts-With-Equal-Sum" class="headerlink" title="Q1 1020. Partition Array Into Three Parts With Equal Sum"></a>Q1 1020. Partition Array Into Three Parts With Equal Sum</h1><h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>给出一个整数数组<code>A</code>，若能找到下标<code>i</code>，<code>j</code>满足<code>i + 1 &lt; j</code>且<code>A[0] + A[1] + ... + A[i] == A[i + 1] + A[i + 2] + ... + A[j - 1] == A[j] + A[j + 1] + ... + A[A.length - 1]</code>，则返回<code>true</code>，否则返回<code>false</code>。</p>
 <h2 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h2><p>三个部分的和相等时，三个部分的和将等于此数组所有元素的算术平均数，且这一算术平均数必定为整数。据此对数组进行划分，不能成功划分即返回<code>false</code>。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><pre class="line-numbers language-lang-cpp"><code class="language-lang-cpp">class Solution &#123;
-public:
-    bool canThreePartsEqualSum(vector<int>& A) &#123;
-        int sum1 = 0;
-        int sum2 = 0;
-        int sum3 = 0;
-        int sum = 0;
-        for(int i = 0; i < A.size(); i++)
-        &#123;
-            sum += A[i];
-        &#125;
-        int av = sum / 3;
-        int l = sum % 3;
-        int Index = 0;
-        if(l != 0)
-        &#123;
-            return false;
-        &#125;
-        for(int i = 0; i < A.size(); i++)
-        &#123;
-            sum1 += A[i];
-            if(sum1 == av)
-            &#123;
-                Index = i + 1;
-                break;
-            &#125;
-        &#125;
-        if(sum1 != av)
-        &#123;
-            return false;
-        &#125;
-        for(int i = Index; i < A.size(); i++)
-        &#123;
-            sum2 += A[i];
-            if(sum2 == av)
-            &#123;
-                Index = i + 1;
-                break;
-            &#125;
-        &#125;
-        if(sum2 != av)
-        &#123;
-            return false;
-        &#125;
-        for(int i = Index; i < A.size(); i++)
-        &#123;
-            sum3 += A[i];
-        &#125;
-        if(sum1 == sum2 && sum2 == sum3)
-        &#123;
-            return true;
-        &#125;
-        else
-        &#123;
-            return false;
-        &#125;
-    &#125;
-&#125;;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">canThreePartsEqualSum</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; A)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> sum1 = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> sum2 = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> sum3 = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; A.size(); i++)</span><br><span class="line">        &#123;</span><br><span class="line">            sum += A[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> av = sum / <span class="number">3</span>;</span><br><span class="line">        <span class="keyword">int</span> l = sum % <span class="number">3</span>;</span><br><span class="line">        <span class="keyword">int</span> Index = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(l != <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; A.size(); i++)</span><br><span class="line">        &#123;</span><br><span class="line">            sum1 += A[i];</span><br><span class="line">            <span class="keyword">if</span>(sum1 == av)</span><br><span class="line">            &#123;</span><br><span class="line">                Index = i + <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(sum1 != av)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = Index; i &lt; A.size(); i++)</span><br><span class="line">        &#123;</span><br><span class="line">            sum2 += A[i];</span><br><span class="line">            <span class="keyword">if</span>(sum2 == av)</span><br><span class="line">            &#123;</span><br><span class="line">                Index = i + <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(sum2 != av)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = Index; i &lt; A.size(); i++)</span><br><span class="line">        &#123;</span><br><span class="line">            sum3 += A[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(sum1 == sum2 &amp;&amp; sum2 == sum3)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <h1 id="Q2-1022-Smallest-Integer-Divisible-by-K"><a href="#Q2-1022-Smallest-Integer-Divisible-by-K" class="headerlink" title="Q2 1022. Smallest Integer Divisible by K"></a>Q2 1022. Smallest Integer Divisible by K</h1><h2 id="题意-1"><a href="#题意-1" class="headerlink" title="题意"></a>题意</h2><p>给出一个正整数<code>K</code>，找到能被<code>K</code>整除的最小正整数，并且此正整数的所有位数字均为1。若能找到这样的正整数，返回这一正整数的位数（长度），若找不到这样的正整数则返回-1。</p>
 <h2 id="解法-1"><a href="#解法-1" class="headerlink" title="解法"></a>解法</h2><p>首先排除偶数。对于某一所有位均为1的正整数<code>n</code>，若<code>n</code>除以<code>K</code>的余数为<code>r</code>，则<code>n * 10 + 1</code>（下一个大于<code>n</code>的全1正整数）除以<code>K</code>的余数可表示为<code>(r * 10 + 1) % K</code>。当<code>r == 0</code>时意味着找到了该整数，而当<code>r</code>重复出现时意味着找不到满足条件的正整数。</p>
-<h2 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h2><pre class="line-numbers language-lang-cpp"><code class="language-lang-cpp">class Solution &#123;
-public:
-    int smallestRepunitDivByK(int K) &#123;
-        if(K % 2 == 0)
-        &#123;
-            return -1;
-        &#125;
-        int length = 1;
-        int n = 1;
-        int r = 0;
-        while(n < K)
-        &#123;
-            n = n * 10 + 1;
-            length++;
-        &#125;
-        r = n % K;
-        if(!r)
-        &#123;
-            return length;
-        &#125;
-        std::set<int> s;
-        while(r)
-        &#123;
-            r = (r * 10 + 1) % K;
-            length++;
-            if(s.find(r) == s.end())
-            &#123;
-                s.insert(r);
-            &#125;
-            else
-            &#123;
-                return -1;
-            &#125;
-        &#125;
-        return length;
-    &#125;
-&#125;;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">smallestRepunitDivByK</span><span class="params">(<span class="keyword">int</span> K)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(K % <span class="number">2</span> == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> length = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> n = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> r = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(n &lt; K)</span><br><span class="line">        &#123;</span><br><span class="line">            n = n * <span class="number">10</span> + <span class="number">1</span>;</span><br><span class="line">            length++;</span><br><span class="line">        &#125;</span><br><span class="line">        r = n % K;</span><br><span class="line">        <span class="keyword">if</span>(!r)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> length;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">set</span>&lt;<span class="keyword">int</span>&gt; s;</span><br><span class="line">        <span class="keyword">while</span>(r)</span><br><span class="line">        &#123;</span><br><span class="line">            r = (r * <span class="number">10</span> + <span class="number">1</span>) % K;</span><br><span class="line">            length++;</span><br><span class="line">            <span class="keyword">if</span>(s.find(r) == s.end())</span><br><span class="line">            &#123;</span><br><span class="line">                s.insert(r);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <h1 id="Q3-1021-Best-Sightseeing-Pair"><a href="#Q3-1021-Best-Sightseeing-Pair" class="headerlink" title="Q3 1021. Best Sightseeing Pair"></a>Q3 1021. Best Sightseeing Pair</h1><h2 id="题意-2"><a href="#题意-2" class="headerlink" title="题意"></a>题意</h2><p>给出一个正整数数组，求下标对<code>i, j (i &lt; j)</code>，使得<code>A[i] + A[j] + i - j</code>最大。</p>
 <h2 id="解法-2"><a href="#解法-2" class="headerlink" title="解法"></a>解法</h2><p>考虑DP。对于数组中的每一个元素<code>A[i]</code>，不停地更新<code>bestPrev</code>（比较<code>A[i]</code>和<code>A[bestPrev]</code>，取大者），使得<code>A[bestPrev] + bestPrev</code>最大，此时即可让<code>A[i] + A[bestPrev] + bestPrev - i</code>最大。</p>
-<h2 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h2><pre class="line-numbers language-lang-cpp"><code class="language-lang-cpp">class Solution &#123;
-public:
-    int maxScoreSightseeingPair(vector<int>& A) &#123;
-        int bestPrev = 0;
-        int result = A[0];
-        for(int i = 1; i < A.size(); i++)
-        &#123;
-            result = max(result, A[i] + A[bestPrev] + bestPrev - i);
-            if(A[i] + i > A[bestPrev] + bestPrev)
-            &#123;
-                bestPrev = i;
-            &#125;
-        &#125;
-        return result;
-    &#125;
-&#125;;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxScoreSightseeingPair</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; A)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> bestPrev = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> result = A[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; A.size(); i++)</span><br><span class="line">        &#123;</span><br><span class="line">            result = max(result, A[i] + A[bestPrev] + bestPrev - i);</span><br><span class="line">            <span class="keyword">if</span>(A[i] + i &gt; A[bestPrev] + bestPrev)</span><br><span class="line">            &#123;</span><br><span class="line">                bestPrev = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <h1 id="Q4-1023-Binary-String-With-Substrings-Representing-1-To-N"><a href="#Q4-1023-Binary-String-With-Substrings-Representing-1-To-N" class="headerlink" title="Q4 1023. Binary String With Substrings Representing 1 To N"></a>Q4 1023. Binary String With Substrings Representing 1 To N</h1><h2 id="题意-3"><a href="#题意-3" class="headerlink" title="题意"></a>题意</h2><p>给定一个只含有<code>&#39;0&#39;</code>和<code>&#39;1&#39;</code>的字符串<code>S</code>和正整数<code>N</code>，当从1到<code>N</code>的每一个正整数X的二进制表示都是<code>S</code>的子串时，返回<code>true</code>，否则返回<code>false</code>。</p>
 <h2 id="解法-3"><a href="#解法-3" class="headerlink" title="解法"></a>解法</h2><p>将从1到<code>N</code>的所有正整数转化为二进制表示，用KMP算法确认二进制表示是否为<code>S</code>的子串。</p>
-<h2 id="代码-3"><a href="#代码-3" class="headerlink" title="代码"></a>代码</h2><pre class="line-numbers language-lang-cpp"><code class="language-lang-cpp">class Solution &#123;
-    // calculate the 'next array'
-    void GetNext(string t, int next[])
-    &#123;
-        int j = 0, k = -1;
-        next[0] = -1;
-
-        while(j < t.size() - 1)
-        &#123;
-            if(k == -1 || t[j] == t[k])
-            &#123;
-                j++;
-                k++;
-                next[j] = k;
-            &#125;
-            else
-            &#123;
-                k = next[k];
-            &#125;
-        &#125;
-    &#125;
-    // KMP Algorithm
-    int KMP(string s, string t)
-    &#123;
-        int next[1001];
-        int i = 0, j = 0;
-        GetNext(t, next);
-        while(i < (int)s.size() && j < (int)t.size())
-        &#123;
-            if(j == -1 || s[i] == t[j])
-            &#123;
-                i++;
-                j++;
-            &#125;
-            else
-            &#123;
-                j = next[j];
-            &#125;
-        &#125;
-        if(j >= t.size())
-        &#123;
-            return true;
-        &#125;
-        else
-        &#123;
-            return false;
-        &#125;
-    &#125;
-public:
-    bool queryString(string S, int N) &#123;
-        int next[1001];
-        for(int i = 1; i <= N; i++)
-        &#123;
-            string tempStr;
-            int temp = i;
-            while(temp)
-            &#123;
-                tempStr = (char)(temp % 2 + '0') + tempStr;
-                temp /= 2;
-            &#125;
-            if(!KMP(S, tempStr))
-            &#123;
-                return false;
-            &#125;
-        &#125;
-        return true;
-    &#125;
-&#125;;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="代码-3"><a href="#代码-3" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="comment">// calculate the &#x27;next array&#x27;</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">GetNext</span><span class="params">(<span class="built_in">string</span> t, <span class="keyword">int</span> next[])</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">0</span>, k = <span class="number">-1</span>;</span><br><span class="line">        next[<span class="number">0</span>] = <span class="number">-1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(j &lt; t.size() - <span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(k == <span class="number">-1</span> || t[j] == t[k])</span><br><span class="line">            &#123;</span><br><span class="line">                j++;</span><br><span class="line">                k++;</span><br><span class="line">                next[j] = k;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                k = next[k];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// KMP Algorithm</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">KMP</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> t)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> next[<span class="number">1001</span>];</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">        GetNext(t, next);</span><br><span class="line">        <span class="keyword">while</span>(i &lt; (<span class="keyword">int</span>)s.size() &amp;&amp; j &lt; (<span class="keyword">int</span>)t.size())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(j == <span class="number">-1</span> || s[i] == t[j])</span><br><span class="line">            &#123;</span><br><span class="line">                i++;</span><br><span class="line">                j++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                j = next[j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(j &gt;= t.size())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">queryString</span><span class="params">(<span class="built_in">string</span> S, <span class="keyword">int</span> N)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> next[<span class="number">1001</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= N; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">string</span> tempStr;</span><br><span class="line">            <span class="keyword">int</span> temp = i;</span><br><span class="line">            <span class="keyword">while</span>(temp)</span><br><span class="line">            &#123;</span><br><span class="line">                tempStr = (<span class="keyword">char</span>)(temp % <span class="number">2</span> + <span class="string">&#x27;0&#x27;</span>) + tempStr;</span><br><span class="line">                temp /= <span class="number">2</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(!KMP(S, tempStr))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -394,6 +229,13 @@ public:
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+              <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag"># 动态规划</a>
+              <a href="/tags/C/" rel="tag"># C++</a>
+              <a href="/tags/KMP/" rel="tag"># KMP</a>
+          </div>
 
         
 
@@ -483,6 +325,14 @@ public:
           <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>

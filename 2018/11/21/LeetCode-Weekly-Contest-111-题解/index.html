@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="部分问题的题解是自己在比赛时实现的，有些题解的效率并不高，有些题解可能只是因为测试用例太弱而勉强AC，如果有人看到希望能够赐教。所有题目都使用C++作答">
@@ -30,6 +30,11 @@
 <meta property="article:published_time" content="2018-11-20T16:00:00.000Z">
 <meta property="article:modified_time" content="2018-11-21T14:52:00.637Z">
 <meta property="article:author" content="Freeman Huang">
+<meta property="article:tag" content="LeetCode">
+<meta property="article:tag" content="Algorithm">
+<meta property="article:tag" content="动态规划">
+<meta property="article:tag" content="减治法">
+<meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2018/11/21/LeetCode-Weekly-Contest-111-%E9%A2%98%E8%A7%A3/">
@@ -182,6 +187,15 @@
 
               <time title="创建时间：2018-11-21 00:00:00 / 修改时间：22:52:00" itemprop="dateCreated datePublished" datetime="2018-11-21T00:00:00+08:00">2018-11-21</time>
             </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据结构与算法</span></a>
+                </span>
+            </span>
 
           
 
@@ -197,73 +211,10 @@
         <p><strong>部分问题的题解是自己在比赛时实现的，有些题解的效率并不高，有些题解可能只是因为测试用例太弱而勉强AC，如果有人看到希望能够赐教。</strong><br><strong>所有题目都使用C++作答</strong><br><a id="more"></a></p>
 <h1 id="Q1-941-Valid-Mountain-Array"><a href="#Q1-941-Valid-Mountain-Array" class="headerlink" title="Q1 941. Valid Mountain Array"></a>Q1 941. Valid Mountain Array</h1><h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>给出一个数组，判断其是否满足“山脉数组”的条件。（先单调增，到达最大元素，再单调减）</p>
 <h2 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h2><p>暴力。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><pre class="line-numbers language-lang-cpp"><code class="language-lang-cpp">class Solution &#123;
-public:
-    bool validMountainArray(vector<int>& A) &#123;
-        int n = A.size();
-        if(n < 3)
-        &#123;
-            return false;
-        &#125;
-        bool a = true;
-        int b = 0;
-        bool c = true;
-        int e = 0;
-        for(int i = 0; i < n; i++)
-        &#123;
-            if(A[i] > b)
-            &#123;
-                b = A[i];
-                e = i;
-            &#125;
-        &#125;
-        if(e == 0 || e == (n - 1))
-        &#123;
-            c = false;
-        &#125;
-        for(int i = 0; i < e; i++)
-        &#123;
-            if(A[i] >= A[i + 1])
-            &#123;
-                c = false;
-            &#125;
-        &#125;
-        cout << c << '\n';
-        for(int i = e + 1; i < n; i++)
-        &#123;
-            if(A[i - 1] <= A[i])
-            &#123;
-                c = false;
-            &#125;
-        &#125;
-        cout << c << '\n';
-        return (a && c);
-    &#125;
-&#125;;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">validMountainArray</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; A)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = A.size();</span><br><span class="line">        <span class="keyword">if</span>(n &lt; <span class="number">3</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">bool</span> a = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">int</span> b = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">bool</span> c = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">int</span> e = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(A[i] &gt; b)</span><br><span class="line">            &#123;</span><br><span class="line">                b = A[i];</span><br><span class="line">                e = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(e == <span class="number">0</span> || e == (n - <span class="number">1</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            c = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; e; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(A[i] &gt;= A[i + <span class="number">1</span>])</span><br><span class="line">            &#123;</span><br><span class="line">                c = <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; c &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = e + <span class="number">1</span>; i &lt; n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(A[i - <span class="number">1</span>] &lt;= A[i])</span><br><span class="line">            &#123;</span><br><span class="line">                c = <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; c &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">        <span class="keyword">return</span> (a &amp;&amp; c);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <h1 id="Q2-944-Delete-Columns-to-Make-Sorted"><a href="#Q2-944-Delete-Columns-to-Make-Sorted" class="headerlink" title="Q2 944. Delete Columns to Make Sorted"></a>Q2 944. Delete Columns to Make Sorted</h1><h2 id="题意-1"><a href="#题意-1" class="headerlink" title="题意"></a>题意</h2><p>给定字符串矩阵，删去不是正序排列的列，留下正序的列，求删去的列数。</p>
 <h2 id="解法-1"><a href="#解法-1" class="headerlink" title="解法"></a>解法</h2><p>暴力。</p>
-<h2 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h2><pre class="line-numbers language-lang-cpp"><code class="language-lang-cpp">class Solution &#123;
-public:
-    int minDeletionSize(vector<string>& A) &#123;
-        int m = A.size();
-        int n = A[0].size();
-        int num = 0;
-        for(int i = 0; i < n; i++)
-        &#123;
-            for(int j = 0; j < m - 1; j++)
-            &#123;
-                if(A[j][i] > A[j + 1][i])
-                &#123;
-                    num++;
-                    break;
-                &#125;
-            &#125;
-        &#125;
-        return num;
-    &#125;
-&#125;;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minDeletionSize</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; A)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = A.size();</span><br><span class="line">        <span class="keyword">int</span> n = A[<span class="number">0</span>].size();</span><br><span class="line">        <span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; m - <span class="number">1</span>; j++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(A[j][i] &gt; A[j + <span class="number">1</span>][i])</span><br><span class="line">                &#123;</span><br><span class="line">                    num++;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <h1 id="Q3-942-DI-String-Match"><a href="#Q3-942-DI-String-Match" class="headerlink" title="Q3 942. DI String Match"></a>Q3 942. DI String Match</h1><h2 id="题意-2"><a href="#题意-2" class="headerlink" title="题意"></a>题意</h2><p>给定只包含”I”（增加）和”D”（减少）的长度为N的字符串，求符合该字符串增减规则的、由整数0至N构成的序列。</p>
 <h2 id="解法-2"><a href="#解法-2" class="headerlink" title="解法"></a>解法</h2><h3 id="个人解法"><a href="#个人解法" class="headerlink" title="个人解法"></a>个人解法</h3><p><strong>非常暴力（很丑陋的暴力），非常弱智，非常慢</strong></p>
 <h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><ol>
@@ -271,128 +222,9 @@ public:
 <li>找到产生的序列中的最小元素，如果这个元素是负的，则数组中所有元素加上这个元素的绝对值进行修正</li>
 <li>循环寻找数组中剩余的最小元素，将整数0 ~ N中未被使用的数放置在对应位置。该过程中开了另一数组记录数字的使用情况（反思：即使要使用这种方法，利用bit mask的方式也更快，更省空间）</li>
 </ol>
-<h4 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h4><pre class="line-numbers language-lang-cpp"><code class="language-lang-cpp">class Solution &#123;
-public:
-    vector<int> diStringMatch(string S) &#123;
-        int a[10002];
-        int f[10001];
-        int n = S.length();
-        int b = 10000;
-        int c = 0;
-        vector<int> d;
-        memset(a, 0, sizeof a);
-        memset(f, 0, sizeof f);
-        for(int i = 0; i < n; i++)
-        &#123;
-            if(S[i] == 'I')
-            &#123;
-                a[i + 1] = a[i] + 1;
-            &#125;
-            else
-            &#123;
-                a[i + 1] = a[i] - 1;
-            &#125;
-        &#125;
-        for(int i = 0; i <= n; i++)
-        &#123;
-            if(a[i] < b)
-            &#123;
-                b = a[i];
-                c = i;
-            &#125;
-        &#125;
-        if(b < 0)
-        &#123;
-            for(int i = 0; i <= n; i++)
-            &#123;
-                a[i] -= b;
-            &#125;
-        &#125;
-        f[c] = 1;
-        // cout << c << "\n";
-        for(int i = 1; i <= n; i++)
-        &#123;
-            int e = 10000;
-            c = 0;
-            for(int j = 0; j <= n; j++)
-            &#123;
-                if((a[j] <= e) && (f[j] == 0))
-                &#123;
-                    e = a[j];
-                    c = j;
-                    // cout << "checked: " << c << " ";
-                &#125;
-            &#125;
-            f[c] = 1;
-            a[c] = i;
-            // cout << "a[" << c << "] = " << i << "\n";
-        &#125;
-        for(int i = 0; i <= n; i++)
-        &#123;
-            d.push_back(a[i]);
-            cout << d[i] << " ";
-        &#125;
-        return d;
-    &#125;
-&#125;;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="解法-from-酒井算协"><a href="#解法-from-酒井算协" class="headerlink" title="解法 from 酒井算协"></a>解法 from 酒井算协</h3><h4 id="解1"><a href="#解1" class="headerlink" title="解1"></a>解1</h4><p>利用减治法，按照规则排列好前N-1个之后，如果第N个字符是增加，则直接把N放在末尾。<br>如果第N个字符是减少，则前面所有数字+1，再把0放在末尾。</p>
-<pre class="line-numbers language-lang-cpp"><code class="language-lang-cpp">class Solution &#123;
-    public:
-    vector<int> diStringMatch(string s)
-    &#123;
-        int n = s.size();
-        vector<int> ans;
-        ans.push_back(0);
-        for(int i = 1; i <= n; i++)
-        &#123;
-            if(s[i - 1] == 'I')
-            &#123;
-                ans.push_back(i);
-            &#125;
-            else
-            &#123;
-                for(int j = 0; j < i; j++)
-                &#123;
-                    ans[j]++;
-                &#125;
-                ans.push_back(0);
-            &#125;
-        &#125;
-        return ans;
-    &#125;
-&#125;;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="解2"><a href="#解2" class="headerlink" title="解2"></a>解2</h4><p>直接模拟</p>
-<pre class="line-numbers language-lang-cpp"><code class="language-lang-cpp">class Solution &#123;
-    public:
-    vector<int> diStringMatch(string s)
-    &#123;
-        int n = s.size(), min_val = 1500, max_val = 1500;
-        vector<int> ans;
-        ans.resize(n + 1);
-        ans[0] = 1500;
-        for(int i = 1; i <= n; i++)
-        &#123;
-            int tval = ans[i - 1];
-            if(s[i - 1] == 'I')
-            &#123;
-                tval = ++max_val;
-            &#125;
-            else
-            &#123;
-                tval = --min_val;
-            &#125;
-            ans[i] = tval;
-        &#125;
-        for(int i = 0; i <= n; i++)
-        &#123;
-            ans[i] -= min_val;
-        &#125;
-        return ans;
-    &#125;
-&#125;;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">diStringMatch</span><span class="params">(<span class="built_in">string</span> S)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> a[<span class="number">10002</span>];</span><br><span class="line">        <span class="keyword">int</span> f[<span class="number">10001</span>];</span><br><span class="line">        <span class="keyword">int</span> n = S.length();</span><br><span class="line">        <span class="keyword">int</span> b = <span class="number">10000</span>;</span><br><span class="line">        <span class="keyword">int</span> c = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; d;</span><br><span class="line">        <span class="built_in">memset</span>(a, <span class="number">0</span>, <span class="keyword">sizeof</span> a);</span><br><span class="line">        <span class="built_in">memset</span>(f, <span class="number">0</span>, <span class="keyword">sizeof</span> f);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(S[i] == <span class="string">&#x27;I&#x27;</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                a[i + <span class="number">1</span>] = a[i] + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                a[i + <span class="number">1</span>] = a[i] - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(a[i] &lt; b)</span><br><span class="line">            &#123;</span><br><span class="line">                b = a[i];</span><br><span class="line">                c = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(b &lt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                a[i] -= b;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        f[c] = <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// cout &lt;&lt; c &lt;&lt; &quot;\n&quot;;</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> e = <span class="number">10000</span>;</span><br><span class="line">            c = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= n; j++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>((a[j] &lt;= e) &amp;&amp; (f[j] == <span class="number">0</span>))</span><br><span class="line">                &#123;</span><br><span class="line">                    e = a[j];</span><br><span class="line">                    c = j;</span><br><span class="line">                    <span class="comment">// cout &lt;&lt; &quot;checked: &quot; &lt;&lt; c &lt;&lt; &quot; &quot;;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            f[c] = <span class="number">1</span>;</span><br><span class="line">            a[c] = i;</span><br><span class="line">            <span class="comment">// cout &lt;&lt; &quot;a[&quot; &lt;&lt; c &lt;&lt; &quot;] = &quot; &lt;&lt; i &lt;&lt; &quot;\n&quot;;</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            d.push_back(a[i]);</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; d[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> d;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="解法-from-酒井算协"><a href="#解法-from-酒井算协" class="headerlink" title="解法 from 酒井算协"></a>解法 from 酒井算协</h3><h4 id="解1"><a href="#解1" class="headerlink" title="解1"></a>解1</h4><p>利用减治法，按照规则排列好前N-1个之后，如果第N个字符是增加，则直接把N放在末尾。<br>如果第N个字符是减少，则前面所有数字+1，再把0放在末尾。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">diStringMatch</span><span class="params">(<span class="built_in">string</span> s)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = s.size();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ans;</span><br><span class="line">        ans.push_back(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(s[i - <span class="number">1</span>] == <span class="string">&#x27;I&#x27;</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                ans.push_back(i);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j++)</span><br><span class="line">                &#123;</span><br><span class="line">                    ans[j]++;</span><br><span class="line">                &#125;</span><br><span class="line">                ans.push_back(<span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h4 id="解2"><a href="#解2" class="headerlink" title="解2"></a>解2</h4><p>直接模拟<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">diStringMatch</span><span class="params">(<span class="built_in">string</span> s)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = s.size(), min_val = <span class="number">1500</span>, max_val = <span class="number">1500</span>;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ans;</span><br><span class="line">        ans.resize(n + <span class="number">1</span>);</span><br><span class="line">        ans[<span class="number">0</span>] = <span class="number">1500</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> tval = ans[i - <span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span>(s[i - <span class="number">1</span>] == <span class="string">&#x27;I&#x27;</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                tval = ++max_val;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                tval = --min_val;</span><br><span class="line">            &#125;</span><br><span class="line">            ans[i] = tval;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            ans[i] -= min_val;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
 <h1 id="Q4-943-Find-the-Shortest-Superstring"><a href="#Q4-943-Find-the-Shortest-Superstring" class="headerlink" title="Q4 943. Find the Shortest Superstring"></a>Q4 943. Find the Shortest Superstring</h1><h2 id="题意-3"><a href="#题意-3" class="headerlink" title="题意"></a>题意</h2><p>给定一个字符串数组，求一个最短的字符串使得字符串数组中的每个字符串都是其子串。字符串数组的各个字符串数组之间不互为子串。</p>
 <h2 id="解法-3"><a href="#解法-3" class="headerlink" title="解法"></a>解法</h2><p>动态规划。 </p>
 <h4 id="大体思路"><a href="#大体思路" class="headerlink" title="大体思路"></a>大体思路</h4><p>将所有字符串放在一行，使得这些字符串重叠的部分（overlap）最大。</p>
@@ -402,115 +234,7 @@ public:
 <h4 id="算法步骤："><a href="#算法步骤：" class="headerlink" title="算法步骤："></a>算法步骤：</h4><ol>
 <li>对于所有可能的<code>i</code>，<code>j</code>排列，计算<code>overlap[i][j]</code>。</li>
 <li>对于所有可能出现的mask，计算<code>dp[mask][i]</code>，用<code>parent</code>二维数组对上述状态转移过程中<code>j</code>的上一个字符串下标<code>i</code>进行追踪</li>
-<li>利用<code>parent</code>中包含的信息重新构建出答案<h2 id="代码-3"><a href="#代码-3" class="headerlink" title="代码"></a>代码</h2><pre class="line-numbers language-lang-cpp"><code class="language-lang-cpp">class Solution &#123;
- public:
- int dp[1 << 12][21], parent[1 << 12][21], overlap[21][21];
- string shortestSuperstring(vector<string>& A) &#123;
-     //compute overlap
-     memset(dp, 0, sizeof(dp));
-     int n = A.size();
-     for(int i = 0; i < n; i++)
-     &#123;
-         for(int j = 0; j < n; j++)
-         &#123;
-             if(i == j)
-             &#123;
-                 continue;
-             &#125;
-             string s1 = A[i], s2 = A[j];
-             for(int k1 = 0; k1 < s1.size(); k1++)
-             &#123;
-                 bool ok = true;
-                 for(int k2 = 0; k1 + k2 < s1.size() && k2 < s2.size(); k2++)
-                 &#123;
-                     if(s1[k1 + k2] != s2[k2])
-                     &#123;
-                         ok = false;
-                         break;
-                     &#125;
-                 &#125;
-                 if(ok)
-                 &#123;
-                     overlap[i][j] = s1.size() - k1;
-                     break;
-                 &#125;
-             &#125;
-         &#125;
-     &#125;
-     for(int i = 1; i < (1 << n); i++)
-     &#123;
-         // 此处的i即是思路中叙述的mask
-         for(int j = 0; j <= n; j++)
-         &#123;
-             // 若mask中的第j位是有被使用的，设此时状态为dp[mask][j]
-             if((i >> j) & 1)
-             &#123;
-                 // 从dp[mask][j]回退到A[j]并未被添加到当前串中的状态dp[mask ^ (1 << j)][i]，此时dp[mask ^ (1 << j)][i]是已经通过计算得出的
-                 int pmask = i ^ (1 << j);
-                 // 在pmask标识的状态中，上一个被加入的字符串是A[i]
-                 // i的循环范围是pmask的各位中不为零的下标。因为当被使用的字符串由pmask标示时，
-                 // 上一个被加入的字符串还没确定。选择一个i（此处循环使用了变量名k）
-                 // 使得dp[mask][i] + overlap[i][j]最大，才能完成状态转移。
-                 // 以下循环意图是求出dp[i][j]
-                 for(int k = 0; k <= n; k++)
-                 &#123;
-                     if((pmask >> k) & 1)
-                     &#123;
-                         int val = dp[pmask][k] + overlap[k][j];
-                         if(dp[i][j] == 0 || dp[i][j] < val)
-                         &#123;
-                             dp[i][j] = val;
-                             // 追踪：当已经使用的字符串被mask（此处为i）标示时，如果下一个加入的
-                             // 字符串是A[j]，为了使dp的值最优（最大），上次被加入的字符串应该是
-                             // A[k]
-                             parent[i][j] = k;
-                         &#125;
-                     &#125;
-                 &#125;
-             &#125;
-         &#125;
-     &#125;
-     // dp计算完成后，从最终状态（mask各位全为1），反推得最优解，最优的最终状态i用mark记录
-     int mask = (1 << n) - 1;
-     int val = dp[mask][0], mark = 0;
-     for(int i = 0; i < n; i++)
-     &#123;
-         if(dp[mask][i] > val)
-         &#123;
-             val = dp[mask][i];
-             mark = i;
-         &#125;
-     &#125;
-     vector<int> seq;
-     // 反推出答案
-     while(mask)
-     &#123;
-         seq.push_back(mark);
-         int nxt = parent[mask][mark];
-         mask ^= (1 << mark);
-         mark = nxt;
-     &#125;
-     string ans = "";
-     for(int i = seq.size() - 1; i>= 0; i--)
-     &#123;
-         string s = A[seq[i]];
-         if(i == seq.size() - 1)
-         &#123;
-             ans += s;
-         &#125;
-         else
-         &#123;
-             int over = overlap[seq[i + 1]][seq[i]];
-             for(int j = over; j < s.size(); j++)
-             &#123;
-                 ans += s[j];
-             &#125;
-         &#125;
-     &#125;
-     return ans;
- &#125;
-&#125;;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<li>利用<code>parent</code>中包含的信息重新构建出答案<h2 id="代码-3"><a href="#代码-3" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> dp[<span class="number">1</span> &lt;&lt; <span class="number">12</span>][<span class="number">21</span>], parent[<span class="number">1</span> &lt;&lt; <span class="number">12</span>][<span class="number">21</span>], overlap[<span class="number">21</span>][<span class="number">21</span>];</span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">shortestSuperstring</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; A)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//compute overlap</span></span><br><span class="line">        <span class="built_in">memset</span>(dp, <span class="number">0</span>, <span class="keyword">sizeof</span>(dp));</span><br><span class="line">        <span class="keyword">int</span> n = A.size();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(i == j)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="built_in">string</span> s1 = A[i], s2 = A[j];</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> k1 = <span class="number">0</span>; k1 &lt; s1.size(); k1++)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">bool</span> ok = <span class="literal">true</span>;</span><br><span class="line">                    <span class="keyword">for</span>(<span class="keyword">int</span> k2 = <span class="number">0</span>; k1 + k2 &lt; s1.size() &amp;&amp; k2 &lt; s2.size(); k2++)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="keyword">if</span>(s1[k1 + k2] != s2[k2])</span><br><span class="line">                        &#123;</span><br><span class="line">                            ok = <span class="literal">false</span>;</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span>(ok)</span><br><span class="line">                    &#123;</span><br><span class="line">                        overlap[i][j] = s1.size() - k1;</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; (<span class="number">1</span> &lt;&lt; n); i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 此处的i即是思路中叙述的mask</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= n; j++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 若mask中的第j位是有被使用的，设此时状态为dp[mask][j]</span></span><br><span class="line">                <span class="keyword">if</span>((i &gt;&gt; j) &amp; <span class="number">1</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="comment">// 从dp[mask][j]回退到A[j]并未被添加到当前串中的状态dp[mask ^ (1 &lt;&lt; j)][i]，此时dp[mask ^ (1 &lt;&lt; j)][i]是已经通过计算得出的</span></span><br><span class="line">                    <span class="keyword">int</span> pmask = i ^ (<span class="number">1</span> &lt;&lt; j);</span><br><span class="line">                    <span class="comment">// 在pmask标识的状态中，上一个被加入的字符串是A[i]</span></span><br><span class="line">                    <span class="comment">// i的循环范围是pmask的各位中不为零的下标。因为当被使用的字符串由pmask标示时，</span></span><br><span class="line">                    <span class="comment">// 上一个被加入的字符串还没确定。选择一个i（此处循环使用了变量名k）</span></span><br><span class="line">                    <span class="comment">// 使得dp[mask][i] + overlap[i][j]最大，才能完成状态转移。</span></span><br><span class="line">                    <span class="comment">// 以下循环意图是求出dp[i][j]</span></span><br><span class="line">                    <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k &lt;= n; k++)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="keyword">if</span>((pmask &gt;&gt; k) &amp; <span class="number">1</span>)</span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="keyword">int</span> val = dp[pmask][k] + overlap[k][j];</span><br><span class="line">                            <span class="keyword">if</span>(dp[i][j] == <span class="number">0</span> || dp[i][j] &lt; val)</span><br><span class="line">                            &#123;</span><br><span class="line">                                dp[i][j] = val;</span><br><span class="line">                                <span class="comment">// 追踪：当已经使用的字符串被mask（此处为i）标示时，如果下一个加入的</span></span><br><span class="line">                                <span class="comment">// 字符串是A[j]，为了使dp的值最优（最大），上次被加入的字符串应该是</span></span><br><span class="line">                                <span class="comment">// A[k]</span></span><br><span class="line">                                parent[i][j] = k;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// dp计算完成后，从最终状态（mask各位全为1），反推得最优解，最优的最终状态i用mark记录</span></span><br><span class="line">        <span class="keyword">int</span> mask = (<span class="number">1</span> &lt;&lt; n) - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> val = dp[mask][<span class="number">0</span>], mark = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(dp[mask][i] &gt; val)</span><br><span class="line">            &#123;</span><br><span class="line">                val = dp[mask][i];</span><br><span class="line">                mark = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; seq;</span><br><span class="line">        <span class="comment">// 反推出答案</span></span><br><span class="line">        <span class="keyword">while</span>(mask)</span><br><span class="line">        &#123;</span><br><span class="line">            seq.push_back(mark);</span><br><span class="line">            <span class="keyword">int</span> nxt = parent[mask][mark];</span><br><span class="line">            mask ^= (<span class="number">1</span> &lt;&lt; mark);</span><br><span class="line">            mark = nxt;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">string</span> ans = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = seq.size() - <span class="number">1</span>; i&gt;= <span class="number">0</span>; i--)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">string</span> s = A[seq[i]];</span><br><span class="line">            <span class="keyword">if</span>(i == seq.size() - <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                ans += s;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">int</span> over = overlap[seq[i + <span class="number">1</span>]][seq[i]];</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> j = over; j &lt; s.size(); j++)</span><br><span class="line">                &#123;</span><br><span class="line">                    ans += s[j];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 
@@ -521,6 +245,13 @@ public:
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+              <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag"># 动态规划</a>
+              <a href="/tags/%E5%87%8F%E6%B2%BB%E6%B3%95/" rel="tag"># 减治法</a>
+              <a href="/tags/C/" rel="tag"># C++</a>
+          </div>
 
         
 
@@ -610,6 +341,14 @@ public:
           <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>

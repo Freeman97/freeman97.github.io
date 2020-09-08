@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="知识点主要来源于Java核心技术（卷I）">
@@ -30,6 +30,9 @@
 <meta property="article:published_time" content="2020-08-08T08:44:16.000Z">
 <meta property="article:modified_time" content="2020-09-08T08:34:57.146Z">
 <meta property="article:author" content="Freeman Huang">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="泛型">
+<meta property="article:tag" content="反射">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2020/08/08/Java%E5%AD%A6%E4%B9%A0-%E6%B3%9B%E5%9E%8B%E4%B8%8E%E5%8F%8D%E5%B0%84/">
@@ -188,6 +191,15 @@
                 <span class="post-meta-item-text">更新于</span>
                 <time title="修改时间：2020-09-08 16:34:57" itemprop="dateModified" datetime="2020-09-08T16:34:57+08:00">2020-09-08</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">语言学习</span></a>
+                </span>
+            </span>
 
           
 
@@ -238,211 +250,31 @@
 <li><code>getDeclaredConstructors()</code><br>通过<code>Constructor</code>实例可以利用<code>newInstance()</code>创建一个实例对象</li>
 <li><code>newInstance(Object...parameters)</code></li>
 </ul>
-<h3 id="编写泛型数组代码（Todo）"><a href="#编写泛型数组代码（Todo）" class="headerlink" title="编写泛型数组代码（Todo）"></a>编写泛型数组代码（Todo）</h3><h3 id="动态代理（Todo）"><a href="#动态代理（Todo）" class="headerlink" title="动态代理（Todo）"></a>动态代理（Todo）</h3><h1 id="泛型类的定义"><a href="#泛型类的定义" class="headerlink" title="泛型类的定义"></a>泛型类的定义</h1><pre class="line-numbers language-lang-java"><code class="language-lang-java">public class ClassName<T, U> &#123;
-    private T member1;
-    private U member2;
-
-    public T method1() &#123;...&#125;
-
-    public void method2(T argument1) &#123;...&#125;
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="泛型方法的定义"><a href="#泛型方法的定义" class="headerlink" title="泛型方法的定义"></a>泛型方法的定义</h1><pre class="line-numbers language-lang-java"><code class="language-lang-java">class ClassName &#123;
-    public <T> T method(T argument) &#123;...&#125;
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="编写泛型数组代码（Todo）"><a href="#编写泛型数组代码（Todo）" class="headerlink" title="编写泛型数组代码（Todo）"></a>编写泛型数组代码（Todo）</h3><h3 id="动态代理（Todo）"><a href="#动态代理（Todo）" class="headerlink" title="动态代理（Todo）"></a>动态代理（Todo）</h3><h1 id="泛型类的定义"><a href="#泛型类的定义" class="headerlink" title="泛型类的定义"></a>泛型类的定义</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassName</span>&lt;<span class="title">T</span>, <span class="title">U</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T member1;</span><br><span class="line">    <span class="keyword">private</span> U member2;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">method1</span><span class="params">()</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">(T argument1)</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="泛型方法的定义"><a href="#泛型方法的定义" class="headerlink" title="泛型方法的定义"></a>泛型方法的定义</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassName</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">method</span><span class="params">(T argument)</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>泛型方法的类型推导是可能出错的（？）</p>
-<h1 id="对类型变量进行限定"><a href="#对类型变量进行限定" class="headerlink" title="对类型变量进行限定"></a>对类型变量进行限定</h1><p>可以限制传入的类型必须是某个类型的子类或必须实现某些接口。</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">class ClassName &#123;
-    public <T extends SuperClass & Interface1 & Interface2> T method() &#123;...&#125;
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>可以根据需要声明多个限定，但最多有一个限定可以是类，且类作为限定时必须是限定列表中的第一个限定。</p>
-<h1 id="泛型代码与虚拟机"><a href="#泛型代码与虚拟机" class="headerlink" title="泛型代码与虚拟机"></a>泛型代码与虚拟机</h1><h2 id="类型擦除"><a href="#类型擦除" class="headerlink" title="类型擦除"></a>类型擦除</h2><p>定义一个泛型类型时，都会自动提供一个相应的原始类型(raw type)。这个原始类型的名字就是去掉类型参数之后的泛型类型名。类型变量会被擦除(erased)，并替换为限定类型。对于无限定的变量则替换为Object。对于泛型类</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class ClassName<T> &#123;
-    private T member1;
-
-    public T method1() &#123;...&#125;
-
-    public void method2(T argument1) &#123;...&#125;
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>其原始类型为</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class ClassName &#123;
-    private Object member1;
-
-    public Object method1() &#123;...&#125;
-
-    public void method2(Object argument1) &#123;...&#125;
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>程序中包含不同类型的<code>ClassName</code>，被擦除类型后都会变成<code>ClassName</code>的原始类型。与C++的模板相比，C++会为每个模板的实例化产生不同的类型。</p>
-<p>而对于给出限定的泛型类，其原始类型会使用第一个限定来替换类型变量。对于泛型类</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class ClassName<T extends Interface1 & Interface2> &#123;
-    private T member;
-
-    public ClassName(T argument) &#123;...&#125;
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>其原始类型将为</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class ClassName &#123;
-    private Interface1 member;
-
-    public ClassName(Interface1 argument) &#123;...&#125;
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>如果有必要，编译器可能会在此时插入强制类型转换。为提高效率，应将没有方法的接口放在限定列表的末尾。</p>
-<h2 id="转换泛型表达式"><a href="#转换泛型表达式" class="headerlink" title="转换泛型表达式"></a>转换泛型表达式</h2><p>调用泛型方法时，如果擦除了返回类型，编译器会插入强制类型转换。例如，对于如下的泛型类</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class ClassName<T> &#123;
-    private T member;
-    public T getMember() &#123;
-        return this.member;
-    &#125;
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>考虑以下语句序列</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">ClassName<ClassName2> a = ...;
-ClassName2 b = a.getMember();
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>原始类型中的<code>getMember()</code>方法返回值类型被擦除，返回类型为<code>Object</code>。此时第二行语句会发生从<code>Object</code>到<code>ClassName2</code>的强制类型转换（在结果字节码中）。</p>
+<h1 id="对类型变量进行限定"><a href="#对类型变量进行限定" class="headerlink" title="对类型变量进行限定"></a>对类型变量进行限定</h1><p>可以限制传入的类型必须是某个类型的子类或必须实现某些接口。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassName</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> &lt;T extends SuperClass &amp; Interface1 &amp; Interface2&gt; <span class="function">T <span class="title">method</span><span class="params">()</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>可以根据需要声明多个限定，但最多有一个限定可以是类，且类作为限定时必须是限定列表中的第一个限定。</p>
+<h1 id="泛型代码与虚拟机"><a href="#泛型代码与虚拟机" class="headerlink" title="泛型代码与虚拟机"></a>泛型代码与虚拟机</h1><h2 id="类型擦除"><a href="#类型擦除" class="headerlink" title="类型擦除"></a>类型擦除</h2><p>定义一个泛型类型时，都会自动提供一个相应的原始类型(raw type)。这个原始类型的名字就是去掉类型参数之后的泛型类型名。类型变量会被擦除(erased)，并替换为限定类型。对于无限定的变量则替换为Object。对于泛型类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassName</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T member1;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">method1</span><span class="params">()</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">(T argument1)</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>其原始类型为<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassName</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Object member1;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">method1</span><span class="params">()</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">(Object argument1)</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>程序中包含不同类型的<code>ClassName</code>，被擦除类型后都会变成<code>ClassName</code>的原始类型。与C++的模板相比，C++会为每个模板的实例化产生不同的类型。</p>
+<p>而对于给出限定的泛型类，其原始类型会使用第一个限定来替换类型变量。对于泛型类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassName</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Interface1</span> &amp; <span class="title">Interface2</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T member;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ClassName</span><span class="params">(T argument)</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>其原始类型将为<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassName</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Interface1 member;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ClassName</span><span class="params">(Interface1 argument)</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>如果有必要，编译器可能会在此时插入强制类型转换。为提高效率，应将没有方法的接口放在限定列表的末尾。</p>
+<h2 id="转换泛型表达式"><a href="#转换泛型表达式" class="headerlink" title="转换泛型表达式"></a>转换泛型表达式</h2><p>调用泛型方法时，如果擦除了返回类型，编译器会插入强制类型转换。例如，对于如下的泛型类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassName</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T member;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getMember</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.member;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>考虑以下语句序列<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ClassName&lt;ClassName2&gt; a = ...;</span><br><span class="line">ClassName2 b = a.getMember();</span><br></pre></td></tr></table></figure><br>原始类型中的<code>getMember()</code>方法返回值类型被擦除，返回类型为<code>Object</code>。此时第二行语句会发生从<code>Object</code>到<code>ClassName2</code>的强制类型转换（在结果字节码中）。</p>
 <h2 id="转换泛型方法"><a href="#转换泛型方法" class="headerlink" title="转换泛型方法"></a>转换泛型方法</h2><p>继承传入类型参数的泛型类得到的子类，在重写父类的同名方法时可能会遇到类型擦除与多态性相冲突的情况。编译器会合成桥方法(bridge method)来保证多态性。（有待补充）</p>
-<h1 id="Java泛型的限制与局限性"><a href="#Java泛型的限制与局限性" class="headerlink" title="Java泛型的限制与局限性"></a>Java泛型的限制与局限性</h1><h2 id="不能用基本类型实例化类型参数（无法类型擦除）"><a href="#不能用基本类型实例化类型参数（无法类型擦除）" class="headerlink" title="不能用基本类型实例化类型参数（无法类型擦除）"></a>不能用基本类型实例化类型参数（无法类型擦除）</h2><h2 id="运行时类型查询只适用于原始类型"><a href="#运行时类型查询只适用于原始类型" class="headerlink" title="运行时类型查询只适用于原始类型"></a>运行时类型查询只适用于原始类型</h2><p>对于所有泛型类，所有的类型查询只会产生原始类型。对于<code>ClassName&lt;T&gt;</code>，所有类型查询(<code>instanceof</code>, 强制类型转换)只能判断变量是否为任意类型的一个<code>ClassName</code>。同时，<code>getClass</code>方法也总是返回原始类型。</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">ClassName1<ClassName2> a = ...;
-// 只返回ClassName1.class
-a.getClass();
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h2 id="不能创建参数化类型的数组"><a href="#不能创建参数化类型的数组" class="headerlink" title="不能创建参数化类型的数组"></a>不能创建参数化类型的数组</h2><p>Java的数组不是泛型容器，在运行时会持有它的元素类型信息，如果试图存储其它类型的元素会先尝试类型转换，失败则会抛出一个ArrayStoreException异常。<br>对于示例类</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">// 这是一个后续各个例子都可能使用的类
-class Pair<T> &#123;
-    private T first;
-    private T second;
-
-    public Pair(T f, T s) &#123;
-        this.first = f;
-        this.second = s;
-    &#125;
-
-    public T getFirst() &#123;
-        return this.first;
-    &#125;
-
-    public T getSecond() &#123;
-        return this.second;
-    &#125;
-
-    public void setFirst(T f) &#123;
-        this.first = f;
-    &#125;
-
-    public void setSecond(T s) &#123;
-        this.second = s;
-    &#125;
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>尝试定义这样一个数组</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">var table = new Pair<String>[10];
-// 事实上无法编译通过
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>如果能够编译通过，<code>table</code>的类型应为<code>Pair[]</code>。对于泛型类型，类型擦除会让数组的元素类型检查失效。</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">table[0] = new Pair<OtherType>();
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>因此不允许创建参数化类型的数组。但是声明类型为<code>Pair&lt;String&gt;[]</code>的变量依然是合法的。<br>声明通配类型的数组是可以编译通过的。声明后可以对其进行强制类型转换，但这是不安全的。</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">var table1 = (Pair<String>[]) new Pair<?>[10]; // 可以通过
-table1[0] = new Pair<Integer>(1, 1); // 按Java Core I中的大意写出的代码，但是直接报了类型转换错误，无法编译通过
-
-var table2 = new Pair<?>[10];
-table2[0] = new Pair<Integer(1, 1)>;
-System.out.println(((Pair<String>[]) table2)[0].getFirst()); // 在调用getFirst()前对table2进行强制类型转换，可以编译通过，但是运行时会得到一个ClassCastException异常
-// 问题: 上述table2的例子是否算是heap pollution的一个例子?
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>总之，如果有收集参数化类型对象的需求，使用泛型容器（如用ArrayList代替数组）更简单有效。</p>
-<h2 id="Varargs警告"><a href="#Varargs警告" class="headerlink" title="Varargs警告"></a>Varargs警告</h2><p>Java不支持泛型类型的数组，但是在某种场合下这个限制会得到放松：向参数个数可变的方法传递泛型类型的实例。考虑以下代码</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Main &#123;
-    public static void main(String[] args) &#123;
-        Collection<Pair<String>> table = new ArrayList<Pair<String>>();
-        Pair<String> pair1 = new Pair<String>("1", "2");
-        Pair<String> pair2 = new Pair<String>("3", "4");
-        ClassName.addAll(table, pair1, pair2);
-    &#125;
-&#125;
-
-class ClassName &#123;
-    public static <T> void addAll(Collection<T> coll, T...ts) &#123;
-        // var type = ts.getClass();
-        for(T t: ts) coll.add(t);
-    &#125;
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>为了调用<code>addAll()</code>，JVM必须建立一个<code>Pair&lt;String&gt;</code>数组。实际上使用debug可以发现参数ts的类型为<code>Pair[]</code>（已经经历了类型擦除）。这种情况下，不会得到错误，而只会在调用<code>addAll()</code>的地方得到警告<code>Type safety: A generic array of Pair&lt;String&gt; is created for a varargs parameter</code>。可以使用<code>@SafeVarargs</code>注解来消除创建泛型数组的有关限制，但要注意这始终是一个危险的操作，下面的代码给出了一个例子。</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Main &#123;
-    public static void main(String[] args) &#123;
-        Collection<Pair<String>> table = new ArrayList<Pair<String>>();
-        Pair<String> pair1 = new Pair<String>("1", "2");
-        Pair<String> pair2 = new Pair<String>("3", "4");
-        Pair<String> pair3 = (Pair<String>)(Object)new Pair<Integer>(5, 6);
-        ClassName.addAll(table, pair1, pair2, pair3);
-        try &#123;
-            // BOOM!
-            String omg = ((ArrayList<Pair<String>>) table).get(2).getFirst();
-        &#125; catch (ClassCastException e) &#123;
-            System.out.println("BOOM!");
-        &#125;
-    &#125;
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>上述代码还会在定义<code>addAll()</code>的地方得到警告<code>Type safety: Potential heap pollution via varargs parameter ts</code>。Heap pollution指的是一种特殊的引用（references），这种引用持有的类型并不是它所指向的对象的超类。</p>
-<h2 id="不能实例化类型变量"><a href="#不能实例化类型变量" class="headerlink" title="不能实例化类型变量"></a>不能实例化类型变量</h2><p>即对于<code>Pair&lt;T&gt;</code>，不能实例化<code>T</code>。换言之这样的构造器是非法的</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">class Pair<T> &#123;
-    ...
-    public Pair() &#123;
-        first = new T();
-        second = new T();
-    &#125;
-&#125; // ERROR!
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>解决方法：</p>
+<h1 id="Java泛型的限制与局限性"><a href="#Java泛型的限制与局限性" class="headerlink" title="Java泛型的限制与局限性"></a>Java泛型的限制与局限性</h1><h2 id="不能用基本类型实例化类型参数（无法类型擦除）"><a href="#不能用基本类型实例化类型参数（无法类型擦除）" class="headerlink" title="不能用基本类型实例化类型参数（无法类型擦除）"></a>不能用基本类型实例化类型参数（无法类型擦除）</h2><h2 id="运行时类型查询只适用于原始类型"><a href="#运行时类型查询只适用于原始类型" class="headerlink" title="运行时类型查询只适用于原始类型"></a>运行时类型查询只适用于原始类型</h2><p>对于所有泛型类，所有的类型查询只会产生原始类型。对于<code>ClassName&lt;T&gt;</code>，所有类型查询(<code>instanceof</code>, 强制类型转换)只能判断变量是否为任意类型的一个<code>ClassName</code>。同时，<code>getClass</code>方法也总是返回原始类型。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ClassName1&lt;ClassName2&gt; a = ...;</span><br><span class="line"><span class="comment">// 只返回ClassName1.class</span></span><br><span class="line">a.getClass();</span><br></pre></td></tr></table></figure></p>
+<h2 id="不能创建参数化类型的数组"><a href="#不能创建参数化类型的数组" class="headerlink" title="不能创建参数化类型的数组"></a>不能创建参数化类型的数组</h2><p>Java的数组不是泛型容器，在运行时会持有它的元素类型信息，如果试图存储其它类型的元素会先尝试类型转换，失败则会抛出一个ArrayStoreException异常。<br>对于示例类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这是一个后续各个例子都可能使用的类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> T first;</span><br><span class="line">	<span class="keyword">private</span> T second;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(T f, T s)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.first = f;</span><br><span class="line">		<span class="keyword">this</span>.second = s;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">getFirst</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.first;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">getSecond</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.second;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(T f)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.first = f;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSecond</span><span class="params">(T s)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.second = s;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>尝试定义这样一个数组<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> table = <span class="keyword">new</span> Pair&lt;String&gt;[<span class="number">10</span>];</span><br><span class="line"><span class="comment">// 事实上无法编译通过</span></span><br></pre></td></tr></table></figure><br>如果能够编译通过，<code>table</code>的类型应为<code>Pair[]</code>。对于泛型类型，类型擦除会让数组的元素类型检查失效。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">table[<span class="number">0</span>] = <span class="keyword">new</span> Pair&lt;OtherType&gt;();</span><br></pre></td></tr></table></figure><br>因此不允许创建参数化类型的数组。但是声明类型为<code>Pair&lt;String&gt;[]</code>的变量依然是合法的。<br>声明通配类型的数组是可以编译通过的。声明后可以对其进行强制类型转换，但这是不安全的。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> table1 = (Pair&lt;String&gt;[]) <span class="keyword">new</span> Pair&lt;?&gt;[<span class="number">10</span>]; <span class="comment">// 可以通过</span></span><br><span class="line">table1[<span class="number">0</span>] = <span class="keyword">new</span> Pair&lt;Integer&gt;(<span class="number">1</span>, <span class="number">1</span>); <span class="comment">// 按Java Core I中的大意写出的代码，但是直接报了类型转换错误，无法编译通过</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> table2 = <span class="keyword">new</span> Pair&lt;?&gt;[<span class="number">10</span>];</span><br><span class="line">table2[<span class="number">0</span>] = <span class="keyword">new</span> Pair&lt;Integer(<span class="number">1</span>, <span class="number">1</span>)&gt;;</span><br><span class="line">System.out.println(((Pair&lt;String&gt;[]) table2)[<span class="number">0</span>].getFirst()); <span class="comment">// 在调用getFirst()前对table2进行强制类型转换，可以编译通过，但是运行时会得到一个ClassCastException异常</span></span><br><span class="line"><span class="comment">// 问题: 上述table2的例子是否算是heap pollution的一个例子?</span></span><br></pre></td></tr></table></figure><br>总之，如果有收集参数化类型对象的需求，使用泛型容器（如用ArrayList代替数组）更简单有效。</p>
+<h2 id="Varargs警告"><a href="#Varargs警告" class="headerlink" title="Varargs警告"></a>Varargs警告</h2><p>Java不支持泛型类型的数组，但是在某种场合下这个限制会得到放松：向参数个数可变的方法传递泛型类型的实例。考虑以下代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Collection&lt;Pair&lt;String&gt;&gt; table = <span class="keyword">new</span> ArrayList&lt;Pair&lt;String&gt;&gt;();</span><br><span class="line">		Pair&lt;String&gt; pair1 = <span class="keyword">new</span> Pair&lt;String&gt;(<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>);</span><br><span class="line">		Pair&lt;String&gt; pair2 = <span class="keyword">new</span> Pair&lt;String&gt;(<span class="string">&quot;3&quot;</span>, <span class="string">&quot;4&quot;</span>);</span><br><span class="line">		ClassName.addAll(table, pair1, pair2);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassName</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">addAll</span><span class="params">(Collection&lt;T&gt; coll, T...ts)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// var type = ts.getClass();</span></span><br><span class="line">        <span class="keyword">for</span>(T t: ts) coll.add(t);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>为了调用<code>addAll()</code>，JVM必须建立一个<code>Pair&lt;String&gt;</code>数组。实际上使用debug可以发现参数ts的类型为<code>Pair[]</code>（已经经历了类型擦除）。这种情况下，不会得到错误，而只会在调用<code>addAll()</code>的地方得到警告<code>Type safety: A generic array of Pair&lt;String&gt; is created for a varargs parameter</code>。可以使用<code>@SafeVarargs</code>注解来消除创建泛型数组的有关限制，但要注意这始终是一个危险的操作，下面的代码给出了一个例子。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Collection&lt;Pair&lt;String&gt;&gt; table = <span class="keyword">new</span> ArrayList&lt;Pair&lt;String&gt;&gt;();</span><br><span class="line">		Pair&lt;String&gt; pair1 = <span class="keyword">new</span> Pair&lt;String&gt;(<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>);</span><br><span class="line">		Pair&lt;String&gt; pair2 = <span class="keyword">new</span> Pair&lt;String&gt;(<span class="string">&quot;3&quot;</span>, <span class="string">&quot;4&quot;</span>);</span><br><span class="line">		Pair&lt;String&gt; pair3 = (Pair&lt;String&gt;)(Object)<span class="keyword">new</span> Pair&lt;Integer&gt;(<span class="number">5</span>, <span class="number">6</span>);</span><br><span class="line">		ClassName.addAll(table, pair1, pair2, pair3);</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">// BOOM!</span></span><br><span class="line">			String omg = ((ArrayList&lt;Pair&lt;String&gt;&gt;) table).get(<span class="number">2</span>).getFirst();</span><br><span class="line">		&#125; <span class="keyword">catch</span> (ClassCastException e) &#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;BOOM!&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>上述代码还会在定义<code>addAll()</code>的地方得到警告<code>Type safety: Potential heap pollution via varargs parameter ts</code>。Heap pollution指的是一种特殊的引用（references），这种引用持有的类型并不是它所指向的对象的超类。</p>
+<h2 id="不能实例化类型变量"><a href="#不能实例化类型变量" class="headerlink" title="不能实例化类型变量"></a>不能实例化类型变量</h2><p>即对于<code>Pair&lt;T&gt;</code>，不能实例化<code>T</code>。换言之这样的构造器是非法的<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        first = <span class="keyword">new</span> T();</span><br><span class="line">        second = <span class="keyword">new</span> T();</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="comment">// ERROR!</span></span><br></pre></td></tr></table></figure><br>解决方法：</p>
 <ol>
-<li>让调用者提供一个构造器表达式（Java 8+）<pre class="line-numbers language-lang-java"><code class="language-lang-java">public static <T> Pair<T> makePair(Supplier<T> constr) &#123;
-    return new Pair<>(constr.get(), constr.get());
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<li>让调用者提供一个构造器表达式（Java 8+）<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Pair&lt;T&gt; <span class="title">makePair</span><span class="params">(Supplier&lt;T&gt; constr)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Pair&lt;&gt;(constr.get(), constr.get());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 其中<code>Supplier&lt;T&gt;</code>为一个函数式接口，表示一个无参数且返回类型为<code>T</code>的函数。</li>
-<li>通过反射调用<code>Constructor.newInstance</code>方法来构造泛型对象（？）<pre class="line-numbers language-lang-java"><code class="language-lang-java">public static <T> Pair<T> makePair(Class<T> cl) &#123;
-    try &#123;
-        return new Pair<>(cl.getConstructor().newInstance(), cl.getConstructor().newInstance());
-    &#125; catch (Exception e) &#123;
-        return null;
-    &#125;
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<li>通过反射调用<code>Constructor.newInstance</code>方法来构造泛型对象（？）<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Pair&lt;T&gt; <span class="title">makePair</span><span class="params">(Class&lt;T&gt; cl)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Pair&lt;&gt;(cl.getConstructor().newInstance(), cl.getConstructor().newInstance());</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <h2 id="不能构造泛型数组"><a href="#不能构造泛型数组" class="headerlink" title="不能构造泛型数组"></a>不能构造泛型数组</h2><p>与“不能创建参数化类型的数组”相似。解决方法：</p>
 <ol>
-<li>让用户提供一个数组构造器表达式（Java 8+）<pre class="line-numbers language-lang-java"><code class="language-lang-java">public static <T extends Comparable> T[] minmax(IntFunction<T[]> constr, T...a) &#123;
-    T[] result = constr.apply(2);
-    ...
-&#125;
-...
-//调用
-String[] res = ArrayAlg.minmax(String[]::new, "abc", "def", "ghi");
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li>利用反射调用<code>Array.newInstance</code><pre class="line-numbers language-lang-java"><code class="language-lang-java">public static <T extends Comparable> T[] minmax(T...a) &#123;
-    var result = (T[]) Array.newInstance(a.getClass.getComponentType(), 2);
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<li>让用户提供一个数组构造器表达式（Java 8+）<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T extends Comparable&gt; T[] minmax(IntFunction&lt;T[]&gt; constr, T...a) &#123;</span><br><span class="line">    T[] result = constr.apply(<span class="number">2</span>);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line"><span class="comment">//调用</span></span><br><span class="line">String[] res = ArrayAlg.minmax(String[]::<span class="keyword">new</span>, <span class="string">&quot;abc&quot;</span>, <span class="string">&quot;def&quot;</span>, <span class="string">&quot;ghi&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+<li>利用反射调用<code>Array.newInstance</code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T extends Comparable&gt; T[] minmax(T...a) &#123;</span><br><span class="line">    <span class="keyword">var</span> result = (T[]) Array.newInstance(a.getClass.getComponentType(), <span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<h2 id="泛型类的静态上下文中类型变量无效"><a href="#泛型类的静态上下文中类型变量无效" class="headerlink" title="泛型类的静态上下文中类型变量无效"></a>泛型类的静态上下文中类型变量无效</h2><p>不能在静态字段或方法中引用类型变量。</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public class Singleton<T> &#123;
-    private static T singleInstance; // ERROR (这个类以不同类型实例化两次不就出事了吗)
-
-    public static T getSingleInstance() &#123;
-        ...
-    &#125; // ERROR
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="泛型类的静态上下文中类型变量无效"><a href="#泛型类的静态上下文中类型变量无效" class="headerlink" title="泛型类的静态上下文中类型变量无效"></a>泛型类的静态上下文中类型变量无效</h2><p>不能在静态字段或方法中引用类型变量。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> T singleInstance; <span class="comment">// ERROR (这个类以不同类型实例化两次不就出事了吗)</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> T <span class="title">getSingleInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125; <span class="comment">// ERROR</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h2 id="不能抛出或捕获泛型类的实例"><a href="#不能抛出或捕获泛型类的实例" class="headerlink" title="不能抛出或捕获泛型类的实例"></a>不能抛出或捕获泛型类的实例</h2><p>既不能抛出也不能捕获泛型类的对象，实际上泛型类无法扩展<code>Throwable</code>。<code>catch</code>子句中不能使用类型变量。</p>
 <h2 id="可以取消对检查型异常的检查（Todo）"><a href="#可以取消对检查型异常的检查（Todo）" class="headerlink" title="可以取消对检查型异常的检查（Todo）"></a>可以取消对检查型异常的检查（Todo）</h2><h2 id="注意类型擦除后的冲突（Todo）"><a href="#注意类型擦除后的冲突（Todo）" class="headerlink" title="注意类型擦除后的冲突（Todo）"></a>注意类型擦除后的冲突（Todo）</h2><h1 id="泛型类型的继承规则"><a href="#泛型类型的继承规则" class="headerlink" title="泛型类型的继承规则"></a>泛型类型的继承规则</h1><p>考虑一个类<code>Class</code>及其子类<code>SubClass</code>。有如下的继承规则：</p>
 <ol>
@@ -454,22 +286,10 @@ String[] res = ArrayAlg.minmax(String[]::new, "abc", "def", "ghi");
 <li><code>ArrayList&lt;Class&gt;</code>和<code>ArrayList&lt;SubClass&gt;</code>没有关系</li>
 <li><code>List&lt;Class&gt;</code>和<code>List&lt;SubClass&gt;</code>没有关系</li>
 </ol>
-<h1 id="通配符类型"><a href="#通配符类型" class="headerlink" title="通配符类型"></a>通配符类型</h1><p>首先给出三个类及其继承关系：</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">class SuperClass &#123;...&#125;
-class SubClass extends SuperClass &#123;...&#125;
-class SubSubClass extends SubClass &#123;...&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="通配符类型"><a href="#通配符类型" class="headerlink" title="通配符类型"></a>通配符类型</h1><p>首先给出三个类及其继承关系：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SuperClass</span> </span>&#123;...&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SubClass</span> <span class="keyword">extends</span> <span class="title">SuperClass</span> </span>&#123;...&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SubSubClass</span> <span class="keyword">extends</span> <span class="title">SubClass</span> </span>&#123;...&#125;</span><br></pre></td></tr></table></figure></p>
 <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>通配符类型允许类型参数发生变化。<code>Pair&lt;? extends SuperClass&gt;</code>表示任何泛型<code>Pair</code>类型，其类型参数是<code>SuperClass</code>的子类。若<code>SubClass</code>是<code>SuperClass</code>的子类，那么<code>Pair&lt;SuperClass&gt;</code>与<code>Pair&lt;SubClass&gt;</code>都是<code>Pair&lt;? extends SuperClass</code>的子类，而<code>Pair&lt;? extends SuperClass&gt;</code>是<code>Pair</code>（原始类型）的子类。</p>
-<h2 id="超类型限定"><a href="#超类型限定" class="headerlink" title="超类型限定"></a>超类型限定</h2><p>通配符<code>? super ClassName</code>限制为<code>ClassName</code>的所有超类型。稍微有点绕，举个例子进行说明:对于<code>Pair&lt;? super SubClass&gt;</code>而言，有如下方法：</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">void setFirst(? super SubClass) &#123;...&#125;
-? super SubClass getFirst() &#123;...&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>由此可见，编译器不知道<code>setFirst</code>的具体类型（参数类型是<code>SubClass</code>的某个超类，这个超类及其子类才能作为参数传入，那么这个超类是哪一个呢？是<code>SuperClass</code>吗？还是<code>Object</code>？），因此无法接受<code>SuperClass</code>类型或<code>Object</code>类型的方法调用。而<code>SubClass</code>的子类型（如<code>SubSubClass</code>）对象或是<code>SubClass</code>类型的对象则可以作为参数传入。另外，如果调用<code>getFirst</code>，则不能保证返回值的类型（返回值类型是<code>SubClass</code>的某个超类，类型为这个超类及其超类的引用才能托管<code>getFirst</code>的返回值，然而这个超类具体是哪个同样无从得知），只能把返回值赋给一个<code>Object</code>。<br>对于超类型限定的继承关系，<code>Pair&lt;SuperClass&gt;</code>以及<code>Pair&lt;Object&gt;</code>是<code>Pair&lt;? super SubClass&gt;</code>的子类，而<code>Pair&lt;? super Manager&gt;</code>为<code>Pair&lt;?&gt;</code>的子类。</p>
-<h2 id="无限定通配符"><a href="#无限定通配符" class="headerlink" title="无限定通配符"></a>无限定通配符</h2><p>例如<code>Pair&lt;?&gt;</code>，它有如下方法</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">? getFirst()
-void setFirst(?)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p><code>getFirst</code>的返回值只能赋给一个<code>Object</code>，<code>setFirst</code>无法被调用。</p>
+<h2 id="超类型限定"><a href="#超类型限定" class="headerlink" title="超类型限定"></a>超类型限定</h2><p>通配符<code>? super ClassName</code>限制为<code>ClassName</code>的所有超类型。稍微有点绕，举个例子进行说明:对于<code>Pair&lt;? super SubClass&gt;</code>而言，有如下方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(? <span class="keyword">super</span> SubClass)</span> </span>&#123;...&#125;</span><br><span class="line">? <span class="function"><span class="keyword">super</span> SubClass <span class="title">getFirst</span><span class="params">()</span> </span>&#123;...&#125;</span><br></pre></td></tr></table></figure><br>由此可见，编译器不知道<code>setFirst</code>的具体类型（参数类型是<code>SubClass</code>的某个超类，这个超类及其子类才能作为参数传入，那么这个超类是哪一个呢？是<code>SuperClass</code>吗？还是<code>Object</code>？），因此无法接受<code>SuperClass</code>类型或<code>Object</code>类型的方法调用。而<code>SubClass</code>的子类型（如<code>SubSubClass</code>）对象或是<code>SubClass</code>类型的对象则可以作为参数传入。另外，如果调用<code>getFirst</code>，则不能保证返回值的类型（返回值类型是<code>SubClass</code>的某个超类，类型为这个超类及其超类的引用才能托管<code>getFirst</code>的返回值，然而这个超类具体是哪个同样无从得知），只能把返回值赋给一个<code>Object</code>。<br>对于超类型限定的继承关系，<code>Pair&lt;SuperClass&gt;</code>以及<code>Pair&lt;Object&gt;</code>是<code>Pair&lt;? super SubClass&gt;</code>的子类，而<code>Pair&lt;? super Manager&gt;</code>为<code>Pair&lt;?&gt;</code>的子类。</p>
+<h2 id="无限定通配符"><a href="#无限定通配符" class="headerlink" title="无限定通配符"></a>无限定通配符</h2><p>例如<code>Pair&lt;?&gt;</code>，它有如下方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">? getFirst()</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(?)</span></span></span><br></pre></td></tr></table></figure><br><code>getFirst</code>的返回值只能赋给一个<code>Object</code>，<code>setFirst</code>无法被调用。</p>
 <h2 id="通配符捕获（Todo）"><a href="#通配符捕获（Todo）" class="headerlink" title="通配符捕获（Todo）"></a>通配符捕获（Todo）</h2><h2 id="通过反射分析泛型类信息（Todo）"><a href="#通过反射分析泛型类信息（Todo）" class="headerlink" title="通过反射分析泛型类信息（Todo）"></a>通过反射分析泛型类信息（Todo）</h2>
     </div>
 
@@ -478,6 +298,11 @@ void setFirst(?)
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/%E6%B3%9B%E5%9E%8B/" rel="tag"># 泛型</a>
+              <a href="/tags/%E5%8F%8D%E5%B0%84/" rel="tag"># 反射</a>
+          </div>
 
         
 
@@ -567,6 +392,14 @@ void setFirst(?)
           <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>
