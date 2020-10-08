@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="分类刷题归集，总结遇到的各种双指针问题题目描述和编号来自Leetcode中文站">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法专题 - 双指针">
+<meta property="og:url" content="http://yoursite.com/2020/10/04/Algorithm-SumUp-TwoPointers/index.html">
+<meta property="og:site_name" content="Freeman&#39;s Blog">
+<meta property="og:description" content="分类刷题归集，总结遇到的各种双指针问题题目描述和编号来自Leetcode中文站">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-04T09:34:41.000Z">
+<meta property="article:modified_time" content="2020-10-08T17:09:33.806Z">
+<meta property="article:author" content="Freeman Huang">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Algorithm">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/10/04/Algorithm-SumUp-TwoPointers/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>算法专题 - 双指针 | Freeman's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Freeman's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个菜鸡心血来潮搭建的个人博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/04/Algorithm-SumUp-TwoPointers/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Freeman Huang">
+      <meta itemprop="description" content="Self-talking of a noob">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Freeman's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          算法专题 - 双指针
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-04 17:34:41" itemprop="dateCreated datePublished" datetime="2020-10-04T17:34:41+08:00">2020-10-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-09 01:09:33" itemprop="dateModified" datetime="2020-10-09T01:09:33+08:00">2020-10-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据结构与算法</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>分类刷题归集，总结遇到的各种双指针问题</strong><br><strong>题目描述和编号来自Leetcode中文站</strong><br><a id="more"></a></p>
+<h1 id="左右指针系列问题"><a href="#左右指针系列问题" class="headerlink" title="左右指针系列问题"></a>左右指针系列问题</h1><h2 id="Leetcode-11-盛最多水的容器"><a href="#Leetcode-11-盛最多水的容器" class="headerlink" title="Leetcode 11 盛最多水的容器"></a>Leetcode 11 盛最多水的容器</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/container-with-most-water/">https://leetcode-cn.com/problems/container-with-most-water/</a></p>
+<p>给你 n 个非负整数 a1，a2，…，an，每个数代表坐标中的一个点 (i, ai) 。在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, ai) 和 (i, 0)。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。<br>说明：你不能倾斜容器，且 n 的值至少为 2。</p>
+<h3 id="解"><a href="#解" class="headerlink" title="解"></a>解</h3><p>一道比较典型的可以用双指针法处理的问题，可以假设最开始时两个指针分别处于数组的两端，按照一定的规则逐渐相向移动。对于任意时刻的两个不同位置指针<code>i</code>和<code>j</code>，不妨假设<code>i &lt; j</code>，能够构成容量为<code>v1 = min(height[i], height[j]) * (j - i)</code>的容器。进一步假设<code>height[i] &lt; height[j]</code>，则此时无论如何向左移动指针<code>j</code>，得到的新容器容量都不会超过<code>v1</code>，因为<code>min(height[i], height[j])</code>有可能与原来相等也有可能比原来小，但是<code>j - i</code>一定比原来小。由此可见，此时向右移动指针<code>i</code>才有可能得到容量更大的容器。该解法的时间复杂度为$O(n)$，空间复杂度为$O(1)$。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxArea</span><span class="params">(<span class="keyword">int</span>[] height)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>, j = height.length - <span class="number">1</span>, res = <span class="number">0</span>, current = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(i &gt;= j)</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        <span class="keyword">while</span>(i &lt; j) &#123;</span><br><span class="line">            current = Math.min(height[i], height[j]) * (j - i);</span><br><span class="line">            res = Math.max(current, res);</span><br><span class="line">            <span class="keyword">if</span>(height[i] &lt; height[j]) &#123;</span><br><span class="line">                i++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                j--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="Sum系列问题-左右指针"><a href="#Sum系列问题-左右指针" class="headerlink" title="Sum系列问题(左右指针)"></a>Sum系列问题(左右指针)</h1><h2 id="Leetcode-16-最接近的三数之和"><a href="#Leetcode-16-最接近的三数之和" class="headerlink" title="Leetcode 16 最接近的三数之和"></a>Leetcode 16 最接近的三数之和</h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/3sum-closest">https://leetcode-cn.com/problems/3sum-closest</a></p>
+<p>给定一个包括<code>n</code>个整数的数组<code>nums</code>和 一个目标值<code>target</code>。找出<code>nums</code>中的三个整数，使得它们的和与<code>target</code>最接近。返回这三个数的和。假定每组输入只存在唯一答案。<br>示例：<br><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [<span class="number">-1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">-4</span>], target = <span class="number">1</span></span><br><span class="line">输出：<span class="number">2</span></span><br><span class="line">解释：与 target 最接近的和是 <span class="number">2</span> (<span class="number">-1</span> + <span class="number">2</span> + <span class="number">1</span> = <span class="number">2</span>) 。</span><br></pre></td></tr></table></figure><br>提示：</p>
+<ul>
+<li><code>3 &lt;= nums.length &lt;= 10^3</code></li>
+<li><code>-10^3 &lt;= nums[i] &lt;= 10^3</code></li>
+<li><code>-10^4 &lt;= target &lt;= 10^4</code></li>
+</ul>
+<h3 id="解-1"><a href="#解-1" class="headerlink" title="解"></a>解</h3><p>最朴素的解法用暴力三重循环搜索所有组合，但是时间复杂度为$O(n^3)$。</p>
+<ul>
+<li>首先考虑如何在遍历的同时避免重复<br>考虑首先对数组进行排序（此处不妨设首先对数组进行非递减排序），并且对遍历增加条件：<ol>
+<li>每一重循环所枚举到的下标必须大于上一重循环枚举到的下标</li>
+<li>在同一重循环中，如果当前元素和上一个元素相等，则跳过当前元素<br>需要注意的是，如果用三元组<code>(i, p, q)</code>来表示遍历中的某一次访问的下标，条件2需要保证的事情是“三元组上每个位置的所有可能取值不会被重复计数”，编写程序时要注意不要让前一重循环的下标移动意外删除掉后一重循环的下标的可能取值。</li>
+</ol>
+</li>
+<li>然后考虑如何加速遍历<br>最后两重循环可以使用双指针来合并成一重。当第一重循环分别取得下标<code>i</code>时，后一重循环初始化为<code>p = i + 1</code>, <code>q = nums.length - 1</code>。每次遍历可以得到和<code>sum = nums[i] + nums[p] + nums[q]</code>，当前已经遍历得到的最优值为<code>res</code>。如果有<code>abs(sum - target) &lt; abs(res - target)</code>，则<code>res = sum</code>，否则考虑如何移动左右指针。<ol>
+<li>如果<code>sum &lt; target</code>，注意此时肯定有<code>sum &lt; res &lt; target</code>，考虑到数组非递减排序，应该让左指针+1.</li>
+<li>如果<code>sum &gt; target</code>，注意此时肯定有<code>sum &gt; res &gt; target</code>，考虑到数组非递减排序，应该让右指针-1.<br>需要注意的是，在移动双指针的时候同样要注意上一条的2。<br>在此基础之上，可以进行一定的剪枝操作，详见代码。此时时间复杂度为$O(n^2)$，空间复杂度为$O(n)$。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">threeSumClosest</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">1145141919</span>;</span><br><span class="line">        <span class="keyword">if</span>(nums == <span class="keyword">null</span> || nums.length &lt; <span class="number">3</span>) <span class="keyword">return</span> res;</span><br><span class="line">        <span class="keyword">int</span> n = nums.length, sum = <span class="number">0</span>;</span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">2</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(i &gt; <span class="number">0</span> &amp;&amp; nums[i] == nums[i - <span class="number">1</span>]) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">int</span> p = i + <span class="number">1</span>, q = n - <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[i] + nums[i + <span class="number">1</span>] + nums[i + <span class="number">2</span>] &gt; res &amp;&amp; res &gt; target) <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[i] + nums[n - <span class="number">2</span>] + nums[n - <span class="number">1</span>] &lt; res &amp;&amp; res &lt; target) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">while</span>(p &lt; q) &#123;</span><br><span class="line">                sum = nums[i] + nums[p] + nums[q];</span><br><span class="line">                <span class="keyword">if</span>(sum == target) <span class="keyword">return</span> sum;</span><br><span class="line">                <span class="keyword">if</span>(Math.abs(sum - target) &lt; Math.abs(res - target)) &#123;</span><br><span class="line">                    res = sum;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(sum - target &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                    p++;</span><br><span class="line">                    <span class="keyword">while</span>(p &lt; q &amp;&amp; nums[p] == nums[p - <span class="number">1</span>]) p++;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    q--;</span><br><span class="line">                    <span class="keyword">while</span>(p &lt; q &amp;&amp; nums[q] == nums[q + <span class="number">1</span>]) q--;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="Leetcode-18-四数之和"><a href="#Leetcode-18-四数之和" class="headerlink" title="Leetcode 18 四数之和"></a>Leetcode 18 四数之和</h2><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h3><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/4sum">https://leetcode-cn.com/problems/4sum</a></p>
+<p>给定一个包含 n 个整数的数组 nums 和一个目标值 target，判断 nums 中是否存在四个元素 a，b，c 和 d ，使得 a + b + c + d 的值与 target 相等？找出所有满足条件且不重复的四元组。答案中不可以包含重复的四元组。<br>示例：<br><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">给定数组 nums = [<span class="number">1</span>, <span class="number">0</span>, <span class="number">-1</span>, <span class="number">0</span>, <span class="number">-2</span>, <span class="number">2</span>]，和 target = <span class="number">0</span>。</span><br><span class="line"></span><br><span class="line">满足要求的四元组集合为：</span><br><span class="line">[</span><br><span class="line">  [<span class="number">-1</span>,  <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">  [<span class="number">-2</span>, <span class="number">-1</span>, <span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">  [<span class="number">-2</span>,  <span class="number">0</span>, <span class="number">0</span>, <span class="number">2</span>]</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<h3 id="解-2"><a href="#解-2" class="headerlink" title="解"></a>解</h3><p>最朴素的解法是用暴力搜索所有组合，并用哈希表去重。但是遍历的时间复杂度为$O(n^4)$，并且去重较为困难。</p>
+<ul>
+<li>首先考虑如何在遍历的同时避免重复<br>考虑首先对数组进行排序（此处不妨设首先对数组进行非递减排序），并且对遍历增加条件：<ol>
+<li>每一重循环所枚举到的下标必须大于上一重循环枚举到的下标</li>
+<li>在同一重循环中，如果当前元素和上一个元素相等，则跳过当前元素<br>注意，2不能写成“在同一重循环中，如果当前元素和下一个元素相等，则跳过当前元素”。首先1既保证了下标不会重复，在数组有序的基础上还保证了不会出现“元素相同，顺序不同”的情况。假设4重循环的下标分别为<code>i, j, p, q</code>，那么每次遍历可以表示为一个四元组，2是为了保证这个四元组每个位置上的所有可能的取值不会被重复计数。但如果条件是“和下一个元素相等”，则上一重循环会排除掉下一重循环的某个取值，因为下一重循环的下标一定要比上一重循环的下标大。满足以上的条件，则可以认为在遍历过程中不会产生重复的结果。</li>
+</ol>
+</li>
+<li>然后考虑如何加速遍历<br>前两重循环无法优化，后两重循环可以通过双指针合并为一重。当前两重循环分别取得下标<code>i, j</code>时，最后一重循环初始化为<code>p = i + 1</code>, <code>q = nums.length - 1</code>。每次遍历可以得到和<code>sum = nums[i] + nums[j] + nums[p] + nums[q]</code>。<ol>
+<li>如果<code>sum &gt; target</code>，此时移动左指针只能让<code>sum</code>更大，移动右指针可以让<code>sum</code>更小，故此时应该让右指针-1。</li>
+<li>如果<code>sum &lt; target</code>，基于和1相似的考量，应该让左指针+1。<br>需要注意的是，在移动双指针的时候同样要注意上一条的2。<br>在此基础之上，可以进行一定的剪枝操作，详见代码。此时时间复杂度为$O(n^3)$，空间复杂度为$O(n^2)$。所有“n数之和等于某个target”的题都可以用这个模型来解决。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; fourSum(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target) &#123;</span><br><span class="line">        List&lt;List&lt;Integer&gt;&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span>(nums == <span class="keyword">null</span> || nums.length &lt; <span class="number">4</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> n = nums.length;</span><br><span class="line">        <span class="comment">// need to ensure that there&#x27;s no duplicate four digits without using hashmap</span></span><br><span class="line">        <span class="comment">// first, sort the array</span></span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">3</span>; i++) &#123;</span><br><span class="line">            <span class="comment">// notice: don&#x27;t try to write like this: i should be first examined and then jump over duplicate. Same with j.</span></span><br><span class="line">            <span class="comment">// if(i &lt; n - 1 &amp;&amp; nums[i] == nums[i + 1]) continue;</span></span><br><span class="line">            <span class="keyword">if</span>(i &gt; <span class="number">0</span> &amp;&amp; nums[i] == nums[i - <span class="number">1</span>]) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="comment">// do some pruning</span></span><br><span class="line">            <span class="keyword">if</span>(nums[i] + nums[i + <span class="number">1</span>] + nums[i + <span class="number">2</span>] + nums[i + <span class="number">3</span>] &gt; target) <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[i] + nums[n - <span class="number">3</span>] + nums[n - <span class="number">2</span>] + nums[n - <span class="number">1</span>] &lt; target) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; n - <span class="number">2</span>; j++) &#123;</span><br><span class="line">                <span class="comment">// notice</span></span><br><span class="line">                <span class="comment">// if(j &lt; n - 1 &amp;&amp; nums[j] == nums[j + 1]) continue;</span></span><br><span class="line">                <span class="keyword">if</span>(j &gt; i + <span class="number">1</span> &amp;&amp; nums[j] == nums[j - <span class="number">1</span>]) <span class="keyword">continue</span>;</span><br><span class="line">                <span class="comment">// do some pruning</span></span><br><span class="line">                <span class="keyword">if</span>(nums[i] + nums[j] + nums[j + <span class="number">1</span>] + nums[j + <span class="number">2</span>] &gt; target) <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">if</span>(nums[i] + nums[j] + nums[n - <span class="number">2</span>] + nums[n - <span class="number">1</span>] &lt; target) <span class="keyword">continue</span>;</span><br><span class="line">                <span class="comment">// then find the rest two digits using two pointers</span></span><br><span class="line">                <span class="keyword">int</span> p = j + <span class="number">1</span>, q = n - <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">while</span>(p &lt; q) &#123;</span><br><span class="line">                    <span class="keyword">int</span> sum = nums[i] + nums[j] + nums[p] + nums[q];</span><br><span class="line">                    <span class="keyword">if</span>(sum == target) &#123;</span><br><span class="line">                        res.add(List.of(nums[i], nums[j], nums[p], nums[q]));</span><br><span class="line">                        <span class="comment">// it is no problem to write like this, because the value of current p and q is already examined!</span></span><br><span class="line">                        <span class="keyword">while</span>(p &lt; q &amp;&amp; nums[p] == nums[p + <span class="number">1</span>]) p++;</span><br><span class="line">                        p++;</span><br><span class="line">                        <span class="keyword">while</span>(p &lt; q &amp;&amp; nums[q] == nums[q - <span class="number">1</span>]) q--;</span><br><span class="line">                        q--;</span><br><span class="line">                    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (sum &lt; target) &#123;</span><br><span class="line">                        p++;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        q--;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="Leetcode-923-三数之和的多种可能"><a href="#Leetcode-923-三数之和的多种可能" class="headerlink" title="Leetcode 923 三数之和的多种可能"></a>Leetcode 923 三数之和的多种可能</h2><h3 id="题目描述-3"><a href="#题目描述-3" class="headerlink" title="题目描述"></a>题目描述</h3><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/3sum-with-multiplicity">https://leetcode-cn.com/problems/3sum-with-multiplicity</a></p>
+<p>给定一个整数数组<code>A</code>，以及一个整数<code>target</code>作为目标值，返回满足<code>i &lt; j &lt; k</code>且<code>A[i] + A[j] + A[k] == target</code>的元组<code>i, j, k</code>的数量。</p>
+<p>由于结果会非常大，请返回 结果除以<code>10^9 + 7</code>的余数。</p>
+<p>示例 1：<br><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">输入：A = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">5</span>], target = <span class="number">8</span></span><br><span class="line">输出：<span class="number">20</span></span><br><span class="line">解释：</span><br><span class="line">按值枚举（A[i]，A[j]，A[k]）：</span><br><span class="line">(<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>) 出现 <span class="number">8</span> 次；</span><br><span class="line">(<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>) 出现 <span class="number">8</span> 次；</span><br><span class="line">(<span class="number">2</span>, <span class="number">2</span>, <span class="number">4</span>) 出现 <span class="number">2</span> 次；</span><br><span class="line">(<span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>) 出现 <span class="number">2</span> 次。</span><br></pre></td></tr></table></figure><br>示例 2：<br><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入：A = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>], target = <span class="number">5</span></span><br><span class="line">输出：<span class="number">12</span></span><br><span class="line">解释：</span><br><span class="line">A[i] = <span class="number">1</span>，A[j] = A[k] = <span class="number">2</span> 出现 <span class="number">12</span> 次：</span><br><span class="line">我们从 [<span class="number">1</span>,<span class="number">1</span>] 中选择一个 <span class="number">1</span>，有 <span class="number">2</span> 种情况，</span><br><span class="line">从 [<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>] 中选出两个 <span class="number">2</span>，有 <span class="number">6</span> 种情况。</span><br></pre></td></tr></table></figure></p>
+<p>提示：<br><figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">3 </span>&lt;= A.length &lt;= <span class="number">3000</span></span><br><span class="line"><span class="symbol">0 </span>&lt;= A[i] &lt;= <span class="number">100</span></span><br><span class="line"><span class="symbol">0 </span>&lt;= target &lt;= <span class="number">300</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="解1-双指针"><a href="#解1-双指针" class="headerlink" title="解1 双指针"></a>解1 双指针</h3><p>基本思路与#18类似。先将数组进行排序，遍历数组下标，对于每个<code>i</code>，用双指针来完成寻找<code>A[i] + A[j] + A[k] == target</code>的子任务。本题的难点在于如何完成对满足条件的重复元组进行计数的任务，在处理边界条件的时候要特别注意。设任意一个满足条件的下标组合表示为<code>i, j, k</code>：</p>
+<ul>
+<li>当<code>A[j] != A[k]</code>时，可以使用双指针对值为<code>A[i]</code>和<code>A[j]</code>的元素进行计数，设计数结果为<code>m, n</code>，那么对于当前下标<code>i</code>和数字组合<code>A[i], A[j], A[k]</code>，可能性组合一共有<code>m * n</code>种。</li>
+<li>当<code>A[j] == A[k]</code>时，由于数组是排序的，可以得知下标<code>j, j-1, ..., k</code>处的值都相等，因此此时需要计算的是“从这些下标中任取两个，能有多少种取法”，即$\binom{k - j + 1}{2}$。</li>
+<li>需要注意的是，本题在最外层循环无法通过“对相同的值进行计数”来进行加速，因为有可能多算。例如<code>[1, 1, 1, 1], target = 3</code>，当<code>i = 0</code>时，计数结果是$\binom{3}{2} = 3$，但是当<code>i = 1</code>时，尽管有<code>A[1] == A[0]</code>，但是此时技术结果应该为$1$。本解法的时间复杂度为$O(N^2)$，空间复杂度为$O(1)$。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">threeSumMulti</span><span class="params">(<span class="keyword">int</span>[] A, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>, sum = <span class="number">0</span>, n = A.length, mod = <span class="number">1000000007</span>;</span><br><span class="line">        <span class="keyword">if</span>(A == <span class="keyword">null</span> || A.length &lt; <span class="number">3</span>) <span class="keyword">return</span> res;</span><br><span class="line">        Arrays.sort(A);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">2</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(A[i] + A[i + <span class="number">1</span>] + A[i + <span class="number">2</span>] &gt; target) <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">if</span>(A[i] + A[n - <span class="number">2</span>] + A[n - <span class="number">1</span>] &lt; target) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">int</span> p = i + <span class="number">1</span>, q = n - <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">while</span>(p &lt; q) &#123;</span><br><span class="line">                sum = A[i] + A[p] + A[q];</span><br><span class="line">                <span class="keyword">if</span>(sum &lt; target) &#123;</span><br><span class="line">                    p++;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span>(sum &gt; target) &#123;</span><br><span class="line">                    q--;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span>(A[p] != A[q]) &#123;</span><br><span class="line">                    <span class="keyword">int</span> pCount = <span class="number">1</span>, qCount = <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">while</span>(p &lt; q &amp;&amp; A[p] == A[p + <span class="number">1</span>]) &#123;</span><br><span class="line">                        pCount++;</span><br><span class="line">                        p++;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">while</span>(p &lt; q &amp;&amp; A[q] == A[q - <span class="number">1</span>]) &#123;</span><br><span class="line">                        qCount++;</span><br><span class="line">                        q--;</span><br><span class="line">                    &#125;</span><br><span class="line">                    p++;</span><br><span class="line">                    q--;</span><br><span class="line">                    res = (res + pCount * qCount) % mod;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    res = (res + (q - p + <span class="number">1</span>) * (q - p) / <span class="number">2</span>) % mod;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="解2-数学法"><a href="#解2-数学法" class="headerlink" title="解2 数学法"></a>解2 数学法</h3><p>思路是对数组<code>A</code>中出现的每一个数字进行计数，之后对每种<code>x + y + z == target</code>的组合进行计数。设<code>x</code>在<code>A</code>中出现了<code>count[x]</code>次，则：</p>
+<ul>
+<li>若<code>x</code>， <code>y</code>， <code>z</code>各不相同，则这种组合会出现$count[x] \times count[y] \times count[z]$次。为了避免重复计数，应该保证<code>x &lt; y &lt; z</code>。</li>
+<li>若<code>x == y</code>，且<code>x != z</code>，则这种组合会出现$\binom{count[x]}{2} \times count[z]$次（<code>x != y</code>且<code>x == z</code>的情况类似可以计算）。为了避免重复计数，应该保证<code>x == y &lt; z</code>。</li>
+<li>若<code>x</code>，<code>y</code>，<code>z</code>都相同，则这种组合会出现$\binom{count[x]}{3}$次。<br>若<code>A</code>中出现了<code>W</code>个不同的数字，则该算法的时间复杂度为$O(N + W^2)$，空间复杂度为$O(W)$。</li>
+<li>需要注意的是，计算的中间结果可能会很大，要谨防溢出。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">threeSumMulti</span><span class="params">(<span class="keyword">int</span>[] A, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = A.length, mod = <span class="number">1000000007</span>;</span><br><span class="line">        <span class="keyword">long</span>[] count = <span class="keyword">new</span> <span class="keyword">long</span>[<span class="number">101</span>];</span><br><span class="line">        <span class="keyword">if</span>(A == <span class="keyword">null</span> || A.length &lt; <span class="number">3</span>) <span class="keyword">return</span> (<span class="keyword">int</span>)res;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            count[A[i]]++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// all different</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; <span class="number">101</span>; x++) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> y = x + <span class="number">1</span>; y &lt; <span class="number">101</span>; y++) &#123;</span><br><span class="line">                <span class="keyword">int</span> z = target - x - y;</span><br><span class="line">                <span class="keyword">if</span>(y &lt; z &amp;&amp; z &lt;= <span class="number">100</span>) &#123;</span><br><span class="line">                    res += count[x] * count[y] * count[z];</span><br><span class="line">                    res = res % mod;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// two different</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; <span class="number">101</span>; x++) &#123;</span><br><span class="line">            <span class="keyword">int</span> z = target - <span class="number">2</span> * x;</span><br><span class="line">            <span class="keyword">if</span>(x &lt; z &amp;&amp; z &lt;= <span class="number">100</span>) &#123;</span><br><span class="line">                <span class="comment">// count[x] - 1 will be zero when count[x] &lt; 2.</span></span><br><span class="line">                res += count[x] * (count[x] - <span class="number">1</span>) / <span class="number">2</span> * count[z];</span><br><span class="line">                res = res % mod;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; <span class="number">101</span>; x++) &#123;</span><br><span class="line">            <span class="keyword">if</span>((target - x) % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">int</span> y = (target - x) / <span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(x &lt; y &amp;&amp; y &lt;= <span class="number">100</span>) &#123;</span><br><span class="line">                    res += count[x] * count[y] * (count[y] - <span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line">                    res = res % mod;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// all same</span></span><br><span class="line">        <span class="keyword">if</span>(target % <span class="number">3</span> == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> x = target / <span class="number">3</span>;</span><br><span class="line">            <span class="keyword">if</span>(x &gt;= <span class="number">0</span> &amp;&amp; x &lt;= <span class="number">100</span>) &#123;</span><br><span class="line">                res += count[x] * (count[x] - <span class="number">1</span>) * (count[x] - <span class="number">2</span>) / <span class="number">6</span>;</span><br><span class="line">                res = res % mod;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">int</span>)res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="滑动窗口-Sliding-Window-问题"><a href="#滑动窗口-Sliding-Window-问题" class="headerlink" title="滑动窗口(Sliding Window)问题"></a>滑动窗口(Sliding Window)问题</h1><h2 id="Leetcode-3-无重复字符的最长字串"><a href="#Leetcode-3-无重复字符的最长字串" class="headerlink" title="Leetcode #3 无重复字符的最长字串"></a>Leetcode #3 无重复字符的最长字串</h2><h3 id="题目描述-4"><a href="#题目描述-4" class="headerlink" title="题目描述"></a>题目描述</h3><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-substring-without-repeating-characters">https://leetcode-cn.com/problems/longest-substring-without-repeating-characters</a></p>
+<p>给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。<br>示例 1:<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">输入: &quot;abcabcbb&quot;</span></span><br><span class="line"><span class="section">输出: 3 </span></span><br><span class="line"><span class="section">解释: 因为无重复字符的最长子串是 &quot;abc&quot;，所以其长度为 3。</span></span><br></pre></td></tr></table></figure><br>示例 2:<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">输入: &quot;bbbbb&quot;</span></span><br><span class="line"><span class="section">输出: 1</span></span><br><span class="line"><span class="section">解释: 因为无重复字符的最长子串是 &quot;b&quot;，所以其长度为 1。</span></span><br></pre></td></tr></table></figure><br>示例 3:<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">输入: &quot;pwwkew&quot;</span></span><br><span class="line"><span class="section">输出: 3</span></span><br><span class="line"><span class="section">解释: 因为无重复字符的最长子串是 &quot;wke&quot;，所以其长度为 3。</span></span><br><span class="line">     请注意，你的答案必须是 子串 的长度，<span class="string">&quot;pwke&quot;</span> 是一个子序列，不是子串。</span><br></pre></td></tr></table></figure></p>
+<h3 id="解-3"><a href="#解-3" class="headerlink" title="解"></a>解</h3><p>很显然，判断一个字符串是否含有重复字符可以用集合或者哈希表实现，我们考虑如何更快地寻找最长的子串。<br>假设我们在长度为<code>n</code>的字符串中找到了一个起点为<code>i</code>，终点为<code>j - 1</code>的子串，其中<code>j</code>处的字符和<code>k</code>处的字符相等，此处显然有<code>i &lt;= k &lt; j</code>。如果<code>j &lt; n</code>，说明我们应该继续尝试寻找更长的字符串。显然这个更长的子串起点不可能在区间<code>[i, k]</code>之内，假设某个子串的起点在区间<code>[i, k]</code>之内，那么这个子串在<code>j</code>处就会碰到重复字符，得不到比原来更长的字符串。因此，可以考虑此时让右指针<code>i</code>逐步移动到<code>k + 1</code>的位置，为了能够方便地得到<code>k</code>的位置，我们需要使用哈希表记录每个字符出现的位置。<code>i</code>在移动时需要清除掉哈希表中记录的出现过的字符，因为它们暂时没有在下一个子串中出现。本算法的时间复杂度为$O(n)$，因为左指针<code>i</code>和右指针<code>j</code>都遍历了一次字符串。假设所有可能出现过的字符有<code>M</code>种，那么空间复杂度为$O(M)$。默认字符集为ASCII能表示的字符的话，有$M = 128$。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(s == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(s.length() == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> n = s.length(), res = <span class="number">0</span>, i = <span class="number">0</span>, j = <span class="number">0</span>, cacheTail = <span class="number">0</span>, last = <span class="number">0</span>;</span><br><span class="line">        HashMap&lt;Character, Integer&gt; m = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="keyword">while</span>(i &lt; n) &#123;</span><br><span class="line">            <span class="keyword">while</span>(j &lt; n &amp;&amp; (!m.containsKey(s.charAt(j)) || m.get(s.charAt(j)) &lt; cacheTail)) &#123;</span><br><span class="line">                m.put(s.charAt(j), j);</span><br><span class="line">                j++;</span><br><span class="line">            &#125;</span><br><span class="line">            res = (j - i + last &gt; res) ? j - i + last : res;</span><br><span class="line">            <span class="keyword">if</span>(j &gt;= n) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                cacheTail = m.get(s.charAt(j)) + <span class="number">1</span>;</span><br><span class="line">                last = j - <span class="number">1</span> - m.get(s.charAt(j));</span><br><span class="line">                i = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>现在我们考虑如何在以上算法的基础上进一步进行优化。首先，如果字符是ASCII字符集，那哈希表可以使用数组来实现（而不是使用Java的<code>HashMap</code>），运行速度会有显著提升。其次，我们让左指针<code>i</code>一步一步地移动，目的是为了删除掉哈希表中<code>[i, k]</code>上的字符记录，因为这些字符暂时还没有在下一个子串中出现。我们可以使用一种速度更快的方式：不手动删除这些记录，而是记录并更新下一个字符串的开始坐标。如果从哈希表中获得的字符记录其下标小于当前字符串的开始坐标，那么这个字符记录就应该被视为无效。这样一来，左指针<code>i</code>甚至能够直接跳跃到<code>j</code>的位置上，只需要记录下<code>(k, j)</code>的长度<code>last</code>，并在下一个子串需要进行长度计算的时候加上(<code>j - i + last</code>)即可。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(s == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(s.length() == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> n = s.length(), res = <span class="number">0</span>, i = <span class="number">0</span>, j = <span class="number">0</span>, cacheTail = <span class="number">0</span>, last = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//HashMap&lt;Character, Integer&gt; m = new HashMap&lt;&gt;();</span></span><br><span class="line">        <span class="keyword">int</span>[] map = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">128</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; <span class="number">128</span>; k++) &#123;</span><br><span class="line">            map[k] = -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(i &lt; n) &#123;</span><br><span class="line">            <span class="comment">// Add tail to disable the map records</span></span><br><span class="line">            <span class="keyword">while</span>(j &lt; n &amp;&amp; (map[(<span class="keyword">int</span>)s.charAt(j)] == -<span class="number">1</span> || map[(<span class="keyword">int</span>)s.charAt(j)] &lt; cacheTail)) &#123;</span><br><span class="line">                map[(<span class="keyword">int</span>)s.charAt(j)] = j;</span><br><span class="line">                j++;</span><br><span class="line">            &#125;</span><br><span class="line">            res = (j - i + last &gt; res) ? j - i + last : res;</span><br><span class="line">            <span class="keyword">if</span>(j &gt;= n) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                cacheTail = map[(<span class="keyword">int</span>)s.charAt(j)] + <span class="number">1</span>;</span><br><span class="line">                last = j - <span class="number">1</span> - map[s.charAt(j)];</span><br><span class="line">                i = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/13/JZoffer-JZ21toJZ30/" rel="prev" title="剑指offer题解（三） - JZ21 ~ JZ30">
+      <i class="fa fa-chevron-left"></i> 剑指offer题解（三） - JZ21 ~ JZ30
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A6%E5%8F%B3%E6%8C%87%E9%92%88%E7%B3%BB%E5%88%97%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">左右指针系列问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Leetcode-11-%E7%9B%9B%E6%9C%80%E5%A4%9A%E6%B0%B4%E7%9A%84%E5%AE%B9%E5%99%A8"><span class="nav-number">1.1.</span> <span class="nav-text">Leetcode 11 盛最多水的容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.1.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3"><span class="nav-number">1.1.2.</span> <span class="nav-text">解</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sum%E7%B3%BB%E5%88%97%E9%97%AE%E9%A2%98-%E5%B7%A6%E5%8F%B3%E6%8C%87%E9%92%88"><span class="nav-number">2.</span> <span class="nav-text">Sum系列问题(左右指针)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Leetcode-16-%E6%9C%80%E6%8E%A5%E8%BF%91%E7%9A%84%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C"><span class="nav-number">2.1.</span> <span class="nav-text">Leetcode 16 最接近的三数之和</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-1"><span class="nav-number">2.1.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3-1"><span class="nav-number">2.1.2.</span> <span class="nav-text">解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Leetcode-18-%E5%9B%9B%E6%95%B0%E4%B9%8B%E5%92%8C"><span class="nav-number">2.2.</span> <span class="nav-text">Leetcode 18 四数之和</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-2"><span class="nav-number">2.2.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3-2"><span class="nav-number">2.2.2.</span> <span class="nav-text">解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Leetcode-923-%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C%E7%9A%84%E5%A4%9A%E7%A7%8D%E5%8F%AF%E8%83%BD"><span class="nav-number">2.3.</span> <span class="nav-text">Leetcode 923 三数之和的多种可能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-3"><span class="nav-number">2.3.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A31-%E5%8F%8C%E6%8C%87%E9%92%88"><span class="nav-number">2.3.2.</span> <span class="nav-text">解1 双指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A32-%E6%95%B0%E5%AD%A6%E6%B3%95"><span class="nav-number">2.3.3.</span> <span class="nav-text">解2 数学法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3-Sliding-Window-%E9%97%AE%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">滑动窗口(Sliding Window)问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Leetcode-3-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%97%E4%B8%B2"><span class="nav-number">3.1.</span> <span class="nav-text">Leetcode #3 无重复字符的最长字串</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-4"><span class="nav-number">3.1.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3-3"><span class="nav-number">3.1.2.</span> <span class="nav-text">解</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Freeman Huang</p>
+  <div class="site-description" itemprop="description">Self-talking of a noob</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Freeman Huang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
