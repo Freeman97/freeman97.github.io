@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="TLA+ ToolBox项目总述 TLA+：TLA意为行为时序逻辑，TLA+则是一种形式化语言，以行为时序逻辑的方式对软件程序、算法或者协议进行高层次的建模，描述系统的行为，帮助开发人员对程序和算法有更清楚的认识，在系统设计阶段避免一些可能出现的错误。（对代码进行测试是一种发现编码错误的手段，但不是一种高效的对系统设计进行检查的手段） TLA+的做法是使用基于状态的方式来描述系统的行为。用对所有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="项目">
+<meta property="og:url" content="http://yoursite.com/2021/03/26/%E9%A1%B9%E7%9B%AE/index.html">
+<meta property="og:site_name" content="Freeman&#39;s Blog">
+<meta property="og:description" content="TLA+ ToolBox项目总述 TLA+：TLA意为行为时序逻辑，TLA+则是一种形式化语言，以行为时序逻辑的方式对软件程序、算法或者协议进行高层次的建模，描述系统的行为，帮助开发人员对程序和算法有更清楚的认识，在系统设计阶段避免一些可能出现的错误。（对代码进行测试是一种发现编码错误的手段，但不是一种高效的对系统设计进行检查的手段） TLA+的做法是使用基于状态的方式来描述系统的行为。用对所有">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-26T15:30:01.000Z">
+<meta property="article:modified_time" content="2021-03-26T15:32:40.978Z">
+<meta property="article:author" content="Freeman Huang">
+<meta property="article:tag" content="2021春招">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/26/%E9%A1%B9%E7%9B%AE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>项目 | Freeman's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Freeman's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个菜鸡心血来潮搭建的个人博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/26/%E9%A1%B9%E7%9B%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Freeman Huang">
+      <meta itemprop="description" content="Self-talking of a noob">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Freeman's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          项目
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-26 23:30:01 / 修改时间：23:32:40" itemprop="dateCreated datePublished" datetime="2021-03-26T23:30:01+08:00">2021-03-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%98%A5%E6%8B%9B%E5%A4%8D%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">春招复习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <a id="more"></a>
+<h1 id="TLA-ToolBox"><a href="#TLA-ToolBox" class="headerlink" title="TLA+ ToolBox"></a>TLA+ ToolBox</h1><h2 id="项目总述"><a href="#项目总述" class="headerlink" title="项目总述"></a>项目总述</h2><ul>
+<li>TLA+：TLA意为行为时序逻辑，TLA+则是一种形式化语言，以行为时序逻辑的方式对软件程序、算法或者协议进行高层次的建模，描述系统的行为，帮助开发人员对程序和算法有更清楚的认识，在系统设计阶段避免一些可能出现的错误。（对代码进行测试是一种发现编码错误的手段，但不是一种高效的对系统设计进行检查的手段）</li>
+<li>TLA+的做法是使用基于状态的方式来描述系统的行为。用对所有状态变量的一次赋值来表示一个系统的全局状态。用状态转移前后状态变量的关系来表现所有可能出现的状态变化。于是系统的可能行为集合就可以被分为两个部分：所有可能的初始状态和所有可能的状态转移方式。</li>
+<li>TLA+ Toolbox是形式化语言TLA+的集成开发环境，其中包括了模型检查器TLC。用户使用TLA+对系统建立的模型包括了系统的初始状态和所有可能的状态转换，实际上建立了整个系统的状态图。模型检查器TLC可以遍历用户系统对应的状态图，检查每个状态是否能够满足用户定义的一些约束，以此来帮助用户发现系统模型的潜在问题。</li>
+<li>个人负责的工作：提供TLC的运行时API，用户使用这些API可以在TLC运行时获取他们关心的一些状态信息，例如当前已经检查的模型深度和当前正在检查的状态。用户还可以使用这些API对运行中的TLC进行一些操作，例如让计算任务暂停，为当前任务创建检查点以便恢复执行等。这些API计划使用JMX进行提供。同时开发云计算功能模块：用户提供云服务提供商的token，TLC可以自动地使用云服务提供商的SDK创建云实例，将TLC主程序和用户编写的模型打包上传到云实例，在云实例上执行计算任务，并在计算任务完成时自动给用户发送邮件并关闭云实例。</li>
+</ul>
+<h2 id="实际应用场景"><a href="#实际应用场景" class="headerlink" title="实际应用场景"></a>实际应用场景</h2><ul>
+<li>…</li>
+</ul>
+<h2 id="TLA-可以举个例子吗"><a href="#TLA-可以举个例子吗" class="headerlink" title="TLA+可以举个例子吗"></a>TLA+可以举个例子吗</h2><ul>
+<li>TLA+ 比较常用的地方是用于精确地对并发系统或分布式算法进行建模<h3 id="2PC协议的TLA实现"><a href="#2PC协议的TLA实现" class="headerlink" title="2PC协议的TLA实现"></a>2PC协议的TLA实现</h3></li>
+</ul>
+<h2 id="JMX？"><a href="#JMX？" class="headerlink" title="JMX？"></a>JMX？</h2><ul>
+<li>定义符合JMX规范的Java对象<code>MBean</code>，将其注册到Java内置的MBean服务器中让MBean服务器对其进行管理，即可暴露一些当前应用的运行时信息，提供一些可读写的字段，提供一些可以在运行时执行的操作。</li>
+<li>定义<code>MBean</code>一般是先定义一个<code>XXXMBean</code>接口，在接口中说明所有可以访问的属性和所有可以执行的方法，然后定义<code>XXXMBean</code>的实现类<code>XXX</code>，在实现类中提供实际的数据访问、执行实际的操作。</li>
+<li>MBean的名称规范(<code>ObjectName</code>): 至少要包括一个域(domain)和一系列的键值对。Domain一般可以使用包名。</li>
+<li>MXBean: 只会包含预定义的数据类型，因此任何客户端（包括远程客户端）都可以使用，而不需要引用特定的自定义类型。MXBean接口不要求实现类名与接口名有对应关系。</li>
+<li>如果要在MXBean里使用复杂类型，复杂类型的数据会被映射为简单类型。</li>
+</ul>
+<h2 id="项目实现细节"><a href="#项目实现细节" class="headerlink" title="项目实现细节"></a>项目实现细节</h2><h3 id="模型检查器的基本原理"><a href="#模型检查器的基本原理" class="headerlink" title="模型检查器的基本原理"></a>模型检查器的基本原理</h3><ul>
+<li>本质上，用户所编写的模型规定了系统的初始状态和所有可能的状态转换，相当于定义了一个状态图。模型检查器的原理大致是对这个状态图进行广度优先遍历，并检查每个状态是否出现不满足Safety属性。为了实现广度优先遍历，TLC需要维护2个数据结构：一个记录所有已经检查过的状态的集合，一个用于实现广度优先遍历的队列。TLC可以开启多个worker线程，worker线程对已检查过的状态集和状态队列的独写使用<code>ReadWriteLock</code>来保证线程安全。</li>
+</ul>
+<h3 id="集合怎么实现"><a href="#集合怎么实现" class="headerlink" title="集合怎么实现?"></a>集合怎么实现?</h3><h3 id="队列怎么实现"><a href="#队列怎么实现" class="headerlink" title="队列怎么实现?"></a>队列怎么实现?</h3><ul>
+<li>队列实现为一个硬盘上的文件，开头和结尾保留一定量的元素在内存中。使用了专有的线程对队列开头和结尾的缓冲区进行预载。</li>
+</ul>
+<h3 id="提供什么运行时API"><a href="#提供什么运行时API" class="headerlink" title="提供什么运行时API?"></a>提供什么运行时API?</h3><ul>
+<li>启动与暂停：<ul>
+<li>暂停：设置队列的标志变量<code>stop</code>，worker线程调用入队列或出队列的方法使用<code>synchornized</code>关键字修饰，调用时必须检查标志变量的值，如果发现<code>stop = true</code>则会调用<code>wait</code>方法让自己挂起。</li>
+<li>重启：修改<code>stop</code>为<code>false</code>，并且调用<code>notifyAll</code>唤醒所有在队列上等待的线程</li>
+</ul>
+</li>
+<li>单步调试：<ul>
+<li>使用模型检查器的内部类解析用户编写的模型，生成所有的初始状态，让用户自行挑选下一状态并单步观察状态的变化。</li>
+</ul>
+</li>
+</ul>
+<h3 id="云计算模块的基本原理"><a href="#云计算模块的基本原理" class="headerlink" title="云计算模块的基本原理"></a>云计算模块的基本原理</h3><ul>
+<li>让用户选择云服务的提供商并设置必要的认证凭据（ID, SECRET），云计算模块负责自动创建特定规格的实例，并通过SSH连接到云实例上，完成云实例的准备并下载运行所需要的依赖（例如JDK）。同时云计算模块会负责将用户在本地创建的模型文件与模型检查器的可执行jar文件打包上传到云实例上。模型检查器执行完毕后首先将执行结果的输出文件使用邮件发送到用户提供的邮件地址。</li>
+<li>主要负责为该模块添加阿里云支持，项目原本使用了jclouds屏蔽不同云服务提供商的接口差异，但是jclouds并未在正式版中提供阿里云支持，因此计划是尝试将阿里云的SDK进行包装和适配，尽可能地复用原有的代码。</li>
+<li>怎么发送邮件<ul>
+<li>让用户提供邮件地址，可以通过邮件地址的<code>@</code>后的域名查询邮件地址对应的SMTP服务器域名。DNS服务器会返回对应的MX记录</li>
+<li>至于怎么知道哪台服务器才存放这个MX记录，我觉得只需要和查找A记录一样，先找到<code>@</code>后的域名所在的服务器就可以找到对应的MX记录了。</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/2021%E6%98%A5%E6%8B%9B/" rel="tag"># 2021春招</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/26/MySQL/" rel="prev" title="MySQL">
+      <i class="fa fa-chevron-left"></i> MySQL
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/26/%E9%9D%A2%E7%BB%8F/" rel="next" title="面经">
+      面经 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#TLA-ToolBox"><span class="nav-number">1.</span> <span class="nav-text">TLA+ ToolBox</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E6%80%BB%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">项目总述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.2.</span> <span class="nav-text">实际应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TLA-%E5%8F%AF%E4%BB%A5%E4%B8%BE%E4%B8%AA%E4%BE%8B%E5%AD%90%E5%90%97"><span class="nav-number">1.3.</span> <span class="nav-text">TLA+可以举个例子吗</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2PC%E5%8D%8F%E8%AE%AE%E7%9A%84TLA%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.3.1.</span> <span class="nav-text">2PC协议的TLA实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JMX%EF%BC%9F"><span class="nav-number">1.4.</span> <span class="nav-text">JMX？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82"><span class="nav-number">1.5.</span> <span class="nav-text">项目实现细节</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%A3%80%E6%9F%A5%E5%99%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">1.5.1.</span> <span class="nav-text">模型检查器的基本原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.5.2.</span> <span class="nav-text">集合怎么实现?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%9F%E5%88%97%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.5.3.</span> <span class="nav-text">队列怎么实现?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E4%BE%9B%E4%BB%80%E4%B9%88%E8%BF%90%E8%A1%8C%E6%97%B6API"><span class="nav-number">1.5.4.</span> <span class="nav-text">提供什么运行时API?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%91%E8%AE%A1%E7%AE%97%E6%A8%A1%E5%9D%97%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">1.5.5.</span> <span class="nav-text">云计算模块的基本原理</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Freeman Huang</p>
+  <div class="site-description" itemprop="description">Self-talking of a noob</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Freeman Huang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

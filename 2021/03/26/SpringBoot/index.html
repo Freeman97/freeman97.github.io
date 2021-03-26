@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="TODOS:  [] SpringBoot的启动流程  SpringBoot帮我们干了什么依赖管理 父项目完成依赖管理（spring-boot-starter-parent）。父项目几乎声明了常用的所有依赖的版本号 开发时导入starter场景启动器：对于一个场景，引入starter依赖会引入该场景相关的所有常规依赖 所有场景启动器都依赖spring-boot-starter   无需关注版本号">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot">
+<meta property="og:url" content="http://yoursite.com/2021/03/26/SpringBoot/index.html">
+<meta property="og:site_name" content="Freeman&#39;s Blog">
+<meta property="og:description" content="TODOS:  [] SpringBoot的启动流程  SpringBoot帮我们干了什么依赖管理 父项目完成依赖管理（spring-boot-starter-parent）。父项目几乎声明了常用的所有依赖的版本号 开发时导入starter场景启动器：对于一个场景，引入starter依赖会引入该场景相关的所有常规依赖 所有场景启动器都依赖spring-boot-starter   无需关注版本号">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/03/26/SpringBoot/pics/springboot/AutoConfigurationPackage.png">
+<meta property="article:published_time" content="2021-03-26T15:30:01.000Z">
+<meta property="article:modified_time" content="2021-03-26T15:34:40.004Z">
+<meta property="article:author" content="Freeman Huang">
+<meta property="article:tag" content="2021春招">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/03/26/SpringBoot/pics/springboot/AutoConfigurationPackage.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/26/SpringBoot/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>SpringBoot | Freeman's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Freeman's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个菜鸡心血来潮搭建的个人博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/26/SpringBoot/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Freeman Huang">
+      <meta itemprop="description" content="Self-talking of a noob">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Freeman's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SpringBoot
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-26 23:30:01 / 修改时间：23:34:40" itemprop="dateCreated datePublished" datetime="2021-03-26T23:30:01+08:00">2021-03-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%98%A5%E6%8B%9B%E5%A4%8D%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">春招复习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <a id="more"></a>
+<p>TODOS:</p>
+<ul>
+<li>[] SpringBoot的启动流程</li>
+</ul>
+<h1 id="SpringBoot帮我们干了什么"><a href="#SpringBoot帮我们干了什么" class="headerlink" title="SpringBoot帮我们干了什么"></a>SpringBoot帮我们干了什么</h1><h2 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h2><ul>
+<li>父项目完成依赖管理（<code>spring-boot-starter-parent</code>）。父项目几乎声明了常用的所有依赖的版本号</li>
+<li>开发时导入starter场景启动器：对于一个场景，引入starter依赖会引入该场景相关的所有常规依赖<ul>
+<li>所有场景启动器都依赖<code>spring-boot-starter</code></li>
+</ul>
+</li>
+<li>无需关注版本号，完成自动版本仲裁<ul>
+<li>查看<code>spring-boot-dependencies</code>中的依赖标签名。也可以在项目中的<code>&lt;properties&gt;</code>标签中自定义依赖的版本号</li>
+</ul>
+</li>
+</ul>
+<h2 id="自动配置"><a href="#自动配置" class="headerlink" title="自动配置"></a>自动配置</h2><ul>
+<li>对于一个场景中的各种依赖会提供默认配置，开箱即用（例如<code>web.xml</code>中的各种设置，例如字符编码…etc）</li>
+<li>默认的包结构（包扫描的目录：主程序所在的包及其子包中的所有类都会被扫描</li>
+<li>各种配置拥有默认值（默认端口，默认值…），配置类持有这些默认值，而在SpringBoot类的项目配置文件中(<code>application.properties</code>/<code>application.yml</code>)进行设置可以将这些值绑定到<strong>对应的</strong>配置类上，配置类会被加载到容器中发挥作用。</li>
+<li>按需加载自动配置项：引入的时候自动配置才会开启<ul>
+<li>所有的自动配置功能都在<code>spring-boot-autoconfigure</code>中</li>
+</ul>
+</li>
+</ul>
+<h1 id="底层注解"><a href="#底层注解" class="headerlink" title="底层注解"></a>底层注解</h1><h2 id="SpringBootApplication"><a href="#SpringBootApplication" class="headerlink" title="@SpringBootApplication"></a>@SpringBootApplication</h2><p>默认加在主类上，是<code>@SpringBootConfiguration</code>（其实就是<code>@Configuration</code>, 允许在Spring上下文中注册额外的Bean或导入其它配置类）、<code>@EnableAutoConfiguration</code>（启动Springboot自动配置机制）、<code>@ComponentScan</code>（扫描Bean，扫描该类所在包下所有的类）的集合。</p>
+<h2 id="Configuration"><a href="#Configuration" class="headerlink" title="@Configuration"></a>@Configuration</h2><ul>
+<li>声明配置类，作用如<code>beans.xml</code></li>
+<li>创建Bean：<ul>
+<li>在类中创建方法并附加<code>@Bean</code>注解，方法名就是组件ID，返回类型就是组件类型，返回值就是组件实例。默认为单例Bean</li>
+</ul>
+</li>
+<li>默认<code>proxyBeanMethods = true</code>：代理Bean的方法。可以说明<code>@Configuration</code>中的方法是被代理的。（重复直接调用单例Bean的创建方法不会返回不同对象，说明方法已经被代理）<ul>
+<li>Full配置与Lite配置：Full模式中配置类的<code>proxyBeanMethods = true</code>，Lite模式中为<code>false</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="Import-Class-lt-gt"><a href="#Import-Class-lt-gt" class="headerlink" title="@Import(Class&lt;?&gt;[])"></a>@Import(Class&lt;?&gt;[])</h2><ul>
+<li>向容器中导入指定的类的实例</li>
+</ul>
+<h2 id="Conditional"><a href="#Conditional" class="headerlink" title="@Conditional"></a>@Conditional</h2><ul>
+<li>满足条件时才进行装配 </li>
+</ul>
+<h2 id="ImportResource"><a href="#ImportResource" class="headerlink" title="@ImportResource"></a>@ImportResource</h2><ul>
+<li>从classpath中搜索配置文件，注入配置文件中描述的Bean</li>
+</ul>
+<h2 id="ConfigurationProperties"><a href="#ConfigurationProperties" class="headerlink" title="@ConfigurationProperties"></a>@ConfigurationProperties</h2><ul>
+<li>从配置文件中读取配置，绑定到容器中的Bean的属性上</li>
+<li><code>@EnableConfigurationProperties</code>：附加在配置类上，开启指定类的属性配置功能，同时把这个类的对象加入容器中。主要在为第三方包的类进行配置绑定时使用。（因为没办法在第三方的类加注解）</li>
+</ul>
+<h1 id="自动装配原理"><a href="#自动装配原理" class="headerlink" title="自动装配原理"></a>自动装配原理</h1><h2 id="核心注解-EnableAutoConfiguration"><a href="#核心注解-EnableAutoConfiguration" class="headerlink" title="核心注解@EnableAutoConfiguration"></a>核心注解<code>@EnableAutoConfiguration</code></h2><h3 id="AutoConfigurationPackage"><a href="#AutoConfigurationPackage" class="headerlink" title="@AutoConfigurationPackage"></a>@AutoConfigurationPackage</h3><p><img src="./pics/springboot/AutoConfigurationPackage.png" alt="AutoConfigurationPackage"></p>
+<h3 id="Import-AutoConfigurationImportSelector-class"><a href="#Import-AutoConfigurationImportSelector-class" class="headerlink" title="@Import({AutoConfigurationImportSelector.class})"></a>@Import({AutoConfigurationImportSelector.class})</h3><ul>
+<li>其中包含注解<code>@Import(&#123;AutoConfigurationImportSelector.class&#125;)</code>。</li>
+<li><code>AutoConfigurationImportSelector</code> 类实现了 <code>ImportSelector</code>接口，也就实现了这个接口中的 <code>selectImports</code>方法，该方法主要用于获取所有符合条件的类的全限定类名，这些类需要被加载到 IoC 容器中<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> AutoConfigurationEntry EMPTY_ENTRY = <span class="keyword">new</span> AutoConfigurationEntry();</span><br><span class="line"></span><br><span class="line"><span class="function">AutoConfigurationEntry <span class="title">getAutoConfigurationEntry</span><span class="params">(AutoConfigurationMetadata autoConfigurationMetadata, AnnotationMetadata annotationMetadata)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//&lt;1&gt;.</span></span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.isEnabled(annotationMetadata)) &#123;</span><br><span class="line">            <span class="keyword">return</span> EMPTY_ENTRY;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//&lt;2&gt;.</span></span><br><span class="line">            AnnotationAttributes attributes = <span class="keyword">this</span>.getAttributes(annotationMetadata);</span><br><span class="line">            <span class="comment">//&lt;3&gt;.</span></span><br><span class="line">            List&lt;String&gt; configurations = <span class="keyword">this</span>.getCandidateConfigurations(annotationMetadata, attributes);</span><br><span class="line">            <span class="comment">//&lt;4&gt;.</span></span><br><span class="line">            configurations = <span class="keyword">this</span>.removeDuplicates(configurations);</span><br><span class="line">            Set&lt;String&gt; exclusions = <span class="keyword">this</span>.getExclusions(annotationMetadata, attributes);</span><br><span class="line">            <span class="keyword">this</span>.checkExcludedClasses(configurations, exclusions);</span><br><span class="line">            configurations.removeAll(exclusions);</span><br><span class="line">            configurations = <span class="keyword">this</span>.filter(configurations, autoConfigurationMetadata);</span><br><span class="line">            <span class="keyword">this</span>.fireAutoConfigurationImportEvents(configurations, exclusions);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> AutoConfigurationImportSelector.AutoConfigurationEntry(configurations, exclusions);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol>
+<li>判断自动装配开关是否打开。默认spring.boot.enableautoconfiguration=true，可在 application.properties 或 application.yml 中设置</li>
+<li>用于获取EnableAutoConfiguration注解中的 exclude 和 excludeName。为排除</li>
+<li>获取需要自动装配的所有配置类，读取META-INF/spring.factories（所有引入的starter依赖中都需要定义<code>/META-INF/spring.factories</code>，才能被SpringBoot的自动装配机制捕捉到），查找出所有的<code>XXXAutoConfiguration</code>。</li>
+<li>对自动配置器进行筛选，在<code>XXXAutoConfiguration</code>类中的<code>@ConditionalOnClass</code>中，规定只有相关的类存在的时候（也就是classpath下有指定类的时候），才会将加载器实例化并注入IOC容器中，进而完成下一步的自动装配。</li>
+</ol>
+<h2 id="手写Starter"><a href="#手写Starter" class="headerlink" title="手写Starter"></a>手写Starter</h2><ol>
+<li>命名最好是<code>XXX-spring-boot-starter</code>，而不是<code>spring-boot-starter-XXX</code>，后者是SpringBoot官方的Starter的命名方式</li>
+<li>引入依赖：<code>spring-boot-starter-parent</code>, <code>spring-boot-starter</code></li>
+<li>创建自动配置器：带有<code>@Configuration</code>注解的类，这样其中的方法可以向IOC容器注入Bean。需要为类或者方法附加<code>@ConditionalOnClass</code>注解，否则无论如何都会为Spring注入Bean。</li>
+<li>在工程的resource目录下创建<code>/META-INF/spring.factories</code>文件，文件内容包含<code>org.springframework.boot.autoconfigure.EnableAutoConfiguration=\</code>以及自动装配器的全限定类名。</li>
+<li>最后在SpringBoot项目中引入该starter，即可实现自动装配。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/2021%E6%98%A5%E6%8B%9B/" rel="tag"># 2021春招</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/26/%E5%88%86%E5%B8%83%E5%BC%8F%E5%9F%BA%E7%A1%80/" rel="prev" title="分布式理论">
+      <i class="fa fa-chevron-left"></i> 分布式理论
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/26/Spring/" rel="next" title="Spring">
+      Spring <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SpringBoot%E5%B8%AE%E6%88%91%E4%BB%AC%E5%B9%B2%E4%BA%86%E4%BB%80%E4%B9%88"><span class="nav-number">1.</span> <span class="nav-text">SpringBoot帮我们干了什么</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">依赖管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.</span> <span class="nav-text">自动配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%95%E5%B1%82%E6%B3%A8%E8%A7%A3"><span class="nav-number">2.</span> <span class="nav-text">底层注解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringBootApplication"><span class="nav-number">2.1.</span> <span class="nav-text">@SpringBootApplication</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Configuration"><span class="nav-number">2.2.</span> <span class="nav-text">@Configuration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Import-Class-lt-gt"><span class="nav-number">2.3.</span> <span class="nav-text">@Import(Class&lt;?&gt;[])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conditional"><span class="nav-number">2.4.</span> <span class="nav-text">@Conditional</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ImportResource"><span class="nav-number">2.5.</span> <span class="nav-text">@ImportResource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ConfigurationProperties"><span class="nav-number">2.6.</span> <span class="nav-text">@ConfigurationProperties</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E5%8E%9F%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">自动装配原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%B3%A8%E8%A7%A3-EnableAutoConfiguration"><span class="nav-number">3.1.</span> <span class="nav-text">核心注解@EnableAutoConfiguration</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AutoConfigurationPackage"><span class="nav-number">3.1.1.</span> <span class="nav-text">@AutoConfigurationPackage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Import-AutoConfigurationImportSelector-class"><span class="nav-number">3.1.2.</span> <span class="nav-text">@Import({AutoConfigurationImportSelector.class})</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%8B%E5%86%99Starter"><span class="nav-number">3.2.</span> <span class="nav-text">手写Starter</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Freeman Huang</p>
+  <div class="site-description" itemprop="description">Self-talking of a noob</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Freeman Huang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="核心概念Why Docker?Docker镜像(Images)基本概念一个镜像是一个只读的模板，它包含了创建一个Docker容器的命令。要创建一个新的Docker镜像，编写Dockerfile然后build即可。当运行一个Docker容器时，容器使用一个隔离的文件系统。这一文件系统由容器的镜像来提供。因为镜像包括了容器的文件系统，所以镜像必须包括运行一个应用所需要的所有东西，包括依赖、配置项、脚本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker学习笔记">
+<meta property="og:url" content="http://yoursite.com/2020/12/24/Docker-Learning-Notes/index.html">
+<meta property="og:site_name" content="Freeman&#39;s Blog">
+<meta property="og:description" content="核心概念Why Docker?Docker镜像(Images)基本概念一个镜像是一个只读的模板，它包含了创建一个Docker容器的命令。要创建一个新的Docker镜像，编写Dockerfile然后build即可。当运行一个Docker容器时，容器使用一个隔离的文件系统。这一文件系统由容器的镜像来提供。因为镜像包括了容器的文件系统，所以镜像必须包括运行一个应用所需要的所有东西，包括依赖、配置项、脚本">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-24T07:59:41.000Z">
+<meta property="article:modified_time" content="2020-12-25T09:40:48.706Z">
+<meta property="article:author" content="Freeman Huang">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/24/Docker-Learning-Notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Docker学习笔记 | Freeman's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Freeman's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个菜鸡心血来潮搭建的个人博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/Docker-Learning-Notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Freeman Huang">
+      <meta itemprop="description" content="Self-talking of a noob">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Freeman's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker学习笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-24 15:59:41" itemprop="dateCreated datePublished" datetime="2020-12-24T15:59:41+08:00">2020-12-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-25 17:40:48" itemprop="dateModified" datetime="2020-12-25T17:40:48+08:00">2020-12-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h1><h2 id="Why-Docker"><a href="#Why-Docker" class="headerlink" title="Why Docker?"></a>Why Docker?</h2><h2 id="Docker镜像-Images"><a href="#Docker镜像-Images" class="headerlink" title="Docker镜像(Images)"></a>Docker镜像(Images)</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>一个镜像是一个只读的模板，它包含了创建一个Docker容器的命令。要创建一个新的Docker镜像，编写Dockerfile然后build即可。<br>当运行一个Docker容器时，容器使用一个隔离的文件系统。这一文件系统由容器的镜像来提供。因为镜像包括了容器的文件系统，所以镜像必须包括运行一个应用所需要的所有东西，包括依赖、配置项、脚本、二进制文件等。镜像也包括容器的其它配置，比如环境变量，一个用于运行的默认命令，以及其它元信息。</p>
+<h3 id="层-layer-的概念"><a href="#层-layer-的概念" class="headerlink" title="层(layer)的概念"></a>层(layer)的概念</h3><p>在Dockerfile的每条命令都会为镜像创建一个层(Layer)。当修改Dockerfile并rebuild一个镜像时，只有被修改的层需要rebuild。</p>
+<h2 id="Docker容器-Container"><a href="#Docker容器-Container" class="headerlink" title="Docker容器(Container)"></a>Docker容器(Container)</h2><h3 id="基本概念-1"><a href="#基本概念-1" class="headerlink" title="基本概念"></a>基本概念</h3><p>一个容器是一个镜像的可运行实例，是一个被松散地隔离开的进程。可以通过Docker CLI或Docker API来进行创建(create)、运行(start)、停止(stop)、移动(move)或删除(delete)。默认情况下，一个容器和其它容器以及宿主机是隔离的。一个容器由用于创建它的镜像以及创建时或运行时提供的配置选项来定义。</p>
+<h1 id="常用命令及工作流程"><a href="#常用命令及工作流程" class="headerlink" title="常用命令及工作流程"></a>常用命令及工作流程</h1><h2 id="Docker镜像加速"><a href="#Docker镜像加速" class="headerlink" title="Docker镜像加速"></a>Docker镜像加速</h2><p>对于Windows 10，在Docker Desktop里修改<code>registry-mirrors</code>即可。阿里云会提供Docker镜像加速服务（容器镜像服务）。</p>
+<h2 id="镜像管理"><a href="#镜像管理" class="headerlink" title="镜像管理"></a>镜像管理</h2><h3 id="Build-an-Image"><a href="#Build-an-Image" class="headerlink" title="Build an Image"></a>Build an Image</h3><p>在Dockerfile的同一目录下运行<code>docker build</code>命令<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build [-t IMAGE_NAME] [DOCKERFILE_DIRECTORY]</span><br></pre></td></tr></table></figure></p>
+<h3 id="查看所有的Image"><a href="#查看所有的Image" class="headerlink" title="查看所有的Image"></a>查看所有的Image</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image ls</span><br></pre></td></tr></table></figure>
+<h2 id="容器管理"><a href="#容器管理" class="headerlink" title="容器管理"></a>容器管理</h2><h3 id="Start-a-Container"><a href="#Start-a-Container" class="headerlink" title="Start a Container"></a>Start a Container</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run [OPTIONS] IMAGE [COMMAND] [ARGS]</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> -p: 端口映射</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> -d: detached mode</span></span><br><span class="line">docker run -dp 3000:3000 getting-started</span><br></pre></td></tr></table></figure>
+<h3 id="查看Container运行情况"><a href="#查看Container运行情况" class="headerlink" title="查看Container运行情况"></a>查看Container运行情况</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+<h3 id="Stop-a-Container"><a href="#Stop-a-Container" class="headerlink" title="Stop a Container"></a>Stop a Container</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop CONTAINER_ID</span><br></pre></td></tr></table></figure>
+<h3 id="Remove-a-Container"><a href="#Remove-a-Container" class="headerlink" title="Remove a Container"></a>Remove a Container</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker rm CONTAINER_ID</span><br><span class="line"><span class="meta">#</span><span class="bash"> Remove a running container</span></span><br><span class="line">docker rm -f CONTAINER_ID</span><br></pre></td></tr></table></figure>
+<h2 id="Docker容器卷-Container-Volumes"><a href="#Docker容器卷-Container-Volumes" class="headerlink" title="Docker容器卷(Container Volumes)"></a>Docker容器卷(Container Volumes)</h2><p>每个容器都持有自己的暂存空间来创建、存储、修改和删除文件，任何容器内的改变都不会影响其它容器。一般情况下容器被删除时容器内所有文件都不复存在。可以使用容器卷(Container Volumes)来让容器的特定系统路径连接回宿主机。如果一个容器内的目录被挂载，在这一目录中的修改可以在宿主机上观察到。同时如果我们在容器重启时挂载相同的目录，就能在容器中看到相同的文件。</p>
+<h3 id="具名容器卷-Named-Volume"><a href="#具名容器卷-Named-Volume" class="headerlink" title="具名容器卷(Named Volume)"></a>具名容器卷(Named Volume)</h3><p>可以认为这是一个数据桶，Docker会负责维护硬盘上的物理位置，用户只需要知道这个数据桶的名称，只要提供这个名称就能得到对应位置的正确数据。</p>
+<h4 id="创建卷"><a href="#创建卷" class="headerlink" title="创建卷"></a>创建卷</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker volume create VOLUME_NAME</span><br><span class="line"><span class="meta">#</span><span class="bash"> docker volume create todo-db</span></span><br></pre></td></tr></table></figure>
+<h4 id="为容器挂载卷"><a href="#为容器挂载卷" class="headerlink" title="为容器挂载卷"></a>为容器挂载卷</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run -v VOLUME_NAME:DIRECTORY IMAGE</span><br><span class="line"><span class="meta">#</span><span class="bash"> VOLUME_NAME: 卷名</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> DIRECOTRY: 将卷挂在到容器内的指定目录</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> docker run -dp 3000:3000 -v todo-db:/etc/todos getting-started</span></span><br></pre></td></tr></table></figure>
+<h4 id="查看所有卷"><a href="#查看所有卷" class="headerlink" title="查看所有卷"></a>查看所有卷</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker volume ls</span><br></pre></td></tr></table></figure>
+<h4 id="查看指定卷的详细信息"><a href="#查看指定卷的详细信息" class="headerlink" title="查看指定卷的详细信息"></a>查看指定卷的详细信息</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker volume inspect VOLUME_NAME</span><br><span class="line"><span class="meta">#</span><span class="bash"> VOLUME_NAME: 卷名，可以通过docker volume ls找到</span></span><br></pre></td></tr></table></figure>
+<p>其中<code>Mountpoint</code>是数据在硬盘上存储的实际位置。<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">&quot;CreatedAt&quot;</span>: <span class="string">&quot;2020-12-25T15:31:19+08:00&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;Driver&quot;</span>: <span class="string">&quot;local&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;Labels&quot;</span>: &#123;&#125;,</span><br><span class="line">        <span class="attr">&quot;Mountpoint&quot;</span>: <span class="string">&quot;/var/lib/docker/volumes/todo-db/_data&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;Name&quot;</span>: <span class="string">&quot;todo-db&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;Options&quot;</span>: &#123;&#125;,</span><br><span class="line">        <span class="attr">&quot;Scope&quot;</span>: <span class="string">&quot;local&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<h3 id="绑定挂载-Bind-Mount"><a href="#绑定挂载-Bind-Mount" class="headerlink" title="绑定挂载(Bind Mount)"></a>绑定挂载(Bind Mount)</h3><p>使用绑定挂载可以控制宿主机上的具体挂载点，bind mount通常用于为容器内的应用提供额外数据。bind mount不支持容器内容写入宿主目录，也不支持volume driver。<br>应用场景:在本地设置开发环境。开发机器不需要安装所有的构建工具和环境，而是可以通过Docker构建一个可以分发的开发环境并分发给开发人员(包括数据库开发环境也可以进行分发，但是数据库开发环境应该使用named volume)。</p>
+<h2 id="Docker网络配置"><a href="#Docker网络配置" class="headerlink" title="Docker网络配置"></a>Docker网络配置</h2><h3 id="容器之间的通信"><a href="#容器之间的通信" class="headerlink" title="容器之间的通信"></a>容器之间的通信</h3><p>只要容器处于同一个Docker网络内，就可以进行通信。</p>
+<h3 id="创建网络"><a href="#创建网络" class="headerlink" title="创建网络"></a>创建网络</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker network create [ARGS] NETWORK_NAME</span><br><span class="line"><span class="meta">#</span><span class="bash"> 可以在ARGS中提供各种参数</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> --driver=bridge 指定网络类型</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> --subnet=192.168.6.0/24 指定子网划分</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> --ip-range=192.168.6.0/24 指定IP范围</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> --gateway=192.168.6.1 指定网关, 可以不提供</span></span><br></pre></td></tr></table></figure>
+<h3 id="查看当前Docker网络"><a href="#查看当前Docker网络" class="headerlink" title="查看当前Docker网络"></a>查看当前Docker网络</h3><ul>
+<li>如果要查看当前所有的网络<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker network ls</span><br><span class="line"><span class="meta">#</span><span class="bash"> 大概会出现四栏的表格：</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> NETWORK ID    NAME    DRIVER    SCOPE</span></span><br></pre></td></tr></table></figure></li>
+<li>如果要查看某个网络的详细情况（子网、默认网关等），可以使用<code>inspect</code>命令。可以看到连接到某一网络的所有容器信息，包括它们各自的IP地址。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network inspect [NETWORK ID | NAME]</span><br></pre></td></tr></table></figure></li>
+<li>节选一段返回信息。<strong>如果不想让Docker容器直接通过iptables进行端口映射，或者iptables的端口映射出现问题，可以通过使用nginx反向代理等手段，让请求直接转发到 容器IP:端口 上</strong><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">&quot;Name&quot;</span>: <span class="string">&quot;bridge&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;Id&quot;</span>: <span class="string">&quot;ca18bdeb0aea357f983a90012ce2245670597495d3bc824f4d86f2cf81f75800&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;Created&quot;</span>: <span class="string">&quot;2020-12-24T21:53:47.388294816+08:00&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;Scope&quot;</span>: <span class="string">&quot;local&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;Driver&quot;</span>: <span class="string">&quot;bridge&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;EnableIPv6&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">&quot;IPAM&quot;</span>: &#123;</span><br><span class="line">            <span class="attr">&quot;Driver&quot;</span>: <span class="string">&quot;default&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;Options&quot;</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">&quot;Config&quot;</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">&quot;Subnet&quot;</span>: <span class="string">&quot;192.168.5.0/24&quot;</span>,</span><br><span class="line">                    <span class="attr">&quot;Gateway&quot;</span>: <span class="string">&quot;192.168.5.1&quot;</span>,</span><br><span class="line">                    <span class="attr">&quot;AuxiliaryAddresses&quot;</span>: &#123;</span><br><span class="line">                        <span class="attr">&quot;DefaultGatewayIPv4&quot;</span>: <span class="string">&quot;192.168.5.2&quot;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;Internal&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">&quot;Attachable&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">&quot;Ingress&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">&quot;ConfigFrom&quot;</span>: &#123;</span><br><span class="line">            <span class="attr">&quot;Network&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;ConfigOnly&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">&quot;Containers&quot;</span>: &#123;</span><br><span class="line">            <span class="attr">&quot;a41a18d43c71e52843f07683d1f672e241afaa922510c46934da2bcd71caaf1e&quot;</span>: &#123;</span><br><span class="line">                <span class="attr">&quot;Name&quot;</span>: <span class="string">&quot;vigilant_jang&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;EndpointID&quot;</span>: <span class="string">&quot;fe6dcd7083dd9bc8484e77b96ecf7bb82b241d4d0b2069e7012a315fc09b48ef&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;MacAddress&quot;</span>: <span class="string">&quot;02:42:c0:a8:05:03&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;IPv4Address&quot;</span>: <span class="string">&quot;192.168.5.3/24&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;IPv6Address&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">&quot;b484dc156df6f30de8f4c13fff4a8cfbe31177a475d66f69c6efb16dfa2af8f5&quot;</span>: &#123;</span><br><span class="line">                <span class="attr">&quot;Name&quot;</span>: <span class="string">&quot;hardcore_goldberg&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;EndpointID&quot;</span>: <span class="string">&quot;50a6883e77447d0e21765f42daacbcaa0f435eea558e5d670ff785bec75e97da&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;MacAddress&quot;</span>: <span class="string">&quot;02:42:c0:a8:05:04&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;IPv4Address&quot;</span>: <span class="string">&quot;192.168.5.4/24&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;IPv6Address&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;Options&quot;</span>: &#123;</span><br><span class="line">            <span class="attr">&quot;com.docker.network.bridge.default_bridge&quot;</span>: <span class="string">&quot;true&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;com.docker.network.bridge.enable_icc&quot;</span>: <span class="string">&quot;true&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;com.docker.network.bridge.enable_ip_masquerade&quot;</span>: <span class="string">&quot;true&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;com.docker.network.bridge.host_binding_ipv4&quot;</span>: <span class="string">&quot;0.0.0.0&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;com.docker.network.bridge.name&quot;</span>: <span class="string">&quot;docker0&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;com.docker.network.driver.mtu&quot;</span>: <span class="string">&quot;1500&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;Labels&quot;</span>: &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h3 id="在启动时让容器连接到指定网络"><a href="#在启动时让容器连接到指定网络" class="headerlink" title="在启动时让容器连接到指定网络"></a>在启动时让容器连接到指定网络</h3>在执行<code>docer run</code>时提供<code>--network</code>参数即可。还可以提供<code>--network-alias</code>来为该容器在该网络上指定host名称，其他容器可以使用Docker提供的DNS服务，使用这一主机名来与该容器通信。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">    --network todo-app --network-alias mysql \</span><br><span class="line">    -v todo-mysql-data:/var/lib/mysql \</span><br><span class="line">    -e MYSQL_ROOT_PASSWORD=secret \</span><br><span class="line">    -e MYSQL_DATABASE=todos \</span><br><span class="line">    mysql:5.7</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Docker/" rel="tag"># Docker</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/18/Hadoop-Pseudo-Distributed-Helloword/" rel="prev" title="Hadoop-Pseudo-Distributed-Helloword">
+      <i class="fa fa-chevron-left"></i> Hadoop-Pseudo-Distributed-Helloword
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/25/Nginx-Learning-Notes/" rel="next" title="Nginx-Learning-Notes">
+      Nginx-Learning-Notes <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">核心概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-Docker"><span class="nav-number">1.1.</span> <span class="nav-text">Why Docker?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker%E9%95%9C%E5%83%8F-Images"><span class="nav-number">1.2.</span> <span class="nav-text">Docker镜像(Images)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.2.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%82-layer-%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.2.2.</span> <span class="nav-text">层(layer)的概念</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker%E5%AE%B9%E5%99%A8-Container"><span class="nav-number">1.3.</span> <span class="nav-text">Docker容器(Container)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">基本概念</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">常用命令及工作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F"><span class="nav-number">2.1.</span> <span class="nav-text">Docker镜像加速</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%95%9C%E5%83%8F%E7%AE%A1%E7%90%86"><span class="nav-number">2.2.</span> <span class="nav-text">镜像管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Build-an-Image"><span class="nav-number">2.2.1.</span> <span class="nav-text">Build an Image</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89%E7%9A%84Image"><span class="nav-number">2.2.2.</span> <span class="nav-text">查看所有的Image</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86"><span class="nav-number">2.3.</span> <span class="nav-text">容器管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Start-a-Container"><span class="nav-number">2.3.1.</span> <span class="nav-text">Start a Container</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8BContainer%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B5"><span class="nav-number">2.3.2.</span> <span class="nav-text">查看Container运行情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stop-a-Container"><span class="nav-number">2.3.3.</span> <span class="nav-text">Stop a Container</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Remove-a-Container"><span class="nav-number">2.3.4.</span> <span class="nav-text">Remove a Container</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker%E5%AE%B9%E5%99%A8%E5%8D%B7-Container-Volumes"><span class="nav-number">2.4.</span> <span class="nav-text">Docker容器卷(Container Volumes)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E5%90%8D%E5%AE%B9%E5%99%A8%E5%8D%B7-Named-Volume"><span class="nav-number">2.4.1.</span> <span class="nav-text">具名容器卷(Named Volume)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%8D%B7"><span class="nav-number">2.4.1.1.</span> <span class="nav-text">创建卷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E5%AE%B9%E5%99%A8%E6%8C%82%E8%BD%BD%E5%8D%B7"><span class="nav-number">2.4.1.2.</span> <span class="nav-text">为容器挂载卷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89%E5%8D%B7"><span class="nav-number">2.4.1.3.</span> <span class="nav-text">查看所有卷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%8C%87%E5%AE%9A%E5%8D%B7%E7%9A%84%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF"><span class="nav-number">2.4.1.4.</span> <span class="nav-text">查看指定卷的详细信息</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%91%E5%AE%9A%E6%8C%82%E8%BD%BD-Bind-Mount"><span class="nav-number">2.4.2.</span> <span class="nav-text">绑定挂载(Bind Mount)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="nav-number">2.5.</span> <span class="nav-text">Docker网络配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1"><span class="nav-number">2.5.1.</span> <span class="nav-text">容器之间的通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E7%BD%91%E7%BB%9C"><span class="nav-number">2.5.2.</span> <span class="nav-text">创建网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8DDocker%E7%BD%91%E7%BB%9C"><span class="nav-number">2.5.3.</span> <span class="nav-text">查看当前Docker网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E5%90%AF%E5%8A%A8%E6%97%B6%E8%AE%A9%E5%AE%B9%E5%99%A8%E8%BF%9E%E6%8E%A5%E5%88%B0%E6%8C%87%E5%AE%9A%E7%BD%91%E7%BB%9C"><span class="nav-number">2.5.4.</span> <span class="nav-text">在启动时让容器连接到指定网络</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Freeman Huang</p>
+  <div class="site-description" itemprop="description">Self-talking of a noob</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Freeman Huang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

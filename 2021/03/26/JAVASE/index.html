@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="动态代理 静态代理的麻烦：要为每一个实现类单独写一个代理类。JDK动态代理 对于实现了某个接口的类，能够直接生成接口的的代理对象（而不用写代理类）。 基本原理：利用Java反射机制 基本思路： 接口有方法的定义，但是没有方法体，也没有构造器。通过反射的某个方法根据接口的方法信息创建一个有相同类结构信息但是有构造器的某个类。 -&gt; java.lang.reflect.Proxy类，提供静态方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java基础">
+<meta property="og:url" content="http://yoursite.com/2021/03/26/JAVASE/index.html">
+<meta property="og:site_name" content="Freeman&#39;s Blog">
+<meta property="og:description" content="动态代理 静态代理的麻烦：要为每一个实现类单独写一个代理类。JDK动态代理 对于实现了某个接口的类，能够直接生成接口的的代理对象（而不用写代理类）。 基本原理：利用Java反射机制 基本思路： 接口有方法的定义，但是没有方法体，也没有构造器。通过反射的某个方法根据接口的方法信息创建一个有相同类结构信息但是有构造器的某个类。 -&gt; java.lang.reflect.Proxy类，提供静态方">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/03/26/JAVASE/pics/JAVASE/java-collection-hierarchy.png">
+<meta property="og:image" content="http://yoursite.com/2021/03/26/JAVASE/pics/jdk1.8之后的内部结构-HashMap.png">
+<meta property="article:published_time" content="2021-03-26T15:30:01.000Z">
+<meta property="article:modified_time" content="2021-03-26T15:33:08.804Z">
+<meta property="article:author" content="Freeman Huang">
+<meta property="article:tag" content="2021春招">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/03/26/JAVASE/pics/JAVASE/java-collection-hierarchy.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/26/JAVASE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java基础 | Freeman's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Freeman's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个菜鸡心血来潮搭建的个人博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/26/JAVASE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Freeman Huang">
+      <meta itemprop="description" content="Self-talking of a noob">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Freeman's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-26 23:30:01 / 修改时间：23:33:08" itemprop="dateCreated datePublished" datetime="2021-03-26T23:30:01+08:00">2021-03-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%98%A5%E6%8B%9B%E5%A4%8D%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">春招复习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <a id="more"></a>
+<h1 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h1><ul>
+<li>静态代理的麻烦：要为每一个实现类单独写一个代理类。<h2 id="JDK动态代理"><a href="#JDK动态代理" class="headerlink" title="JDK动态代理"></a>JDK动态代理</h2></li>
+<li>对于实现了某个接口的类，能够直接生成<strong>接口的</strong>的代理对象（而不用写代理类）。</li>
+<li>基本原理：利用Java反射机制</li>
+<li>基本思路：<ol>
+<li>接口有方法的定义，但是没有方法体，也没有构造器。通过反射的某个方法根据接口的方法信息创建一个有相同类结构信息但是有构造器的<strong>某个</strong>类。 -&gt; <code>java.lang.reflect.Proxy</code>类，提供静态方法<code>getProxyClass(ClassLoader loader, Class&lt;?&gt; ... interfaces)</code>，只要提供一个类加载器和接口(数组)，就可以生成一个代理类的<code>Class</code>对象。而这个代理类是有构造器的(可以通过<code>Class</code>对象调用<code>getConstructors()</code>)。该类没有无参构造器，需要传入实现<code>InvocationHandler</code>的类实例。</li>
+<li>接口的方法体为空，在代理对象中使用传入的实现了<code>InvocationHandler</code>的实例即可利用代理目标在代理对象中执行代理目标的方法，并在代理目标的方法调用前后进行额外的操作或控制。代理对象需要持有实现了<code>InvocationHandler</code>接口的实例。在代理对象上调用代理目标的方法时，代理对象会通过实现了<code>InvocationHandler</code>的实例，将调用转移到代理目标上。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">InvocationHandler</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="function">Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span></span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+其中，<code>proxy</code>为代理对象本身（而不是代理目标）。<code>method</code>为调用的方法，需要对<code>method</code>指定执行方法的目标才可以通过该参数调用方法。<code>args</code>为传入的参数。总之，单独有实现了<code>InvocationHandler</code>接口的实例还是不能正常地调用目标对象的方法，我们需要设法让<code>invoke</code>方法中可以获得到目标对象的引用。方法之一是让实现了<code>InvocationHandler</code>的类持有代理目标的引用（可以用构造函数传参的方式）。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyInvocationHandler</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Object target;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyInvocationHandler</span><span class="params">(Object target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.target = target;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Objcet <span class="title">invoke</span><span class="params">(...)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>更简单地获得代理对象的方法：<code>Proxy.newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces, InvocationHandler handler)</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>优点：不用写代理类，直接生成代理对象。接口增加新方法时，代理对象可以不用进行修改。</li>
+<li>缺点：只能对实现了接口的类使用。在代理对象上只能调用接口中定义的方法。</li>
+</ul>
+<h2 id="CGLIB动态代理"><a href="#CGLIB动态代理" class="headerlink" title="CGLIB动态代理"></a>CGLIB动态代理</h2><ul>
+<li>CGLIB(Code Generation Library)是一个基于ASM的字节码生成库，它允许我们在运行时对字节码进行修改和动态生成。CGLIB 通过继承方式实现代理。很多知名的开源框架都使用到了CGLIB， 例如 Spring 中的 AOP 模块中：如果目标对象实现了接口，则默认采用 JDK 动态代理，否则采用 CGLIB 动态代理。CGLIB属于开源项目，需要额外依赖。</li>
+<li>基本思路：<ol>
+<li>自定义<code>MethodInterceptor</code>并重写<code>intercept</code>方法。该方法用于拦截增强代理目标的方法，类似于JDK动态代理的<code>invoke</code>。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyInterceptor</span> <span class="keyword">implements</span> <span class="title">MethodInterceptor</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">intercept</span><span class="params">(Object o, Method method, Object[] args, MethodProxy methodProxy)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+其中<code>o</code>是已经被增强的代理目标(the enhanced object)，<code>method</code>是被增强的方法(Intercepted Method)，<code>args</code>是方法调用的参数。<code>methodProxy</code>用于调用原始方法(super method, non-intercepted method)。<ol>
+<li>获得代理类<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假设需要代理的目标类的Class对象是clazz</span></span><br><span class="line">Enhancer enhancer = <span class="keyword">new</span> Enhancer();</span><br><span class="line">enhancer.setClassLoader(clazz.getClassLoader());</span><br><span class="line">enhancer.setSuperclass(clazz);</span><br><span class="line">enhancer.setCallback(<span class="keyword">new</span> MyInterceptor());</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>CGLIB动态代理是通过生成一个代理目标的子类来拦截代理类的方法调用，因此不能代理声明为<code>final</code>的类和方法。</li>
+</ul>
+<h1 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h1><h2 id="集合概述"><a href="#集合概述" class="headerlink" title="集合概述"></a>集合概述</h2><p><img src="pics/JAVASE/java-collection-hierarchy.png" alt="javaColletion"></p>
+<h2 id="Comparable和Comparator"><a href="#Comparable和Comparator" class="headerlink" title="Comparable和Comparator"></a>Comparable和Comparator</h2><ul>
+<li>不同的接口，<code>Comparable</code>的方法是<code>compareTo(obj)</code>，<code>Comparator</code>的方法是<code>compare(obj1, obj2)</code></li>
+</ul>
+<h2 id="集合底层数据结构"><a href="#集合底层数据结构" class="headerlink" title="集合底层数据结构"></a>集合底层数据结构</h2><h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><ul>
+<li><code>ArrayList</code>、<code>Vector</code>: <code>Object[]</code>数组。<code>Vector</code>线程安全。</li>
+<li><code>ArrayList</code>:<ul>
+<li>真正持有函数的成员为<code>transient Object[] elementData</code></li>
+<li>无参构造时，为<code>elementData</code>赋予静态成员<code>DEFAULTCAPACITY_EMPTY_ELEMENTDATA</code></li>
+<li>带参构造时，如果参数<code>initialCapacity</code>为0，那么为<code>elementData</code>赋予静态成员<code>EMPTY_ELEMENTDATA</code>。如果参数为正整数则为<code>elementData</code>初始化一个指定容量的新数组。其他情况则抛出异常。</li>
+<li>带参构造时，如果参数为空的集合(不是<code>null</code>)，那么也赋予<code>elementData</code>静态成员<code>EMPTY_ELEMENTDATA</code>的值</li>
+<li>调用<code>add</code>方法时要调用<code>ensureCapacityInternal</code>方法保证数组容量足够。</li>
+<li>无论如何，如果最开始不显式指定容量或者使用非空集合创建<code>ArrayList</code>，<code>ArrayList</code>都会将创建<code>DEFAULT_CAPACITY</code>个元素这一行为推迟到向<code>ArrayList</code>加入第一个元素时。</li>
+<li><code>ArrayList</code>的扩容过程：<ol>
+<li>首先计算扩容后的最小容量。如果当前数据为<code>DEFAULTCAPACITY_EMPTY_ELEMENTDATA</code>，则扩容后容量至少为<code>Math.max(DEFAULT_CAPACITY, minCapacity)</code>。<code>DEFAULT_CAPACITY</code>为10。否则扩容后容量至少为<code>size + 1</code></li>
+<li>如果<code>minCapacity &gt; elementData.length</code>则需要扩容。扩容的总体规则是，如果旧容量的1.5倍大于<code>minCapacity</code>则扩容1.5倍，否则扩容到<code>minCapacity</code>。此时创建扩容后的新数组并把原本存放在<code>elementData</code>中的元素复制到新数组</li>
+<li>Java数组存在最大容量。最大容量一般稍微小于<code>Integer.MAX_VALUE</code>。<code>ArrayList</code>内部用<code>MAX_ARRAY_SIZE</code>保存一个稍微小于<code>Integer.MAX_VALUE</code>的值。如果出现了计算得到的新数组容量存在<code>newCapacity - MAX_ARRAY_SIZE &gt; 0</code>的情况，则判断<code>minCapacity</code>有没有溢出。如果溢出了32位整数的取值范围，则抛出OOM异常，如果没有溢出，则新容量为<code>(minCapacity &gt; MAX_ARRAY_SIZE) ? Integer.MAX_VALUE : MAX_ARRAY_SIZE</code>。</li>
+</ol>
+<ul>
+<li>为什么要区分<code>DEFAULTCAPACITY_EMPTY_ELEMENTDATA</code>和<code>EMPTY_ELEMENTDATA</code>？（since Java 8）<ul>
+<li>为了区分 “我就是要一个初始容量为0的<code>ArrayList</code>（显示指定初始容量为0，使用空集合初始化<code>ArrayList</code>）” 和 “我想要一个初始容量为<code>DEFAULT_CAPACITY</code>的<code>ArrayList</code>，但是我不一定马上要用，因此先返回容量为0的数组，等我要用的时候(第一次加入元素的时候)，再给我一次扩容上来” 。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>LinkedList</code>: 双向（不循环）链表</li>
+</ul>
+<h3 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h3><ul>
+<li><code>HashSet</code>: 基于<code>HashMap</code>实现，底层使用<code>HashMap</code>，使用成员对象来计算hashcode<ul>
+<li>检查重复的方法：先计算hashcode值来判断对象加入的位置，同时与其它对象的hashcode值进行比较。如果发现相同hashcode值的对象，需要调用<code>equals</code>方法来检测对象是否真正相同。（hashcode的定义：同一个对象不可能有两个hashcode，不同对象的hashcode可能相同，其实就是“函数”的定义）</li>
+</ul>
+</li>
+<li><code>LinkedHashSet</code>: 基于<code>LinkedHashMap</code>，能够按照添加的顺序进行遍历</li>
+<li><code>TreeSet</code>: 有序，能按照添加元素的顺序进行遍历，唯一，基于红黑树</li>
+</ul>
+<h3 id="Map-需要重新看"><a href="#Map-需要重新看" class="headerlink" title="Map(需要重新看)"></a>Map(需要重新看)</h3><ul>
+<li><code>HashTable</code>：内部方法都是synchronized的，线程安全。</li>
+<li><code>HashMap</code>: 底层数据结构是数组+链表/红黑树。使用拉链法解决哈希冲突，JDK 1.8引入红黑树来优化过长的链表。HashMap会重新计算键的哈希值而不是使用hashCode。<ul>
+<li>初始大小(<code>capacity</code>)为16，每次扩容时容量为原来的2倍。<code>HashMap</code>会让集合中的元素保持在一个合理的范围内（由装填因子load factor限制），如果元素数超过指定的阈值<code>this.threshold</code>时，则需要进行扩容并进行rehash。</li>
+<li><code>HashMap</code>总是使用2的幂作为哈希表<code>threshold</code>的大小。<code>threshold</code>的值为大于或等于<code>capacity</code>的最小的2的n次幂。</li>
+<li>使用Key来计算hashcode。通过key的hashcode经过<code>HashMap</code>的扰动函数<code>hash()</code>处理(防止较差的<code>hashCode()</code>实现导致<code>HashMap</code>性能下降)后得到真正的hash值，然后通过<code>(n - 1) &amp; hash</code>（<code>n</code>为HashMap数组的长度，该运算等价于用hash对长度取余）的方式计算当前元素要存储的位置。</li>
+<li>Table数组：hash表的桶(bucket)。数组的每个位置上都是一个链表。当链表长度大于阈值（默认为8）时，如果当前数组长度小于64，则进行数组扩容，否则将这个链表转换为红黑树。<br><img src="pics/jdk1.8之后的内部结构-HashMap.png" alt="HashMap"></li>
+</ul>
+</li>
+<li><code>TreeMap</code>实现了<code>NavigableMap</code>实现对集合内元素的搜索能力，实现<code>SortedMap</code>来实现对元素根据key进行排序的能力。</li>
+<li><code>HashMap</code>不是线程安全的</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/2021%E6%98%A5%E6%8B%9B/" rel="tag"># 2021春招</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/26/JMM/" rel="prev" title="Java内存模型(JMM)">
+      <i class="fa fa-chevron-left"></i> Java内存模型(JMM)
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">动态代理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">JDK动态代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CGLIB%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">CGLIB动态代理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E5%90%88"><span class="nav-number">2.</span> <span class="nav-text">集合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E6%A6%82%E8%BF%B0"><span class="nav-number">2.1.</span> <span class="nav-text">集合概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Comparable%E5%92%8CComparator"><span class="nav-number">2.2.</span> <span class="nav-text">Comparable和Comparator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">2.3.</span> <span class="nav-text">集合底层数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#List"><span class="nav-number">2.3.1.</span> <span class="nav-text">List</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Set"><span class="nav-number">2.3.2.</span> <span class="nav-text">Set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Map-%E9%9C%80%E8%A6%81%E9%87%8D%E6%96%B0%E7%9C%8B"><span class="nav-number">2.3.3.</span> <span class="nav-text">Map(需要重新看)</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Freeman Huang</p>
+  <div class="site-description" itemprop="description">Self-talking of a noob</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Freeman Huang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

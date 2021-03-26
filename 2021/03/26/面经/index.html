@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="腾讯csig智慧供应链：JVM: 运行时内存模型√ 垃圾回收机制：标记算法、回收算法√ 类加载机制√ 移动到老年代有哪几种情况√  JUC: 线程池怎么实现的，底层有什么数据结构 synchronized的底层实现√ volatile是什么，跟synchronized的区别，volatile是不是锁√ CAS√  网络: 浏览器中输入地址回车会发生什么√ TCP&#x2F;IP协议栈有哪几层√  字节跳动">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面经">
+<meta property="og:url" content="http://yoursite.com/2021/03/26/%E9%9D%A2%E7%BB%8F/index.html">
+<meta property="og:site_name" content="Freeman&#39;s Blog">
+<meta property="og:description" content="腾讯csig智慧供应链：JVM: 运行时内存模型√ 垃圾回收机制：标记算法、回收算法√ 类加载机制√ 移动到老年代有哪几种情况√  JUC: 线程池怎么实现的，底层有什么数据结构 synchronized的底层实现√ volatile是什么，跟synchronized的区别，volatile是不是锁√ CAS√  网络: 浏览器中输入地址回车会发生什么√ TCP&#x2F;IP协议栈有哪几层√  字节跳动">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-26T15:30:01.000Z">
+<meta property="article:modified_time" content="2021-03-26T15:32:24.886Z">
+<meta property="article:author" content="Freeman Huang">
+<meta property="article:tag" content="2021春招">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/26/%E9%9D%A2%E7%BB%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>面经 | Freeman's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Freeman's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个菜鸡心血来潮搭建的个人博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/26/%E9%9D%A2%E7%BB%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Freeman Huang">
+      <meta itemprop="description" content="Self-talking of a noob">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Freeman's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          面经
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-26 23:30:01 / 修改时间：23:32:24" itemprop="dateCreated datePublished" datetime="2021-03-26T23:30:01+08:00">2021-03-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%98%A5%E6%8B%9B%E5%A4%8D%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">春招复习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <a id="more"></a>
+<h1 id="腾讯csig智慧供应链："><a href="#腾讯csig智慧供应链：" class="headerlink" title="腾讯csig智慧供应链："></a>腾讯csig智慧供应链：</h1><h2 id="JVM"><a href="#JVM" class="headerlink" title="JVM:"></a>JVM:</h2><ul>
+<li>运行时内存模型√</li>
+<li>垃圾回收机制：标记算法、回收算法√</li>
+<li>类加载机制√</li>
+<li>移动到老年代有哪几种情况√</li>
+</ul>
+<h2 id="JUC"><a href="#JUC" class="headerlink" title="JUC:"></a>JUC:</h2><ul>
+<li>线程池怎么实现的，底层有什么数据结构</li>
+<li>synchronized的底层实现√</li>
+<li>volatile是什么，跟synchronized的区别，volatile是不是锁√</li>
+<li>CAS√</li>
+</ul>
+<h2 id="网络"><a href="#网络" class="headerlink" title="网络:"></a>网络:</h2><ul>
+<li>浏览器中输入地址回车会发生什么√</li>
+<li>TCP/IP协议栈有哪几层√</li>
+</ul>
+<h1 id="字节跳动："><a href="#字节跳动：" class="headerlink" title="字节跳动："></a>字节跳动：</h1><h2 id="Java-SE"><a href="#Java-SE" class="headerlink" title="Java SE"></a>Java SE</h2><ul>
+<li>HashMap的实现√</li>
+<li>接口跟抽象类的区别（Java 8， default关键字）√</li>
+</ul>
+<h2 id="JVM-1"><a href="#JVM-1" class="headerlink" title="JVM"></a>JVM</h2><ul>
+<li>老年代的垃圾回收出现的时机是什么√</li>
+</ul>
+<h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><ul>
+<li>SQL语句</li>
+<li>三大范式、BCNF范式√</li>
+</ul>
+<h2 id="手撕环节"><a href="#手撕环节" class="headerlink" title="手撕环节"></a>手撕环节</h2><ul>
+<li>给定有n个元素一个数组，求和为x的所有可能性 Leetcode 40。（15:13-15:35, 总计用时22分钟)</li>
+</ul>
+<h1 id="东方财富"><a href="#东方财富" class="headerlink" title="东方财富"></a>东方财富</h1><h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><ul>
+<li>抽象 封装 继承 多态√</li>
+</ul>
+<h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><ul>
+<li>是什么？：解决一类问题的方式√</li>
+<li>用过什么？√</li>
+<li>UML?</li>
+</ul>
+<h2 id="网络-1"><a href="#网络-1" class="headerlink" title="网络"></a>网络</h2><ul>
+<li>TCP和UDP的区别，优缺点√</li>
+<li>ICMP：控制信息</li>
+<li>TCP为什么要等2MSL√</li>
+</ul>
+<h2 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h2><ul>
+<li>进程间通信的方式√</li>
+<li>线程间通信的方式<ul>
+<li>共享内存</li>
+</ul>
+</li>
+<li>IO的几种方式√</li>
+<li>进程和线程的区别√</li>
+<li>多线程和多进程的区别√</li>
+<li>虚拟内存：交换分区√</li>
+</ul>
+<h2 id="数据库-1"><a href="#数据库-1" class="headerlink" title="数据库"></a>数据库</h2><ul>
+<li>ACID特性√</li>
+<li>索引的数据结构√</li>
+<li>怎么用的索引√</li>
+<li>表锁和行锁√</li>
+<li>内连接和外连接√</li>
+</ul>
+<h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><ul>
+<li>红黑树</li>
+<li>字典树？</li>
+</ul>
+<h2 id="JVM-2"><a href="#JVM-2" class="headerlink" title="JVM"></a>JVM</h2><ul>
+<li>栈内存是什么</li>
+<li>值传递 -&gt; 引用类型，引用的复制，引用的地址</li>
+</ul>
+<h2 id="Java-SE-1"><a href="#Java-SE-1" class="headerlink" title="Java SE"></a>Java SE</h2><ul>
+<li>List、Set、Map</li>
+<li>Java泛型</li>
+<li>Java内存泄漏？</li>
+<li>对象复制：浅拷贝、深拷贝</li>
+<li>Java native关键字</li>
+<li>反射</li>
+<li>lambda表达式</li>
+</ul>
+<h2 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h2><ul>
+<li>是什么</li>
+<li>SpringMVC</li>
+<li>Spring Bean</li>
+</ul>
+<h1 id=""><a href="#" class="headerlink" title="?"></a>?</h1><h2 id="Java-SE-2"><a href="#Java-SE-2" class="headerlink" title="Java SE"></a>Java SE</h2><ul>
+<li>多态</li>
+<li>重载和重写</li>
+<li>静态代码块(<code>static</code>)</li>
+<li>静态内部类</li>
+</ul>
+<h2 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h2><ul>
+<li>线程池的原理</li>
+<li>什么时候新建线程（最大线程数）</li>
+<li>线程状态转换</li>
+<li>进程中断发生了什么</li>
+<li>不响应中断？<ul>
+<li>什么时候线程不会响应中断?</li>
+</ul>
+</li>
+<li>Lock和Synchronized的区别</li>
+<li>Lock的实现原理</li>
+<li>volatile了解吗<ul>
+<li>做了什么（原理？）</li>
+<li>防止指令重排</li>
+<li>volatile读：需要读取内存</li>
+<li>volatile写：刷新到内存</li>
+</ul>
+</li>
+</ul>
+<h2 id="设计模式-1"><a href="#设计模式-1" class="headerlink" title="设计模式"></a>设计模式</h2><ul>
+<li>策略模式</li>
+</ul>
+<h2 id="JVM-3"><a href="#JVM-3" class="headerlink" title="JVM"></a>JVM</h2><ul>
+<li>运行时内存模型</li>
+<li>堆里有什么</li>
+<li>CMS</li>
+<li>JVM调优参数</li>
+<li>堆转储</li>
+<li>Full GC（Major GC）的发生时机</li>
+</ul>
+<h2 id="数据库-2"><a href="#数据库-2" class="headerlink" title="数据库"></a>数据库</h2><ul>
+<li>索引数据结构<ul>
+<li>B+树的数据结构</li>
+</ul>
+</li>
+<li>索引失效？<ul>
+<li>复合索引</li>
+</ul>
+</li>
+<li>事务默认隔离级别<ul>
+<li>默认隔离级别</li>
+<li>可重复读</li>
+</ul>
+</li>
+<li>MVCC <ul>
+<li>隐藏字段：隐藏主键，上一版本，时间戳</li>
+</ul>
+</li>
+</ul>
+<h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis?"></a>Redis?</h2><ul>
+<li>如何实现分布式锁</li>
+</ul>
+<h2 id="网络-2"><a href="#网络-2" class="headerlink" title="网络"></a>网络</h2><ul>
+<li>HTTP状态码</li>
+<li>TCP<ul>
+<li>TIME_WAIT</li>
+<li>CLOSE_WAIT</li>
+</ul>
+</li>
+</ul>
+<h1 id="Spring-1"><a href="#Spring-1" class="headerlink" title="Spring"></a>Spring</h1><ul>
+<li>SpringAOP<ul>
+<li>实现接口：JDK、不实现接口：CGLIB</li>
+</ul>
+</li>
+<li>Bean生命周期<ul>
+<li>Aware接口</li>
+</ul>
+</li>
+</ul>
+<h1 id="SpringBoot"><a href="#SpringBoot" class="headerlink" title="SpringBoot"></a>SpringBoot</h1><ul>
+<li>自动装配的原理</li>
+</ul>
+<h1 id="JWT"><a href="#JWT" class="headerlink" title="JWT"></a>JWT</h1>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/2021%E6%98%A5%E6%8B%9B/" rel="tag"># 2021春招</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/26/%E9%A1%B9%E7%9B%AE/" rel="prev" title="项目">
+      <i class="fa fa-chevron-left"></i> 项目
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/26/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="next" title="网络编程">
+      网络编程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%85%BE%E8%AE%AFcsig%E6%99%BA%E6%85%A7%E4%BE%9B%E5%BA%94%E9%93%BE%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">腾讯csig智慧供应链：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM"><span class="nav-number">1.1.</span> <span class="nav-text">JVM:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JUC"><span class="nav-number">1.2.</span> <span class="nav-text">JUC:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C"><span class="nav-number">1.3.</span> <span class="nav-text">网络:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">字节跳动：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-SE"><span class="nav-number">2.1.</span> <span class="nav-text">Java SE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM-1"><span class="nav-number">2.2.</span> <span class="nav-text">JVM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">2.3.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%8B%E6%92%95%E7%8E%AF%E8%8A%82"><span class="nav-number">2.4.</span> <span class="nav-text">手撕环节</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%9C%E6%96%B9%E8%B4%A2%E5%AF%8C"><span class="nav-number">3.</span> <span class="nav-text">东方财富</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1"><span class="nav-number">3.1.</span> <span class="nav-text">面向对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">设计模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C-1"><span class="nav-number">3.3.</span> <span class="nav-text">网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.4.</span> <span class="nav-text">操作系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93-1"><span class="nav-number">3.5.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">3.6.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM-2"><span class="nav-number">3.7.</span> <span class="nav-text">JVM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-SE-1"><span class="nav-number">3.8.</span> <span class="nav-text">Java SE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring"><span class="nav-number">3.9.</span> <span class="nav-text">Spring</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">?</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-SE-2"><span class="nav-number">4.1.</span> <span class="nav-text">Java SE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="nav-number">4.2.</span> <span class="nav-text">多线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-1"><span class="nav-number">4.3.</span> <span class="nav-text">设计模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM-3"><span class="nav-number">4.4.</span> <span class="nav-text">JVM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93-2"><span class="nav-number">4.5.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis"><span class="nav-number">4.6.</span> <span class="nav-text">Redis?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C-2"><span class="nav-number">4.7.</span> <span class="nav-text">网络</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-1"><span class="nav-number">5.</span> <span class="nav-text">Spring</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SpringBoot"><span class="nav-number">6.</span> <span class="nav-text">SpringBoot</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JWT"><span class="nav-number">7.</span> <span class="nav-text">JWT</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Freeman Huang</p>
+  <div class="site-description" itemprop="description">Self-talking of a noob</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Freeman Huang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

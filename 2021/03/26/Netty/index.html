@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="[] Netty线程模型 [] Zero Copy  反应器模式 反应器Reactor: 负责查询IO事件。检测到一个IO事件时，将其发送给相应的Handler处理器去处理。这里的IO事件就是NIO中选择器监控的通道IO事件。 Handler处理器：与IO事件绑定，负责IO事件的处理。例如，完成真正的连接建立、通道（channel）的读取、处理业务逻辑、负责将结果写出到通道等。  单线程的Re">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Netty">
+<meta property="og:url" content="http://yoursite.com/2021/03/26/Netty/index.html">
+<meta property="og:site_name" content="Freeman&#39;s Blog">
+<meta property="og:description" content="[] Netty线程模型 [] Zero Copy  反应器模式 反应器Reactor: 负责查询IO事件。检测到一个IO事件时，将其发送给相应的Handler处理器去处理。这里的IO事件就是NIO中选择器监控的通道IO事件。 Handler处理器：与IO事件绑定，负责IO事件的处理。例如，完成真正的连接建立、通道（channel）的读取、处理业务逻辑、负责将结果写出到通道等。  单线程的Re">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-26T15:30:01.000Z">
+<meta property="article:modified_time" content="2021-03-26T15:33:51.135Z">
+<meta property="article:author" content="Freeman Huang">
+<meta property="article:tag" content="2021春招">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/26/Netty/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Netty | Freeman's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Freeman's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个菜鸡心血来潮搭建的个人博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/26/Netty/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Freeman Huang">
+      <meta itemprop="description" content="Self-talking of a noob">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Freeman's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Netty
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-26 23:30:01 / 修改时间：23:33:51" itemprop="dateCreated datePublished" datetime="2021-03-26T23:30:01+08:00">2021-03-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%98%A5%E6%8B%9B%E5%A4%8D%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">春招复习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <a id="more"></a>
+<ul>
+<li>[] Netty线程模型</li>
+<li>[] Zero Copy</li>
+</ul>
+<h1 id="反应器模式"><a href="#反应器模式" class="headerlink" title="反应器模式"></a>反应器模式</h1><ul>
+<li>反应器Reactor: 负责查询IO事件。检测到一个IO事件时，将其发送给相应的Handler处理器去处理。这里的IO事件就是NIO中选择器监控的通道IO事件。</li>
+<li>Handler处理器：与IO事件绑定，负责IO事件的处理。例如，完成真正的连接建立、通道（channel）的读取、处理业务逻辑、负责将结果写出到通道等。</li>
+</ul>
+<h2 id="单线程的Reactor模式"><a href="#单线程的Reactor模式" class="headerlink" title="单线程的Reactor模式"></a>单线程的Reactor模式</h2><ul>
+<li>Reactor和Handler在同一线程中运行。</li>
+<li>相对于传统的多线程Blocking-IO，免去了线程切换的成本</li>
+<li>缺点：Reactor和Handler都在同一线程上执行。如果一个Handler被阻塞，其它所有的Handler都得不到执行。假如负责监听连接的Handler和负责数据输入输出的Handler都在同一个线程上，负责监听连接的Handler可能会被阻塞，此时整个服务都不能接受新的连接。</li>
+<li>思考：为什么Redis使用了单线程的Reactor模式？<ul>
+<li>Redis是一个服务器，Redis的数据操作多数都在内存中，因此Handler的操作耗时应该非常少</li>
+<li>多个线程切换需要线程切换开销，如果Handler并不需要很长的阻塞时间，使用多线程模型可能弊大于利</li>
+<li>Redis是一个数据库，如果使用多线程的IO模型，多个线程可能会对同一个数据进行操作，此时需要引入同步机制，而同步机制的开销是相当大的。使用单线程模型，天然保证了单个Redis的数据库操作的原子性。</li>
+</ul>
+</li>
+</ul>
+<h2 id="多线程的Reactor模式"><a href="#多线程的Reactor模式" class="headerlink" title="多线程的Reactor模式"></a>多线程的Reactor模式</h2><ol>
+<li>升级Handler：使用线程池</li>
+<li>升级Reactor：引入多个Selector，将单个Reactor线程拆分为多个SubReactor线程，每个SubReactor线程使用一个Selector。</li>
+</ol>
+<h2 id="VS-生产者消费者模式"><a href="#VS-生产者消费者模式" class="headerlink" title="VS 生产者消费者模式"></a>VS 生产者消费者模式</h2><p>反应器模式没有专门的队列去缓冲存储IO事件</p>
+<h2 id="VS-观察者模式"><a href="#VS-观察者模式" class="headerlink" title="VS 观察者模式"></a>VS 观察者模式</h2><p>在Reactor模式中一个事件绑定到了一个Handler上，每个IO事件被查询后Reactor会将事件分发给所绑定的Handler。而观察者模式中同一个事件（主题）可以被订阅过的多个观察者处理。</p>
+<h2 id="Reactor的优缺点"><a href="#Reactor的优缺点" class="headerlink" title="Reactor的优缺点"></a>Reactor的优缺点</h2><h3 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h3><ul>
+<li>响应快，不会被单个连接的同步IO阻塞整个服务</li>
+<li>编程相对简单</li>
+<li>可扩展：增加Reactor线程的个数</li>
+</ul>
+<h3 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h3><ul>
+<li>增加一定复杂性</li>
+<li>需要OS底层IO多路复用的支持</li>
+</ul>
+<h1 id="Netty"><a href="#Netty" class="headerlink" title="Netty"></a>Netty</h1><h2 id="Netty中的Reactor"><a href="#Netty中的Reactor" class="headerlink" title="Netty中的Reactor"></a>Netty中的Reactor</h2><h3 id="NioEventLoop类"><a href="#NioEventLoop类" class="headerlink" title="NioEventLoop类"></a>NioEventLoop类</h3><ul>
+<li>一个<code>NioEventLoop</code>拥有一个线程，负责一个Java NIO <code>Selector</code>上的IO事件轮询。一个Reactor可以注册多个netty channel。一个<code>EventLoop</code>相当于一个(Sub)Reactor。</li>
+<li><code>EventLoopGroup</code>：线程组，多线程版本的反应器，其中的每一个<code>EventLoop</code>为一个SubReactor。</li>
+</ul>
+<h3 id="Netty通道-Channel"><a href="#Netty通道-Channel" class="headerlink" title="Netty通道(Channel)"></a>Netty通道(Channel)</h3><ul>
+<li>Netty channel(TCP服务器里主流的就是<code>NioSocketChannel</code>)封装的就是Java NIO通道。Java NIO通道对应的就是OS底层的文件描述符(File Descriptor, fd)。</li>
+<li>连接监听型socket描述符：接受客户端的socket连接。对应<code>ServerSocketChannel</code>(Java NIO)和<code>NioServerSocketChannel</code>(Netty)</li>
+<li>传输数据型socket描述符：负责传输数据，在客户端和服务端都会有一个与一条TCP连接相对应的socket描述符进行数据传输。对应<code>SocketChannel</code>(Java NIO)和<code>NioSocketChannel</code>(Netty)</li>
+<li>有接受关系的<code>NioServerSocketChannel</code>和<code>NioSocketChannel</code>可以被称为亲子(Parent - Child)通道</li>
+</ul>
+<h2 id="Netty的入站处理和出站处理"><a href="#Netty的入站处理和出站处理" class="headerlink" title="Netty的入站处理和出站处理"></a>Netty的入站处理和出站处理</h2><ul>
+<li>通道中发生IO事件 -&gt; 被EventLoop查询到 -&gt; 分发给实现了<code>ChannelInboundHandler</code>处理器，并调用该处理器的对应处理方法(比如<code>channelRead</code>方法，这个事件在pipeline中可以通过pipeline上下文进行冒泡)，进行一系列业务处理 -&gt; 如果事件超出管道顶端，则会被抛弃，也可以通过事件冒泡的方式传递到出站处理器，通常由出站处理器生成或者处理出站流量 -&gt; 事件被出站处理器处理 -&gt; 如果IO事件到达了出站管道的底部，则IO事件会交由与该channel相关联的线程进行处理，这个IO线程通常会执行实际的IO操作。</li>
+</ul>
+<h2 id="Netty管道-pipeline"><a href="#Netty管道-pipeline" class="headerlink" title="Netty管道(pipeline)"></a>Netty管道(pipeline)</h2><ul>
+<li>Handler和Reactor是多对多的关系，一个Handler可以处理多个Reactor上分发的IO事件，一个Reactor上可以使用多个Handler来处理IO事件。多个Handler可以组成一个pipeline。</li>
+<li>一个Netty Channel拥有一条Pipeline。</li>
+<li>IO事件在Pipeline上进行双向流动，入站时按顺序由实现了<code>ChannelInboundHandler</code>的处理器处理，出站时按逆序由实现了<code>ChannelOutboundHandler</code>的处理器处理。一个Handler可以同时实现这两个接口，这样出入站都会参与处理。</li>
+</ul>
+<h2 id="Netty脚手架-Bootstrap"><a href="#Netty脚手架-Bootstrap" class="headerlink" title="Netty脚手架(Bootstrap)"></a>Netty脚手架(Bootstrap)</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/2021%E6%98%A5%E6%8B%9B/" rel="tag"># 2021春招</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/26/ORM/" rel="prev" title="ORM框架">
+      <i class="fa fa-chevron-left"></i> ORM框架
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/26/JMM/" rel="next" title="Java内存模型(JMM)">
+      Java内存模型(JMM) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%8D%E5%BA%94%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">反应器模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%9A%84Reactor%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">单线程的Reactor模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84Reactor%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">多线程的Reactor模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VS-%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">VS 生产者消费者模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VS-%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.4.</span> <span class="nav-text">VS 观察者模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reactor%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">1.5.</span> <span class="nav-text">Reactor的优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9%EF%BC%9A"><span class="nav-number">1.5.1.</span> <span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9%EF%BC%9A"><span class="nav-number">1.5.2.</span> <span class="nav-text">缺点：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Netty"><span class="nav-number">2.</span> <span class="nav-text">Netty</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty%E4%B8%AD%E7%9A%84Reactor"><span class="nav-number">2.1.</span> <span class="nav-text">Netty中的Reactor</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NioEventLoop%E7%B1%BB"><span class="nav-number">2.1.1.</span> <span class="nav-text">NioEventLoop类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Netty%E9%80%9A%E9%81%93-Channel"><span class="nav-number">2.1.2.</span> <span class="nav-text">Netty通道(Channel)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty%E7%9A%84%E5%85%A5%E7%AB%99%E5%A4%84%E7%90%86%E5%92%8C%E5%87%BA%E7%AB%99%E5%A4%84%E7%90%86"><span class="nav-number">2.2.</span> <span class="nav-text">Netty的入站处理和出站处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty%E7%AE%A1%E9%81%93-pipeline"><span class="nav-number">2.3.</span> <span class="nav-text">Netty管道(pipeline)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty%E8%84%9A%E6%89%8B%E6%9E%B6-Bootstrap"><span class="nav-number">2.4.</span> <span class="nav-text">Netty脚手架(Bootstrap)</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Freeman Huang</p>
+  <div class="site-description" itemprop="description">Self-talking of a noob</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Freeman Huang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

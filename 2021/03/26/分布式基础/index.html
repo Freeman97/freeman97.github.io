@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="[] CAP理论彻底理清 [] 常见中间件在CAP理论中的定位:  [] MySQL Cluster [] Redis Cluster [] Redis Sentinel [] Zookeeper [] Eureka [] Nacos [] HDFS(?)   [] 常见算法（优缺点及其原因 2PC协议&#x2F;3PC协议 Paxos简单情况 ZAB Raft    多机器的时钟同步 分布式环境下多台">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式理论">
+<meta property="og:url" content="http://yoursite.com/2021/03/26/%E5%88%86%E5%B8%83%E5%BC%8F%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="Freeman&#39;s Blog">
+<meta property="og:description" content="[] CAP理论彻底理清 [] 常见中间件在CAP理论中的定位:  [] MySQL Cluster [] Redis Cluster [] Redis Sentinel [] Zookeeper [] Eureka [] Nacos [] HDFS(?)   [] 常见算法（优缺点及其原因 2PC协议&#x2F;3PC协议 Paxos简单情况 ZAB Raft    多机器的时钟同步 分布式环境下多台">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-26T15:30:01.000Z">
+<meta property="article:modified_time" content="2021-03-26T15:32:04.671Z">
+<meta property="article:author" content="Freeman Huang">
+<meta property="article:tag" content="2021春招">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/26/%E5%88%86%E5%B8%83%E5%BC%8F%E5%9F%BA%E7%A1%80/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>分布式理论 | Freeman's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Freeman's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个菜鸡心血来潮搭建的个人博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/26/%E5%88%86%E5%B8%83%E5%BC%8F%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Freeman Huang">
+      <meta itemprop="description" content="Self-talking of a noob">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Freeman's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          分布式理论
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-26 23:30:01 / 修改时间：23:32:04" itemprop="dateCreated datePublished" datetime="2021-03-26T23:30:01+08:00">2021-03-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%98%A5%E6%8B%9B%E5%A4%8D%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">春招复习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <a id="more"></a>
+<ul>
+<li>[] CAP理论彻底理清</li>
+<li>[] 常见中间件在CAP理论中的定位: <ul>
+<li>[] MySQL Cluster</li>
+<li>[] Redis Cluster</li>
+<li>[] Redis Sentinel</li>
+<li>[] Zookeeper</li>
+<li>[] Eureka</li>
+<li>[] Nacos</li>
+<li>[] HDFS(?)</li>
+</ul>
+</li>
+<li>[] 常见算法（优缺点及其原因<ul>
+<li>2PC协议/3PC协议</li>
+<li>Paxos简单情况</li>
+<li>ZAB</li>
+<li>Raft</li>
+</ul>
+</li>
+</ul>
+<h1 id="多机器的时钟同步"><a href="#多机器的时钟同步" class="headerlink" title="多机器的时钟同步"></a>多机器的时钟同步</h1><ul>
+<li>分布式环境下多台机器的时间流动可能是不一样的，需要一种机制来进行时钟同步，在多个机器间确定事件的发生顺序</li>
+<li>全序：任意两个元素都有二元关系，可比较</li>
+<li>偏序：只有部分元素可以比较，无法确定所有元素的准确顺序</li>
+<li>在单节点系统上维持全序关系是容易的，但是在分布式系统上维持全序关系需要付出代价。通信的代价是昂贵的，时间的同步是非常困难并且脆弱的。</li>
+</ul>
+<h2 id="全局时间"><a href="#全局时间" class="headerlink" title="全局时间"></a>全局时间</h2><ul>
+<li>理想世界，每个节点使用同一个有完美准确度的时钟</li>
+</ul>
+<h2 id="本地时间"><a href="#本地时间" class="headerlink" title="本地时间"></a>本地时间</h2><h2 id="逻辑时间戳"><a href="#逻辑时间戳" class="headerlink" title="逻辑时间戳"></a>逻辑时间戳</h2><ul>
+<li>“逻辑时间（logical time）”而非真实时间来记录因果关系：使用计数器和通信机制来判断事件发生的顺序</li>
+<li>无法得知有关时间间隔的信息，也无法使用超时机制</li>
+</ul>
+<h2 id="向量时间戳"><a href="#向量时间戳" class="headerlink" title="向量时间戳"></a>向量时间戳</h2><h3 id="Simple-Lamport-Clock"><a href="#Simple-Lamport-Clock" class="headerlink" title="Simple Lamport Clock"></a>Simple Lamport Clock</h3><p>进程工作 -&gt; 计数器自增<br>发送消息 -&gt; 携带计数器值<br>接收消息 -&gt; 合并计数器</p>
+<ul>
+<li>偏序关系：若timestamp(a) &lt; timestamp(b)，则a可能在b之前发生，也可能无法比较。因为一个Lamport clock只能携带1条时间线的信息，因此可能发生“明明是同时发生的事件，却被排序”的情况。</li>
+</ul>
+<h3 id="Vector-Clock"><a href="#Vector-Clock" class="headerlink" title="Vector Clock"></a>Vector Clock</h3><h1 id="FLP-impossiblity-result"><a href="#FLP-impossiblity-result" class="headerlink" title="FLP impossiblity result"></a>FLP impossiblity result</h1><ul>
+<li>假设<ul>
+<li>节点只会fail by crashing，不存在拜占庭式错误</li>
+<li>网络是可靠的</li>
+<li>其它异步系统模型所需的关于时间的假设<ul>
+<li>各个进程行进的速率是独立的</li>
+<li>没有上界</li>
+<li>没有可用的时钟</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>结论<ul>
+<li>即使在消息不会丢失，最多一个进程fail且只会fail by crashing的条件下，异步系统模型中也不存在能够解决共识问题(consensus problem)的确定性算法。</li>
+<li>假设这样的算法存在，则总能设计出一种执行这种算法的方式，通过delaying message来让系统remain undecided(“bivalent”)</li>
+<li>这个结论的重要意义是它强调了在异步系统模型的假设下（no uppder bound），设计解决共识问题的算法必须考虑一种折衷：要么放弃safety，要么放弃liveness。</li>
+</ul>
+</li>
+</ul>
+<h1 id="CAP-theorem"><a href="#CAP-theorem" class="headerlink" title="CAP theorem"></a>CAP theorem</h1><h2 id="三类属性"><a href="#三类属性" class="headerlink" title="三类属性"></a>三类属性</h2><ul>
+<li>一致性Consistency：所有节点在同一时间都可以访问到同样的数据（see the same data）</li>
+<li>可用性Availability：节点的failure不影响没有fail的节点继续工作</li>
+<li>分区容错性Partition tolerance：即使出现了因为网络问题（Partition - communication break）导致的消息丢失，系统还是能继续工作</li>
+<li>最多只有两种属性能够同时满足。（事实上，这并不是严格的“3选2”问题，某些时候属性之间存在tradeoff）<h2 id="三系统类型"><a href="#三系统类型" class="headerlink" title="三系统类型"></a>三系统类型</h2></li>
+<li>CA：保证一致性可用性， <strong>full strict</strong> quorum protocols，例如two-phace commit（2PC）<ul>
+<li>一种强一致性模型，无法区分节点不可用和网络问题，只能通过停止接收写操作来避免数据分歧</li>
+<li>quorum protocol：基于鸽巢原理的算法，保证数据冗余和最终一致性<ul>
+<li>分布式系统中的每一份数据拷贝对象都被赋予一票。每一个读操作获得的票数必须大于最小读票数（read quorum）（Vr），每个写操作获得的票数必须大于最小写票数（write quorum）(Vw）才能读或者写。如果系统有V票（意味着一个数据对象有V份冗余拷贝），那么最小读写票数(quorum)应满足如下限制：<ul>
+<li>Vr + Vw &gt; V</li>
+<li>Vw &gt; V/2</li>
+</ul>
+</li>
+<li>第一条规则保证了一个数据不会被同时读写。当一个写操作请求过来的时候，它必须要获得Vw个冗余拷贝的许可。而剩下的数量是V-Vw 不够Vr，因此不能再有读请求过来了。同理，当读请求已经获得了Vr个冗余拷贝的许可时，写请求就无法获得许可了。</li>
+<li>第二条规则保证了数据的串行化修改。一份数据的冗余拷贝不可能同时被两个写请求修改。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>CP：保证一致性和分区容错性，majority quorum protocols，例如Paxos，Raft<ul>
+<li>也是一种强一致性模型，通过对网络中断的两段实行不对称的行为来避免数据分歧。节点多的一侧可用，节点少的一侧不可用（属于哪种情况需要使用算法进行区分）。</li>
+</ul>
+</li>
+<li>AP：使用冲突化解(conflit resolution)的协议</li>
+</ul>
+<h2 id="导出结论"><a href="#导出结论" class="headerlink" title="导出结论"></a>导出结论</h2><ul>
+<li>应该积极考虑Partition Tolerance：“分布式系统必须保证分区容错性，基本上只能选择AP原则和CP原则”，“You can’t sacrifice partition tolerance”</li>
+<li>因此并不存在”CA”类别，当network partition发生时，分布式系统要么保证一致性，要么保证可用性。</li>
+<li>存在network partitions时，强一致性和高可用性存在冲突</li>
+<li>在一般情况下，强一致性和性能存在冲突。要保证强一致性，各个节点要在每个操作上进行通信和协商，这会导致很高的latency</li>
+</ul>
+<h2 id="强一致性与弱一致性模型"><a href="#强一致性与弱一致性模型" class="headerlink" title="强一致性与弱一致性模型"></a>强一致性与弱一致性模型</h2><h3 id="强一致性模型"><a href="#强一致性模型" class="headerlink" title="强一致性模型"></a>强一致性模型</h3><ul>
+<li>可线性化一致性：在可线性一致性的情况下，所有的操作似乎都按照与全局实时操作顺序一致的顺序原子地执行</li>
+<li>顺序一致性：在顺序一致性的情况下，所有操作似乎都是按照某种顺序原子地执行的，这种顺序与在单个节点上看到的顺序一致，并且在所有节点上都是相等的。</li>
+</ul>
+<h3 id="弱一致性模型"><a href="#弱一致性模型" class="headerlink" title="弱一致性模型"></a>弱一致性模型</h3><ul>
+<li>client-centric一致性模型：入了客户端或会话机制的一致性模型，保证客户不会访问到一个数据项的旧版本，通常可以在客户端增加额外的cache来实现</li>
+<li>因果一致性模型</li>
+<li>最终一致性模型：如果停止对数据的值进行修改，经过”一段待定义的时间”后所有数据的副本都会达成一致得到某个相同的值。在此之前，多个数据的副本可能在”某些为定义的行为中”存在不一致的现象。</li>
+</ul>
+<h1 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h1><ul>
+<li>DBMS相较于文件系统的意义在于<ul>
+<li>基于关系代数，实现对数据的一种结构化存储和结构化查询</li>
+<li>事务的支持 -&gt; ACID</li>
+</ul>
+</li>
+</ul>
+<h1 id="复制（Replication）"><a href="#复制（Replication）" class="headerlink" title="复制（Replication）"></a>复制（Replication）</h1><h2 id="复制的时机来分类"><a href="#复制的时机来分类" class="headerlink" title="复制的时机来分类"></a>复制的时机来分类</h2><h3 id="同步复制"><a href="#同步复制" class="headerlink" title="同步复制"></a>同步复制</h3><ul>
+<li>请求 -&gt; 阻塞，将操作复制到所有节点 -&gt; 所有节点返回 -&gt; 向客户端返回</li>
+<li>返回客户端之前状态变化会被系统中所有节点所知。</li>
+<li>性能差，耐用性保证强。<h3 id="异步复制"><a href="#异步复制" class="headerlink" title="异步复制"></a>异步复制</h3></li>
+<li>请求 -&gt; 立即响应，将更新数据保存在本机 -&gt; 发送异步复制消息，联系其他节点 其他节点更新它们的副本</li>
+<li>性能高，对网络延迟的容忍度高，耐用性保证差，如果某个修改在给客户端发送响应后，在成功复制到从节点之前丢失了，那这个修改就永远丢失了。</li>
+<li>高可用性，但是单纯的lazy approach无法保证错误发生时能够读出之前写入的内容</li>
+</ul>
+<h2 id="按照副本一致性的强弱分类"><a href="#按照副本一致性的强弱分类" class="headerlink" title="按照副本一致性的强弱分类"></a>按照副本一致性的强弱分类</h2><h3 id="维护单一副本（prevent-divergence，single-copy）"><a href="#维护单一副本（prevent-divergence，single-copy）" class="headerlink" title="维护单一副本（prevent divergence，single copy）"></a>维护单一副本（prevent divergence，single copy）</h3><ul>
+<li>尽可能地表现得像单一系统</li>
+<li>保证只有一个活动副本</li>
+<li>保证所有副本的一致性</li>
+<li>例子：异步主从复制、同步主从复制、2PC、Multi-Paxos，3PC，Paxos with leader election<h3 id="multi-master-systems（risk-divergence）"><a href="#multi-master-systems（risk-divergence）" class="headerlink" title="multi-master systems（risk divergence）"></a>multi-master systems（risk divergence）</h3></li>
+</ul>
+<h2 id="常见的复制算法：主从复制"><a href="#常见的复制算法：主从复制" class="headerlink" title="常见的复制算法：主从复制"></a>常见的复制算法：主从复制</h2><ul>
+<li>所有操作都在一个master server上进行，master server将所有操作序列化并形成local log，local log将被发送到所有backup server上形成replica</li>
+<li>丢失修改的两种情况<ul>
+<li>异步复制导致：没来得及同步完成时master宕机，新slave成为master，旧master即使恢复了也会变成slave，无法将修改复制到其他节点</li>
+<li>脑裂：master和slave无法互相联系，联系不上master的slave选出了backup master，新旧master同时接收修改，导致丢失修改<ul>
+<li>怎么解决？要求master必须与一定量的slave保持联系才可以接受写，否则拒绝写</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="主从复制下的一致性协议：2PC-2-Phase-Commit"><a href="#主从复制下的一致性协议：2PC-2-Phase-Commit" class="headerlink" title="主从复制下的一致性协议：2PC(2 Phase Commit)"></a>主从复制下的一致性协议：2PC(2 Phase Commit)</h3><ul>
+<li>中心化的协议，需要单一的master/leader/coordinator角色</li>
+<li>过程 vote -&gt; decision -&gt; commit</li>
+<li>是一个CA算法，不保证Partition Tolerance</li>
+</ul>
+<h3 id="能实现partition-tolerance的共识算法"><a href="#能实现partition-tolerance的共识算法" class="headerlink" title="能实现partition tolerance的共识算法"></a>能实现partition tolerance的共识算法</h3>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/2021%E6%98%A5%E6%8B%9B/" rel="tag"># 2021春招</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/26/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="prev" title="网络编程">
+      <i class="fa fa-chevron-left"></i> 网络编程
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/26/SpringBoot/" rel="next" title="SpringBoot">
+      SpringBoot <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E6%9C%BA%E5%99%A8%E7%9A%84%E6%97%B6%E9%92%9F%E5%90%8C%E6%AD%A5"><span class="nav-number">1.</span> <span class="nav-text">多机器的时钟同步</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E6%97%B6%E9%97%B4"><span class="nav-number">1.1.</span> <span class="nav-text">全局时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%97%B6%E9%97%B4"><span class="nav-number">1.2.</span> <span class="nav-text">本地时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E6%97%B6%E9%97%B4%E6%88%B3"><span class="nav-number">1.3.</span> <span class="nav-text">逻辑时间戳</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E6%97%B6%E9%97%B4%E6%88%B3"><span class="nav-number">1.4.</span> <span class="nav-text">向量时间戳</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Simple-Lamport-Clock"><span class="nav-number">1.4.1.</span> <span class="nav-text">Simple Lamport Clock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vector-Clock"><span class="nav-number">1.4.2.</span> <span class="nav-text">Vector Clock</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FLP-impossiblity-result"><span class="nav-number">2.</span> <span class="nav-text">FLP impossiblity result</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CAP-theorem"><span class="nav-number">3.</span> <span class="nav-text">CAP theorem</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E7%B1%BB%E5%B1%9E%E6%80%A7"><span class="nav-number">3.1.</span> <span class="nav-text">三类属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E7%B3%BB%E7%BB%9F%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.2.</span> <span class="nav-text">三系统类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA%E7%BB%93%E8%AE%BA"><span class="nav-number">3.3.</span> <span class="nav-text">导出结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%BA%E4%B8%80%E8%87%B4%E6%80%A7%E4%B8%8E%E5%BC%B1%E4%B8%80%E8%87%B4%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.4.</span> <span class="nav-text">强一致性与弱一致性模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%BA%E4%B8%80%E8%87%B4%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.4.1.</span> <span class="nav-text">强一致性模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%B1%E4%B8%80%E8%87%B4%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.4.2.</span> <span class="nav-text">弱一致性模型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="nav-number">4.</span> <span class="nav-text">分布式事务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%EF%BC%88Replication%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">复制（Replication）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E7%9A%84%E6%97%B6%E6%9C%BA%E6%9D%A5%E5%88%86%E7%B1%BB"><span class="nav-number">5.1.</span> <span class="nav-text">复制的时机来分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E5%A4%8D%E5%88%B6"><span class="nav-number">5.1.1.</span> <span class="nav-text">同步复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E5%A4%8D%E5%88%B6"><span class="nav-number">5.1.2.</span> <span class="nav-text">异步复制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E7%85%A7%E5%89%AF%E6%9C%AC%E4%B8%80%E8%87%B4%E6%80%A7%E7%9A%84%E5%BC%BA%E5%BC%B1%E5%88%86%E7%B1%BB"><span class="nav-number">5.2.</span> <span class="nav-text">按照副本一致性的强弱分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%B4%E6%8A%A4%E5%8D%95%E4%B8%80%E5%89%AF%E6%9C%AC%EF%BC%88prevent-divergence%EF%BC%8Csingle-copy%EF%BC%89"><span class="nav-number">5.2.1.</span> <span class="nav-text">维护单一副本（prevent divergence，single copy）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#multi-master-systems%EF%BC%88risk-divergence%EF%BC%89"><span class="nav-number">5.2.2.</span> <span class="nav-text">multi-master systems（risk divergence）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95%EF%BC%9A%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="nav-number">5.3.</span> <span class="nav-text">常见的复制算法：主从复制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E4%B8%8B%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE%EF%BC%9A2PC-2-Phase-Commit"><span class="nav-number">5.3.1.</span> <span class="nav-text">主从复制下的一致性协议：2PC(2 Phase Commit)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%BD%E5%AE%9E%E7%8E%B0partition-tolerance%E7%9A%84%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">5.3.2.</span> <span class="nav-text">能实现partition tolerance的共识算法</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Freeman Huang</p>
+  <div class="site-description" itemprop="description">Self-talking of a noob</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Freeman Huang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
