@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Hadoop 大数据解决方案，分布式系统基础架构，主要包括HDFS和MapReduce。  HDFSNameNode Master节点 负责管理HDFS中的文件元信息、例如目录树、各个数据节点的可用空间、每个文件的备份情况等等。 目录树 权限信息 记录HDFS中有哪些块 块到DataNode的映射   负责监控各个DataNode的健康状况，如果发现无法连接到DataNode，会将该DataNod">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大数据相关">
+<meta property="og:url" content="http://yoursite.com/2021/03/31/BigData/index.html">
+<meta property="og:site_name" content="Freeman&#39;s Blog">
+<meta property="og:description" content="Hadoop 大数据解决方案，分布式系统基础架构，主要包括HDFS和MapReduce。  HDFSNameNode Master节点 负责管理HDFS中的文件元信息、例如目录树、各个数据节点的可用空间、每个文件的备份情况等等。 目录树 权限信息 记录HDFS中有哪些块 块到DataNode的映射   负责监控各个DataNode的健康状况，如果发现无法连接到DataNode，会将该DataNod">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-31T08:03:39.000Z">
+<meta property="article:modified_time" content="2021-04-01T15:42:07.609Z">
+<meta property="article:author" content="Freeman Huang">
+<meta property="article:tag" content="2021春招">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/31/BigData/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>大数据相关 | Freeman's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Freeman's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">一个菜鸡心血来潮搭建的个人博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/31/BigData/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Freeman Huang">
+      <meta itemprop="description" content="Self-talking of a noob">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Freeman's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          大数据相关
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-31 16:03:39" itemprop="dateCreated datePublished" datetime="2021-03-31T16:03:39+08:00">2021-03-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-01 23:42:07" itemprop="dateModified" datetime="2021-04-01T23:42:07+08:00">2021-04-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%98%A5%E6%8B%9B%E5%A4%8D%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">春招复习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Hadoop"><a href="#Hadoop" class="headerlink" title="Hadoop"></a>Hadoop</h1><ul>
+<li>大数据解决方案，分布式系统基础架构，主要包括HDFS和MapReduce。</li>
+</ul>
+<h2 id="HDFS"><a href="#HDFS" class="headerlink" title="HDFS"></a>HDFS</h2><h3 id="NameNode"><a href="#NameNode" class="headerlink" title="NameNode"></a>NameNode</h3><ul>
+<li>Master节点<ul>
+<li>负责管理HDFS中的文件元信息、例如目录树、各个数据节点的可用空间、每个文件的备份情况等等。<ul>
+<li>目录树</li>
+<li>权限信息</li>
+<li>记录HDFS中有哪些块</li>
+<li>块到DataNode的映射</li>
+</ul>
+</li>
+<li>负责监控各个DataNode的健康状况，如果发现无法连接到DataNode，会将该DataNode移出HDFS并重新备份该节点相关的数据，以满足集群中文件的备份数要求（默认每个文件每块都要有3个副本）。</li>
+</ul>
+</li>
+<li>这些信息以两种形式保存在本地磁盘<ul>
+<li>fsimage: HDFS元数据镜像文件，相当于全量备份</li>
+<li>editlog: HDFS文件改动日志，相当于增量备份（对执行的修改进行备份）</li>
+</ul>
+</li>
+</ul>
+<h3 id="Secondary-NameNode（Hadoop-1-X的思路）"><a href="#Secondary-NameNode（Hadoop-1-X的思路）" class="headerlink" title="Secondary NameNode（Hadoop 1.X的思路）"></a>Secondary NameNode（Hadoop 1.X的思路）</h3><ul>
+<li>定期合并fsimage和editlog并传输给NameNode，以减小editlog的体积。Secondary NameNode为了减轻NameNode的负担会帮其完成这项工作。</li>
+<li>可以作为备份节点作为NameNode的元数据进行热备份<ul>
+<li>云玩家方案：定期备份，但是两次备份期间的修改会被丢失</li>
+<li>真实方案：的确是定期备份。。。<ul>
+<li>每隔1小时会进行一次合并，editlog中的事务条数达到某个数字也会进行一次合并。<h4 id="合并fsimage和editlog的流程"><a href="#合并fsimage和editlog的流程" class="headerlink" title="合并fsimage和editlog的流程"></a>合并fsimage和editlog的流程</h4></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>生成一个新文件<code>edits.new</code>，用于记录合并过程中产生的日志信息</li>
+<li>Secondary NameNode从NameNode上读取edits文件和fsimage文件，并进行合并操作，生成一个<code>fsimage.ckpt</code>文件。</li>
+<li>将生成的合并后的文件发送到NameNode上，让NameNode替换原本的fsimage</li>
+<li>用<code>edits.new</code>成为新的edits文件。</li>
+</ul>
+<h3 id="Standby-NameNode-共享存储-since-Hadoop-2-X"><a href="#Standby-NameNode-共享存储-since-Hadoop-2-X" class="headerlink" title="Standby NameNode + 共享存储(since Hadoop 2.X)"></a>Standby NameNode + 共享存储(since Hadoop 2.X)</h3><ul>
+<li>只有主NameNode可以对外提供读写服务，StandBy NameNode作为备份。</li>
+<li>ZKFailOverController：检测到NameNode的健康状况，在主NameNode故障时，借助Zookeeper实现自动的主备选举和切换。</li>
+<li>ZK集群：提供选举支持</li>
+<li>共享存储系统：保证Active NameNode和Standby NameNode能够实现元数据同步。主备切换时新的主NameNode需要确认元数据能够完全同步。</li>
+</ul>
+<h4 id="QJM-Quorum-Journal-Manager"><a href="#QJM-Quorum-Journal-Manager" class="headerlink" title="QJM(Quorum Journal Manager)"></a>QJM(Quorum Journal Manager)</h4><ul>
+<li>HDFS的默认共享存储方案</li>
+<li>ActiveNameNode每次写Editlog时都需要向JournalNode集群的每一个JournalNode发送写请求，让每个JournalNode写入相同的内容，只要大多数JournalNode节点返回成功就认为向集群写入EditLog成功。对于2N + 1台JournalNode，最多可以有N台机器挂掉。剩下的N + 1台机器如果能够保持一致，仍然能够构成“大多数”。</li>
+<li>向JournalNode提交Editlog是同步阻塞的，但是只需要接收到大多数JournalNode的返回就可以了。</li>
+<li>如果没有收到大多数的Editlog返回，则认为提交EditLog失败了。（如果借鉴Paxos算法的经验，此处应该有一个版本号，提交失败的时候，说明当前NameNode的数据版本可能落后于JournalNode集群，不应该继续对外提供服务了）此时NameNode会停止服务。</li>
+<li>Editlog的分代和分段同步：每个JournalNode只会接收比自身代数大的Editlog同步请求。<ul>
+<li>增量同步：存在跨度问题，如果本地和最新版本差了不止一代，只添加一个增量也是错误的EditLog</li>
+<li>全量同步：每次都传一个最新版本的EditLog，EditLog文件可能会很大。</li>
+<li>分段全量同步：fsimage：当前元信息的完整快照。Active NameNode定期完成fsimage和editlog的合并（借助Secondary NameNode），将旧的editlog截断并只同步最新一段的editlog。Standby NameNode也需要进行fsimage和editlog的合并</li>
+</ul>
+</li>
+<li>主备切换<ul>
+<li>ZK方式：让NameNode和ZK维持会话，使ZK能够监控NameNode的健康状况。发生主备切换时，多个StandBy NameNode可能会竞争成为Active NameNode，此时让ZK支持主节点的选举（本质是获得一个分布式锁？）。</li>
+<li>只有代数高的节点能够对元信息进行写，但是客户端有可能读到旧的信息。HDFS提供fencing机制，当完成主备切换时，使用一定的机制让原本的Active NameNode停止对外服务。默认是通过ssh的方式发送一条命令，杀掉原本的NameNode进程。</li>
+</ul>
+</li>
+</ul>
+<h4 id="StandBy-NameNode"><a href="#StandBy-NameNode" class="headerlink" title="StandBy NameNode"></a>StandBy NameNode</h4><ul>
+<li>Standby NameNode会从JournalNode定期同步editlog，当需要转换为NameNode时需要将落后的Editlog补回来。</li>
+</ul>
+<h3 id="DataNode"><a href="#DataNode" class="headerlink" title="DataNode"></a>DataNode</h3><ul>
+<li>完成实际的数据存储，并向NameNode定期发送心跳便于双方感知对方存在。HDFS以固定大小的块存储文件内容。文件会被切分为若干块存储到不同的DataNode中，同时会将同一个块写到3个不同的DataNode上。文件切割需要由客户端完成，但是文件块的复制对用户透明。</li>
+<li>DataNode把每个数据块存在单独的文件中。它不在同一个目录创建所有的文件，而是通过试探的方法确定每个目录的最佳文件数目。</li>
+<li>DataNode的状态报告：本地文件对应HDFS数据块的列表，作为报告发送到NameNode。</li>
+</ul>
+<h3 id="HDFS上传文件的流程"><a href="#HDFS上传文件的流程" class="headerlink" title="HDFS上传文件的流程"></a>HDFS上传文件的流程</h3><ol>
+<li>Client向NameNode请求数据上传，先告知NameNode自己需要上传的元数据信息（包括大小吗）</li>
+<li>NameNode对上传文件的请求进行检查。例如重名校验和权限校验等。如果检查通过，NameNode会写Editlog，然后修改内存中的元数据信息。</li>
+<li>NameNode向客户端响应可以上传文件。</li>
+<li>Client在本地将文件进行分割，分割成固定大小的块。按顺序向NameNode请求上传块。</li>
+<li>NameNode向Client返回可以上传的节点信息。节点信息是顺序返回的。</li>
+<li>Client向返回的DataNode发出传输通道建立请求。第一位的DataNode在收到通道建立请求后也会递归地向下一位DataNode发送通道建立请求。之后DataNode递归地应答通道建立请求，收到所有的通道建立应答后，第一为的DataNode会返回信息示意Client可以开始传输文件。</li>
+<li>Client会将每个Block上传到通道第一位的DataNode上，通道中的DataNode按顺序完成Block的复制。（这里不清楚是同步的还是异步的，但是肯定会有确认）。<ul>
+<li>想要异步复制，可以设置<code>dfs.replication.min</code>，只让最低限度的DataNode先建立通道并完成复制。然后再让NameNode检测到该块未达到复制因子时决定DataNode怎么复制。</li>
+</ul>
+</li>
+<li>重复以上流程，Client将所有分块传输完毕会向NameNode进行报告。</li>
+</ol>
+<h3 id="HDFS下载文件的流程"><a href="#HDFS下载文件的流程" class="headerlink" title="HDFS下载文件的流程"></a>HDFS下载文件的流程</h3><h2 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h2><ul>
+<li>同样使用Master-Slave架构：JobTracker - TaskTracker。Slave节点向Master节点发送心跳消息以让双方感知对方存在。</li>
+<li>只有Map和Reduce函数，更高级的计算范式需要用户手动根据Map和Reduce进行构造。</li>
+<li>所有的计算中间结果都需要保存在HDFS上，计算过程需要反复地读写磁盘。</li>
+</ul>
+<h1 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h1><ul>
+<li>主要提供一个全面、统一的框架来管理有不同性质的数据集和数据源的大数据处理需求。</li>
+<li>更多的计算范式，不局限于Map和Reduce</li>
+<li>优化的磁盘使用方式：相比于Hadoop MapReduce，尽可能少地读写磁盘。（只有Shuffle的时候将数据完全存放在磁盘？）</li>
+<li>DAG计算模型：根据RDD的依赖关系先计算得到DAG，如果不涉及与其它节点进行数据交换（Shuffle），Spark可以尽可能地在内存中完成这些操作。（减少不了Shuffle，这个是由计算的依赖关系决定的）</li>
+<li>Spark Core：定义RDD的API，操作。</li>
+<li>Spark Streaming: 允许程序像处理普通RDD一样处理实时数据（流数据）</li>
+<li>Spark GraphX：控制图、并行图操作和计算的一组算法和工具的集合。</li>
+</ul>
+<h2 id="Cluster-Manager"><a href="#Cluster-Manager" class="headerlink" title="Cluster Manager"></a>Cluster Manager</h2><ul>
+<li>Master节点，控制整个集群，监控Worker<h2 id="Worker：控制计算节点，启动Executor或者Driver"><a href="#Worker：控制计算节点，启动Executor或者Driver" class="headerlink" title="Worker：控制计算节点，启动Executor或者Driver"></a>Worker：控制计算节点，启动Executor或者Driver</h2><ul>
+<li>Driver：运行Application的main函数</li>
+<li>Executor: 为某个Application运行在Worker Node上的一个进程。</li>
+</ul>
+</li>
+</ul>
+<h2 id="Spark计算模型"><a href="#Spark计算模型" class="headerlink" title="Spark计算模型"></a>Spark计算模型</h2><h3 id="RDD"><a href="#RDD" class="headerlink" title="RDD"></a>RDD</h3><h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>最小的计算单元</li>
+<li>RDD不会将<strong>所有的</strong>中间结果存放在硬盘上，只会在内存不足时将部分中间结果存放在内存。</li>
+<li>弹性：<ul>
+<li>存储的弹性：内存和磁盘可以进行自动切换</li>
+<li>容错：数据丢失可以自动回复（Linage？）</li>
+<li>计算：计算出错可以重试</li>
+<li>分片：根据需要重新分片</li>
+</ul>
+</li>
+<li>分布式：数据存储在集群的不同节点</li>
+<li>封装计算逻辑而不是持有数据</li>
+<li>不可变：逻辑不可改变，如果需要执行新逻辑需要创建新RDD。（转换…）</li>
+<li>可分区、并行计算。</li>
+</ul>
+<h4 id="核心属性"><a href="#核心属性" class="headerlink" title="核心属性"></a>核心属性</h4><ul>
+<li>分区列表：用于执行任务时进行并行计算</li>
+<li>分区计算函数：每个分区的数据不同，但是计算逻辑是一样的。计算逻辑对每个分区的数据进行计算</li>
+<li>依赖关系：依赖的所有RDD</li>
+<li>分区器：可选、决定对数据进行分区的方式</li>
+<li>首选位置：确定计算发送给哪个节点。（让效率最优）<ul>
+<li>移动计算胜过移动数据</li>
+</ul>
+</li>
+</ul>
+<h4 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h4><ol>
+<li>从HDFS/与HDFS兼容的其它持久化存储系统如Hive、Canssandra、HBase输入创建</li>
+<li>从本地文件创建</li>
+<li>从父RDD转换得到新RDD</li>
+<li>通过parallelize或makeRDD将单机数据转换为RDD</li>
+</ol>
+<h4 id="算子"><a href="#算子" class="headerlink" title="算子"></a>算子</h4><ul>
+<li>Transformation：延迟计算，等到Action操作才会触发计算。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/2021%E6%98%A5%E6%8B%9B/" rel="tag"># 2021春招</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/30/linux/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/06/HR/" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Hadoop"><span class="nav-number">1.</span> <span class="nav-text">Hadoop</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HDFS"><span class="nav-number">1.1.</span> <span class="nav-text">HDFS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NameNode"><span class="nav-number">1.1.1.</span> <span class="nav-text">NameNode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Secondary-NameNode%EF%BC%88Hadoop-1-X%E7%9A%84%E6%80%9D%E8%B7%AF%EF%BC%89"><span class="nav-number">1.1.2.</span> <span class="nav-text">Secondary NameNode（Hadoop 1.X的思路）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%88%E5%B9%B6fsimage%E5%92%8Ceditlog%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">合并fsimage和editlog的流程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Standby-NameNode-%E5%85%B1%E4%BA%AB%E5%AD%98%E5%82%A8-since-Hadoop-2-X"><span class="nav-number">1.1.3.</span> <span class="nav-text">Standby NameNode + 共享存储(since Hadoop 2.X)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#QJM-Quorum-Journal-Manager"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">QJM(Quorum Journal Manager)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#StandBy-NameNode"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">StandBy NameNode</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DataNode"><span class="nav-number">1.1.4.</span> <span class="nav-text">DataNode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HDFS%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.5.</span> <span class="nav-text">HDFS上传文件的流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HDFS%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.6.</span> <span class="nav-text">HDFS下载文件的流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MapReduce"><span class="nav-number">1.2.</span> <span class="nav-text">MapReduce</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spark"><span class="nav-number">2.</span> <span class="nav-text">Spark</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Cluster-Manager"><span class="nav-number">2.1.</span> <span class="nav-text">Cluster Manager</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Worker%EF%BC%9A%E6%8E%A7%E5%88%B6%E8%AE%A1%E7%AE%97%E8%8A%82%E7%82%B9%EF%BC%8C%E5%90%AF%E5%8A%A8Executor%E6%88%96%E8%80%85Driver"><span class="nav-number">2.2.</span> <span class="nav-text">Worker：控制计算节点，启动Executor或者Driver</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark%E8%AE%A1%E7%AE%97%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.3.</span> <span class="nav-text">Spark计算模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RDD"><span class="nav-number">2.3.1.</span> <span class="nav-text">RDD</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%B9%E7%82%B9"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%B1%9E%E6%80%A7"><span class="nav-number">2.3.1.2.</span> <span class="nav-text">核心属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA"><span class="nav-number">2.3.1.3.</span> <span class="nav-text">创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%97%E5%AD%90"><span class="nav-number">2.3.1.4.</span> <span class="nav-text">算子</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Freeman Huang</p>
+  <div class="site-description" itemprop="description">Self-talking of a noob</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Freeman Huang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

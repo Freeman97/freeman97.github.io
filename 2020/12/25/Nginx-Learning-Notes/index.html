@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Nginx学习笔记是什么? nginx有一个master进程和多个worker进程。master进程的主要目的是读取并应用配置文件，并维护worker进程。worker进程会负责实际的请求处理。  配置文件的结构nginx由多个模块组成，而这些模块由配置文件中的指令进行控制。指令被分为简单指令(单纯的一条指令，分号结尾)和块级指令(由花括号&amp;#123;&amp;#125;包裹)&#96;。如果一个块级指令能够将">
+  <meta name="description" content="Nginx学习笔记是什么? 一个TCP&#x2F;UDP的通用服务器和反向代理服务器，可以支持HTTP、HTTPS、SMTP等协议。 可以实现负载均衡和URL重写 nginx有一个master进程和多个worker进程。master进程的主要目的是读取并应用配置文件，并维护worker进程。worker进程会负责实际的请求处理。  为什么要反向代理 保护了真实的Web服务器，外网只能看到反向代理服务器，而">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx-Learning-Notes">
 <meta property="og:url" content="http://yoursite.com/2020/12/25/Nginx-Learning-Notes/index.html">
 <meta property="og:site_name" content="Freeman&#39;s Blog">
-<meta property="og:description" content="Nginx学习笔记是什么? nginx有一个master进程和多个worker进程。master进程的主要目的是读取并应用配置文件，并维护worker进程。worker进程会负责实际的请求处理。  配置文件的结构nginx由多个模块组成，而这些模块由配置文件中的指令进行控制。指令被分为简单指令(单纯的一条指令，分号结尾)和块级指令(由花括号&amp;#123;&amp;#125;包裹)&#96;。如果一个块级指令能够将">
+<meta property="og:description" content="Nginx学习笔记是什么? 一个TCP&#x2F;UDP的通用服务器和反向代理服务器，可以支持HTTP、HTTPS、SMTP等协议。 可以实现负载均衡和URL重写 nginx有一个master进程和多个worker进程。master进程的主要目的是读取并应用配置文件，并维护worker进程。worker进程会负责实际的请求处理。  为什么要反向代理 保护了真实的Web服务器，外网只能看到反向代理服务器，而">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-25T02:19:38.000Z">
-<meta property="article:modified_time" content="2021-03-26T15:38:31.161Z">
+<meta property="article:modified_time" content="2021-03-31T13:19:33.445Z">
 <meta property="article:author" content="Freeman Huang">
 <meta property="article:tag" content="后端开发">
 <meta property="article:tag" content="服务器">
@@ -203,7 +203,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-26 23:38:31" itemprop="dateModified" datetime="2021-03-26T23:38:31+08:00">2021-03-26</time>
+                <time title="修改时间：2021-03-31 21:19:33" itemprop="dateModified" datetime="2021-03-31T21:19:33+08:00">2021-03-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -228,8 +228,19 @@
       
         <a id="more"></a>
 <h1 id="Nginx学习笔记"><a href="#Nginx学习笔记" class="headerlink" title="Nginx学习笔记"></a>Nginx学习笔记</h1><h2 id="是什么"><a href="#是什么" class="headerlink" title="是什么?"></a>是什么?</h2><ul>
+<li>一个TCP/UDP的通用服务器和反向代理服务器，可以支持HTTP、HTTPS、SMTP等协议。</li>
+<li>可以实现负载均衡和URL重写</li>
 <li>nginx有一个master进程和多个worker进程。master进程的主要目的是读取并应用配置文件，并维护worker进程。worker进程会负责实际的请求处理。</li>
 </ul>
+<h2 id="为什么要反向代理"><a href="#为什么要反向代理" class="headerlink" title="为什么要反向代理"></a>为什么要反向代理</h2><ol>
+<li>保护了真实的Web服务器，外网只能看到反向代理服务器，而反向代理服务器上没有真实数据。</li>
+<li>可以减少Web服务器压力。</li>
+<li>请求的统一控制，包括权限控制和过滤规则等。</li>
+<li>区分动态和静态可缓存的内容。</li>
+<li>负载均衡</li>
+<li>解决跨域问题。<strong>反向代理不是单纯的请求转发</strong>，而是会代理用户向代理下的节点服务器重新发起请求。</li>
+<li>作为真实服务器的缓冲。</li>
+</ol>
 <h2 id="配置文件的结构"><a href="#配置文件的结构" class="headerlink" title="配置文件的结构"></a>配置文件的结构</h2><p>nginx由多个模块组成，而这些模块由配置文件中的指令进行控制。指令被分为简单指令(单纯的一条指令，分号结尾)和块级指令(由花括号<code>&#123;&#125;</code>包裹)`。如果一个块级指令能够将其它指令包裹在它的花括号中，那么他被称为一个上下文(context)。</p>
 <h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>在CentOS 7上安装nginx<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install yum-utils</span><br></pre></td></tr></table></figure><br>创建<code>/etc/yum.repos.d/nginx.repo</code>文件，文件内容为:<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[nginx-stable]</span></span><br><span class="line"><span class="attr">name</span>=nginx stable repo</span><br><span class="line"><span class="attr">baseurl</span>=http://nginx.org/packages/centos/<span class="variable">$releasever</span>/<span class="variable">$basearch</span>/</span><br><span class="line"><span class="attr">gpgcheck</span>=<span class="number">1</span></span><br><span class="line"><span class="attr">enabled</span>=<span class="number">1</span></span><br><span class="line"><span class="attr">gpgkey</span>=https://nginx.org/keys/nginx_signing.key</span><br><span class="line"><span class="attr">module_hotfixes</span>=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="section">[nginx-mainline]</span></span><br><span class="line"><span class="attr">name</span>=nginx mainline repo</span><br><span class="line"><span class="attr">baseurl</span>=http://nginx.org/packages/mainline/centos/<span class="variable">$releasever</span>/<span class="variable">$basearch</span>/</span><br><span class="line"><span class="attr">gpgcheck</span>=<span class="number">1</span></span><br><span class="line"><span class="attr">enabled</span>=<span class="number">0</span></span><br><span class="line"><span class="attr">gpgkey</span>=https://nginx.org/keys/nginx_signing.key</span><br><span class="line"><span class="attr">module_hotfixes</span>=<span class="literal">true</span></span><br></pre></td></tr></table></figure><br>默认情况下，nginx packages使用<code>nginx-stable</code>repository。如果要切换到<code>mainline</code>，则运行以下命令:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum-config-manager --enable nginx-mainline</span><br></pre></td></tr></table></figure><br>随后，安装nginx<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y nginx</span><br></pre></td></tr></table></figure></p>
 <h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx</span><br></pre></td></tr></table></figure>
@@ -241,7 +252,51 @@
         root /data/www;
     &#125;
 &#125;
-</code></pre><p>}<br><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 配置代理服务器</span><br><span class="line">nginx的常见应用之一就是作为代理服务器，接受请求并将其转发给被代理的服务器，从被代理的服务器获取响应，然后将响应发送给客户端。配置方法是在`location`块级指令中加入`proxy_pass`指令。`location`指定的URI匹配可以编写正则表达式来表示更灵活的匹配规则，正则表达式以`~`开头</span><br></pre></td></tr></table></figure><br>server {<br>    location / {<br>        proxy_pass <a target="_blank" rel="noopener" href="http://localhost:8080">http://localhost:8080</a>;<br>    }<br>    location ~ .(gif|jpg|png)$ {<br>        root /data/images;<br>    }<br>}<br>```</p>
+</code></pre><p>}<br><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 配置代理服务器</span><br><span class="line">nginx的常见应用之一就是作为代理服务器，接受请求并将其转发给被代理的服务器，从被代理的服务器获取响应，然后将响应发送给客户端。配置方法是在`location`块级指令中加入`proxy_pass`指令。`location`指定的URI匹配可以编写正则表达式来表示更灵活的匹配规则，正则表达式以`~`开头</span><br></pre></td></tr></table></figure><br>server {<br>    location / {<br>        proxy_pass <a target="_blank" rel="noopener" href="http://localhost:8080">http://localhost:8080</a>;<br>    }<br>    location ~ .(gif|jpg|png)$ {<br>        root /data/images;<br>    }<br>}<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">## sendfile设置</span></span><br><span class="line">`sendfile <span class="keyword">on</span>`。高效文件传输模式（？），将tcp_nopush和tcp_nodelay设置为<span class="keyword">on</span>防止网络阻塞（？？）</span><br><span class="line"></span><br><span class="line"><span class="comment">## 配置负载均衡策略</span></span><br><span class="line">* 用于从upstream模块定义的上游服务器列表中选取一台服务器接受用户的请求。</span><br></pre></td></tr></table></figure><br>http {<br>    upstream myServer {<br>        server xxx.xxx.xxx.xxx:yyyy;<br>        server yyy.yyy.yyy.yyy:zzzz;<br>        server zzz.zzz.zzz.zzz:xxxx [upstream基本参数];<br>    }</p>
+<pre><code>server &#123;
+    listen [端口];
+    server_name [监听地址];
+    location [正则] &#123;
+        root [根目录];
+        index [默认页];
+        proxy_pass myServer; # 将请求转发到myServer定义的服务器列表
+        deny [拒绝的IP];
+        allow [允许的IP];
+    &#125;
+&#125;
+</code></pre><p>}<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">### upstream基本参数</span><br><span class="line">* 对每台服务器的一些配置</span><br><span class="line">* fail_timeout, max_fails: 如果在fail_timeout时间内发往该服务器的请求失败了max_fail次，认为该服务器已经停机</span><br><span class="line">* fail_time：服务器被认为停机的时间长度</span><br><span class="line">* backup: 标记该服务器为备用服务器，出现停机时请求会发送到此处（hash、ip_hash和random负载均衡方法下该参数不可用）</span><br><span class="line">* down: 标记服务器永久停机</span><br><span class="line">* max_conns: 限制该服务器的最大同时活动连接数</span><br><span class="line"></span><br><span class="line">### 轮询</span><br><span class="line">上述的例子就是轮询负载均衡。轮询是upstream模块默认的负载均衡策略。每个请求按照时间顺序逐一分配到不同的服务器。</span><br><span class="line">* Nginx默认就是使用一个加权的Round-Robin负载均衡方法。</span><br><span class="line"></span><br><span class="line">### 权重</span><br><span class="line">为每台服务器配置权重，在轮询时为权重高的后端服务器分配更多请求。</span><br><span class="line">* a = <span class="number">1</span>, b = <span class="number">2</span>, c = <span class="number">3</span></span><br><span class="line">* 加权轮询的顺序可能是`&#123;b, c, b, c, a, c&#125;`。这个加权序列应该尽量让相同的节点尽量分散。</span><br><span class="line"></span><br><span class="line">### ip_hash</span><br><span class="line">每个请求按访问ip的hash结果分配，每个客户端固定访问一个后端服务器。可以使用该策略来实现粘性session。</span><br><span class="line">如果对应的服务器不可用则会转发到其他服务器。</span><br><span class="line"></span><br><span class="line">### hash</span><br><span class="line">可以指定key进行hash，进而为请求分配指定的服务器。</span><br></pre></td></tr></table></figure><br>upstream hashups {</p>
+<pre><code># ip_hash;
+hash [key] [consistent]; # 加入consistent参数使用一致性哈希
+server ...;
+server ...;
+</code></pre><p>}<br>```</p>
+<h2 id="Nginx限流"><a href="#Nginx限流" class="headerlink" title="Nginx限流"></a>Nginx限流</h2><h3 id="控制单个IP的请求处理频率"><a href="#控制单个IP的请求处理频率" class="headerlink" title="控制单个IP的请求处理频率"></a>控制单个IP的请求处理频率</h3><ul>
+<li><code>ngx_http_limit_req_module</code></li>
+<li>定义内存区用于存储IP地址访问信息，设置<code>rate=xxr/s</code>可以设置每秒只处理每个IP地址的xx个请求</li>
+<li>控制突发流量: <code>burst=xx</code></li>
+<li>控制单个IP的请求处理频率。</li>
+</ul>
+<h3 id="控制并发连接数"><a href="#控制并发连接数" class="headerlink" title="控制并发连接数"></a>控制并发连接数</h3><ul>
+<li><code>ngx_http_limit_conn_module</code></li>
+</ul>
+<h3 id="限流的原理"><a href="#限流的原理" class="headerlink" title="限流的原理"></a>限流的原理</h3><h4 id="漏桶算法"><a href="#漏桶算法" class="headerlink" title="漏桶算法"></a>漏桶算法</h4><p>桶的大小固定，请求依序进入桶中，但是进入桶中的请求只会以恒定的速率被处理（漏水的速率恒定）。如果进入桶中的请求溢出桶外，则这部分请求不会被处理。</p>
+<h4 id="令牌桶算法"><a href="#令牌桶算法" class="headerlink" title="令牌桶算法"></a>令牌桶算法</h4><p>桶的大小固定，按固定的速度往桶中丢令牌，桶满之后后续的令牌都无法添加。取令牌时，桶中有令牌，则处理取令牌操作并处理真正的请求。否则取令牌操作将被拒绝，请求也不会被处理。<br>请求在队列中进行排队取令牌，无法取得令牌时请求不会被处理，需要进行等待或直接拒绝请求。<br>令牌桶算法允许一定程度的突发请求。</p>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><h2 id="Nginx为什么快？"><a href="#Nginx为什么快？" class="headerlink" title="Nginx为什么快？"></a>Nginx为什么快？</h2><ul>
+<li>多进程 + IO多路复用。单个进程处理请求遇到再次需要进行IO的情况时，会直接向多路复用器增加新的事件，然后继续处理别的请求。</li>
+<li>Nginx也使用反应器模式，主事件循环等待操作系统发出IO事件准备完成的信号，这样数据就可以从Socket读取到缓冲区。</li>
+</ul>
+<h2 id="反向代理流程"><a href="#反向代理流程" class="headerlink" title="反向代理流程"></a>反向代理流程</h2><ol>
+<li>用户通过域名发出访问Web服务器的请求，该域名被DNS服务器解析为反向代理服务器的IP地址。</li>
+<li>反向代理服务器接收用户的请求。</li>
+<li>反向代理服务器在本地缓存中查找请求的内容，找到后直接把内容发给用户。</li>
+<li>如果本地缓存中没有用户所请求的内容，反向代理服务器代替用户向源服务器请求同样的信息内容，并把信息内容发给用户。如果信息内容是缓存的，还会把它存到缓存中。</li>
+</ol>
+<h3 id="Nginx请求处理"><a href="#Nginx请求处理" class="headerlink" title="Nginx请求处理"></a>Nginx请求处理</h3><p>通过配置文件中配置的规则将本次请求映射到一个location block。Location中配置的各个指令启动不同的模块去完成工作。</p>
+<h4 id="多进程模型"><a href="#多进程模型" class="headerlink" title="多进程模型"></a>多进程模型</h4><ul>
+<li>一个Master进程，多个Worker进程。</li>
+<li>Master进程根据配置建立需要listen的网络socket文件描述符，然后fork出多个worker进程。同时Master还负责在不停止的情况下加载配置文件。</li>
+<li>Worker进程会使用epoll监听同一个Socket fd。连接到来时对所有worker进程来说socket fd都可读。此时为保证只有一个进程处理该事件，worker进程需要抢占互斥锁<code>accept_mutex</code>，只有抢到互斥锁的进程才会调用accept接受链接。</li>
+</ul>
 
     </div>
 
@@ -326,7 +381,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">Nginx学习笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.1.</span> <span class="nav-text">是什么?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text">配置文件的结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">1.3.</span> <span class="nav-text">基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.3.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8"><span class="nav-number">1.3.2.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-s%E5%8F%82%E6%95%B0%E6%8E%A7%E5%88%B6nginx"><span class="nav-number">1.3.3.</span> <span class="nav-text">使用-s参数控制nginx</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">Nginx学习笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.1.</span> <span class="nav-text">是什么?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">为什么要反向代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.</span> <span class="nav-text">配置文件的结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">1.4.</span> <span class="nav-text">基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.4.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8"><span class="nav-number">1.4.2.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-s%E5%8F%82%E6%95%B0%E6%8E%A7%E5%88%B6nginx"><span class="nav-number">1.4.3.</span> <span class="nav-text">使用-s参数控制nginx</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx%E9%99%90%E6%B5%81"><span class="nav-number">1.5.</span> <span class="nav-text">Nginx限流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E5%8D%95%E4%B8%AAIP%E7%9A%84%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86%E9%A2%91%E7%8E%87"><span class="nav-number">1.5.1.</span> <span class="nav-text">控制单个IP的请求处理频率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E5%B9%B6%E5%8F%91%E8%BF%9E%E6%8E%A5%E6%95%B0"><span class="nav-number">1.5.2.</span> <span class="nav-text">控制并发连接数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%90%E6%B5%81%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">1.5.3.</span> <span class="nav-text">限流的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%BC%8F%E6%A1%B6%E7%AE%97%E6%B3%95"><span class="nav-number">1.5.3.1.</span> <span class="nav-text">漏桶算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A4%E7%89%8C%E6%A1%B6%E7%AE%97%E6%B3%95"><span class="nav-number">1.5.3.2.</span> <span class="nav-text">令牌桶算法</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BF%AB%EF%BC%9F"><span class="nav-number">2.1.</span> <span class="nav-text">Nginx为什么快？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E6%B5%81%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">反向代理流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86"><span class="nav-number">2.2.1.</span> <span class="nav-text">Nginx请求处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">多进程模型</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -340,7 +395,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="[] CAP理论彻底理清 [] 常见中间件在CAP理论中的定位:  [] MySQL Cluster [] Redis Cluster [] Redis Sentinel [] Zookeeper [] Eureka [] Nacos [] HDFS(?)   [] 常见算法（优缺点及其原因 2PC协议&#x2F;3PC协议 Paxos简单情况 ZAB Raft    多机器的时钟同步 分布式环境下多台">
+  <meta name="description" content="[] CAP理论彻底理清 [] BASE [] 常见中间件在CAP理论中的定位:  [] MySQL Cluster [] Redis Cluster [] Redis Sentinel [] Zookeeper [] Eureka [] Nacos [] HDFS(?)   [] 常见算法（优缺点及其原因 2PC协议&#x2F;3PC协议 Paxos简单情况 ZAB Raft    多机器的时钟同步">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分布式理论">
 <meta property="og:url" content="http://yoursite.com/2021/03/26/%E5%88%86%E5%B8%83%E5%BC%8F%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="Freeman&#39;s Blog">
-<meta property="og:description" content="[] CAP理论彻底理清 [] 常见中间件在CAP理论中的定位:  [] MySQL Cluster [] Redis Cluster [] Redis Sentinel [] Zookeeper [] Eureka [] Nacos [] HDFS(?)   [] 常见算法（优缺点及其原因 2PC协议&#x2F;3PC协议 Paxos简单情况 ZAB Raft    多机器的时钟同步 分布式环境下多台">
+<meta property="og:description" content="[] CAP理论彻底理清 [] BASE [] 常见中间件在CAP理论中的定位:  [] MySQL Cluster [] Redis Cluster [] Redis Sentinel [] Zookeeper [] Eureka [] Nacos [] HDFS(?)   [] 常见算法（优缺点及其原因 2PC协议&#x2F;3PC协议 Paxos简单情况 ZAB Raft    多机器的时钟同步">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-26T15:30:01.000Z">
-<meta property="article:modified_time" content="2021-03-26T15:37:39.042Z">
+<meta property="article:modified_time" content="2021-04-06T14:35:20.917Z">
 <meta property="article:author" content="Freeman Huang">
 <meta property="article:tag" content="2021春招">
 <meta name="twitter:card" content="summary">
@@ -194,10 +194,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-26 23:30:01 / 修改时间：23:37:39" itemprop="dateCreated datePublished" datetime="2021-03-26T23:30:01+08:00">2021-03-26</time>
+              <time title="创建时间：2021-03-26 23:30:01" itemprop="dateCreated datePublished" datetime="2021-03-26T23:30:01+08:00">2021-03-26</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-06 22:35:20" itemprop="dateModified" datetime="2021-04-06T22:35:20+08:00">2021-04-06</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -222,6 +228,7 @@
         <a id="more"></a>
 <ul>
 <li>[] CAP理论彻底理清</li>
+<li>[] BASE</li>
 <li>[] 常见中间件在CAP理论中的定位: <ul>
 <li>[] MySQL Cluster</li>
 <li>[] Redis Cluster</li>
@@ -303,7 +310,7 @@
 </ul>
 <h2 id="导出结论"><a href="#导出结论" class="headerlink" title="导出结论"></a>导出结论</h2><ul>
 <li>应该积极考虑Partition Tolerance：“分布式系统必须保证分区容错性，基本上只能选择AP原则和CP原则”，“You can’t sacrifice partition tolerance”</li>
-<li>因此并不存在”CA”类别，当network partition发生时，分布式系统要么保证一致性，要么保证可用性。</li>
+<li>因此分布式系统中并不存在”CA”类别，当network partition发生时，分布式系统要么保证一致性，要么保证可用性。（单机系统可以存在CA类别，比如RDBMS）</li>
 <li>存在network partitions时，强一致性和高可用性存在冲突</li>
 <li>在一般情况下，强一致性和性能存在冲突。要保证强一致性，各个节点要在每个操作上进行通信和协商，这会导致很高的latency</li>
 </ul>
@@ -313,15 +320,63 @@
 </ul>
 <h3 id="弱一致性模型"><a href="#弱一致性模型" class="headerlink" title="弱一致性模型"></a>弱一致性模型</h3><ul>
 <li>client-centric一致性模型：入了客户端或会话机制的一致性模型，保证客户不会访问到一个数据项的旧版本，通常可以在客户端增加额外的cache来实现</li>
-<li>因果一致性模型</li>
-<li>最终一致性模型：如果停止对数据的值进行修改，经过”一段待定义的时间”后所有数据的副本都会达成一致得到某个相同的值。在此之前，多个数据的副本可能在”某些为定义的行为中”存在不一致的现象。</li>
-</ul>
-<h1 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h1><ul>
-<li>DBMS相较于文件系统的意义在于<ul>
-<li>基于关系代数，实现对数据的一种结构化存储和结构化查询</li>
-<li>事务的支持 -&gt; ACID</li>
+<li>最终一致性模型：如果停止对数据的值进行修改，经过”一段待定义的时间”后所有数据的副本都会达成一致得到某个相同的值。在此之前，多个数据的副本可能在”某些为定义的行为中”存在不一致的现象。<ul>
+<li>因果一致性：如果A更新完数据通知了B，则B之后对数据的访问和修改必须基于A更新后的值。对于C则没有这样的限制。</li>
+<li>Read your writes：节点A更新后总是能访问到自己更新过的最新值。</li>
 </ul>
 </li>
+</ul>
+<h1 id="BASE理论"><a href="#BASE理论" class="headerlink" title="BASE理论"></a>BASE理论</h1><ul>
+<li>Basically Available: 基本可用。出现故障时，可能出现响应时间变慢或者部分功能降级，但是仍能提供服务。</li>
+<li>Soft State: 软状态，允许系统中的数据存在中间状态，而不是要求多个节点的数据副本总是一致的。</li>
+<li>Eventually Consistent: 最终一致性，软状态存在时间期限。时间期限过后应该保证所有的副本保持数据一致性。</li>
+</ul>
+<h1 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h1><ul>
+<li>一种分布式共识的特殊情况</li>
+<li>DBMS相较于文件系统的意义在于<ul>
+<li>基于关系代数，实现对数据的一种结构化存储和结构化查询</li>
+<li>事务的支持 -&gt; ACID<h2 id="2PC：尽量保证强-一致性"><a href="#2PC：尽量保证强-一致性" class="headerlink" title="2PC：尽量保证强(?)一致性"></a>2PC：尽量保证强(?)一致性</h2><h3 id="流程："><a href="#流程：" class="headerlink" title="流程："></a>流程：</h3></li>
+</ul>
+</li>
+<li>一阶段：</li>
+</ul>
+<ol>
+<li>客户端向协调者发起事务。事务的协调者节点首先向所有的参与者节点发送Prepare请求。</li>
+<li>接收到Prepare请求后，每一个参与者节点都会写入日志并各自执行与事务有关的数据更新（此时会对数据上锁），但是暂时不提交事务，而是想协调者节点返回“完成”消息。</li>
+<li>协调者接收到<strong>所有</strong>参与者返回的消息后，分布式事务进入第二阶段。</li>
+</ol>
+<ul>
+<li>二阶段正常流程：<ul>
+<li>成功流程：<ol>
+<li>如果协调者节点接收到的都是“可以准备提交事务”的消息，那么协调者节点会向所有参与者发送事务提交命令。</li>
+<li>参与者接收到事务提交命令，进行事务的提交并释放锁资源。本地事务完成提交后，会向当前协调者返回“完成”消息。</li>
+<li>协调者接收到所有事务参与者的反馈，分布式事务完成。</li>
+</ol>
+</li>
+<li>失败流程：<ol>
+<li>在第一阶段协调者接收到某个参与者反馈的失败消息，说明该节点的事务执行不成功，必须回滚。</li>
+<li>协调者节点向所有的参与者发送abort请求。接收到abort请求的参与者需要在本地进行事务的回滚操作。</li>
+</ol>
+</li>
+<li>无论是成功还是失败，此时才会告知客户端事务执行的结果。</li>
+</ul>
+</li>
+</ul>
+<h3 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h3><ul>
+<li>一阶段中如果协调者发出Prepare请求，有可能收不到所有参与者的响应。此时可以引入重试-超时机制。如果超时，则直接回滚。</li>
+<li>二阶段第一步如果协调者发出提交请求或回滚请求，但是没有收到所有参与者的响应。则需要不断重发提交请求，直到收到全部协调者的响应。否则可能导致参与者节点的数据不一致。</li>
+<li>各个节点在事务执行过程中会持续占用数据库资源（在事务相关的数据上加锁），性能较差。</li>
+<li>协调者的单点故障问题<ul>
+<li>发送Prepare请求之后协调者单点故障、发送提交事务/回滚事务之前单点故障、发送…之后单点故障…</li>
+</ul>
+</li>
+</ul>
+<h2 id="3PC"><a href="#3PC" class="headerlink" title="3PC"></a>3PC</h2><h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><ul>
+<li>一阶段同样发出Prepare请求，但是不让参与者立即执行事务，而是只需要返回是否能够准备。</li>
+<li>二阶段进行预提交，多出这一状态可以让参与者确认其它参与者都回应了协调者，表示可以进行后续事务。该阶段参与者会进行写日志和修改数据，不提交事务。</li>
+<li>三阶段进行事务提交，协调者发出提交事务请求，参与者响应。</li>
+<li>同样，不管哪一个阶段有参与者返回失败都会宣布事务失败。</li>
+<li>参与者超时：等待提交事务请求超时，参与者会直接提交事务（？）。而等待与提交命令超时的情况，则没有任何影响。</li>
 </ul>
 <h1 id="复制（Replication）"><a href="#复制（Replication）" class="headerlink" title="复制（Replication）"></a>复制（Replication）</h1><h2 id="复制的时机来分类"><a href="#复制的时机来分类" class="headerlink" title="复制的时机来分类"></a>复制的时机来分类</h2><h3 id="同步复制"><a href="#同步复制" class="headerlink" title="同步复制"></a>同步复制</h3><ul>
 <li>请求 -&gt; 阻塞，将操作复制到所有节点 -&gt; 所有节点返回 -&gt; 向客户端返回</li>
@@ -353,7 +408,35 @@
 <li>过程 vote -&gt; decision -&gt; commit</li>
 <li>是一个CA算法，不保证Partition Tolerance</li>
 </ul>
-<h3 id="能实现partition-tolerance的共识算法"><a href="#能实现partition-tolerance的共识算法" class="headerlink" title="能实现partition tolerance的共识算法"></a>能实现partition tolerance的共识算法</h3>
+<h1 id="共识算法"><a href="#共识算法" class="headerlink" title="共识算法"></a>共识算法</h1><h2 id="Quorum机制"><a href="#Quorum机制" class="headerlink" title="Quorum机制"></a>Quorum机制</h2><h3 id="最极端的情况：Write-All-Read-One"><a href="#最极端的情况：Write-All-Read-One" class="headerlink" title="最极端的情况：Write All Read One"></a>最极端的情况：Write All Read One</h3><ul>
+<li>当Client请求向某副本写数据时(更新数据)，只有当所有的副本都更新成功之后，这次写操作才算成功，否则视为失败。</li>
+<li>写操作很脆弱，因为只要有一个副本更新失败，此次写操作就视为失败了。</li>
+<li>读操作很简单，因为，所有的副本更新成功，才视为更新成功，从而保证所有的副本一致。这样，只需要读任何一个副本上的数据即可。假设有N个副本，N-1个都宕机了，剩下的那个副本仍能提供读服务；但是只要有一个副本宕机了，写服务就不会成功。</li>
+</ul>
+<h3 id="W-R-N"><a href="#W-R-N" class="headerlink" title="W R N"></a>W R N</h3><ul>
+<li>更新操作在W个副本中更新成功后才认为此次更新操作成功。更新后的数据为“成功提交”。</li>
+<li>对于读操作，至少要读R个副本才能读到此次更新的数据</li>
+<li>W + R &gt; N</li>
+<li>在保证强一致性的情况下，W越大，写操作的可用性越差，读操作的可用性越好，反之亦然。</li>
+</ul>
+<h3 id="如何判断是否是最新的？"><a href="#如何判断是否是最新的？" class="headerlink" title="如何判断是否是最新的？"></a>如何判断是否是最新的？</h3><h1 id="一致性哈希"><a href="#一致性哈希" class="headerlink" title="一致性哈希"></a>一致性哈希</h1><h2 id="传统哈希方法的局限性"><a href="#传统哈希方法的局限性" class="headerlink" title="传统哈希方法的局限性"></a>传统哈希方法的局限性</h2><ul>
+<li>通过哈希的方式确定某个数据或某个请求应该落到哪个节点。</li>
+<li>传统哈希方法在节点增加或减少的时候需要进行重哈希，这会导致大量key和节点的映射关系发生变化。 -&gt; 如果是缓存的情况，此时会发生大量的缓存失效，造成缓存雪崩。</li>
+</ul>
+<h2 id="一致性哈希算法"><a href="#一致性哈希算法" class="headerlink" title="一致性哈希算法"></a>一致性哈希算法</h2><h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>保证了增加或减少服务器时让尽可能少的映射发生改变<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3></li>
+<li>一致性哈希环：分布范围是<code>[0, 2^32 - 1]</code></li>
+<li>对象和服务器放置在同一个哈希环上。</li>
+<li>对于每个对象，在哈希环上顺时针查找举例这个对象的哈希值最近的服务器。将这一服务器确定为该对象所属的服务器。</li>
+<li>对于服务器增加的情况，只有在哈希环上位于新增的服务器和该服务器的上一台服务器之间的对象需要进行重新分配。</li>
+<li>对于服务器减少的情况，只有原本分配到该台服务器上的对象需要进行重新分配，其它节点不会受影响。</li>
+<li>虚拟节点：将每台物理服务器虚拟为一组虚拟服务器，将虚拟服务器配置到哈希环上，然后维护虚拟服务器到物理服务器的映射。</li>
+</ul>
+<h3 id="雪崩问题"><a href="#雪崩问题" class="headerlink" title="雪崩问题"></a>雪崩问题</h3><ul>
+<li>如果哈希环上的一个服务器故障，原本属于该服务器的请求或数据访问就会全部转移到哈希环上的下一个服务器，这会造成下一个服务器的负载瞬间上升，有可能导致下一个服务器故障。</li>
+<li>解决：在下一个服务器之前增加虚拟节点，分担下一个服务器的压力。</li>
+</ul>
+
     </div>
 
     
@@ -436,7 +519,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E6%9C%BA%E5%99%A8%E7%9A%84%E6%97%B6%E9%92%9F%E5%90%8C%E6%AD%A5"><span class="nav-number">1.</span> <span class="nav-text">多机器的时钟同步</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E6%97%B6%E9%97%B4"><span class="nav-number">1.1.</span> <span class="nav-text">全局时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%97%B6%E9%97%B4"><span class="nav-number">1.2.</span> <span class="nav-text">本地时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E6%97%B6%E9%97%B4%E6%88%B3"><span class="nav-number">1.3.</span> <span class="nav-text">逻辑时间戳</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E6%97%B6%E9%97%B4%E6%88%B3"><span class="nav-number">1.4.</span> <span class="nav-text">向量时间戳</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Simple-Lamport-Clock"><span class="nav-number">1.4.1.</span> <span class="nav-text">Simple Lamport Clock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vector-Clock"><span class="nav-number">1.4.2.</span> <span class="nav-text">Vector Clock</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FLP-impossiblity-result"><span class="nav-number">2.</span> <span class="nav-text">FLP impossiblity result</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CAP-theorem"><span class="nav-number">3.</span> <span class="nav-text">CAP theorem</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E7%B1%BB%E5%B1%9E%E6%80%A7"><span class="nav-number">3.1.</span> <span class="nav-text">三类属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E7%B3%BB%E7%BB%9F%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.2.</span> <span class="nav-text">三系统类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA%E7%BB%93%E8%AE%BA"><span class="nav-number">3.3.</span> <span class="nav-text">导出结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%BA%E4%B8%80%E8%87%B4%E6%80%A7%E4%B8%8E%E5%BC%B1%E4%B8%80%E8%87%B4%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.4.</span> <span class="nav-text">强一致性与弱一致性模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%BA%E4%B8%80%E8%87%B4%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.4.1.</span> <span class="nav-text">强一致性模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%B1%E4%B8%80%E8%87%B4%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.4.2.</span> <span class="nav-text">弱一致性模型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="nav-number">4.</span> <span class="nav-text">分布式事务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%EF%BC%88Replication%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">复制（Replication）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E7%9A%84%E6%97%B6%E6%9C%BA%E6%9D%A5%E5%88%86%E7%B1%BB"><span class="nav-number">5.1.</span> <span class="nav-text">复制的时机来分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E5%A4%8D%E5%88%B6"><span class="nav-number">5.1.1.</span> <span class="nav-text">同步复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E5%A4%8D%E5%88%B6"><span class="nav-number">5.1.2.</span> <span class="nav-text">异步复制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E7%85%A7%E5%89%AF%E6%9C%AC%E4%B8%80%E8%87%B4%E6%80%A7%E7%9A%84%E5%BC%BA%E5%BC%B1%E5%88%86%E7%B1%BB"><span class="nav-number">5.2.</span> <span class="nav-text">按照副本一致性的强弱分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%B4%E6%8A%A4%E5%8D%95%E4%B8%80%E5%89%AF%E6%9C%AC%EF%BC%88prevent-divergence%EF%BC%8Csingle-copy%EF%BC%89"><span class="nav-number">5.2.1.</span> <span class="nav-text">维护单一副本（prevent divergence，single copy）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#multi-master-systems%EF%BC%88risk-divergence%EF%BC%89"><span class="nav-number">5.2.2.</span> <span class="nav-text">multi-master systems（risk divergence）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95%EF%BC%9A%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="nav-number">5.3.</span> <span class="nav-text">常见的复制算法：主从复制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E4%B8%8B%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE%EF%BC%9A2PC-2-Phase-Commit"><span class="nav-number">5.3.1.</span> <span class="nav-text">主从复制下的一致性协议：2PC(2 Phase Commit)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%BD%E5%AE%9E%E7%8E%B0partition-tolerance%E7%9A%84%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">5.3.2.</span> <span class="nav-text">能实现partition tolerance的共识算法</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E6%9C%BA%E5%99%A8%E7%9A%84%E6%97%B6%E9%92%9F%E5%90%8C%E6%AD%A5"><span class="nav-number">1.</span> <span class="nav-text">多机器的时钟同步</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E6%97%B6%E9%97%B4"><span class="nav-number">1.1.</span> <span class="nav-text">全局时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%97%B6%E9%97%B4"><span class="nav-number">1.2.</span> <span class="nav-text">本地时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E6%97%B6%E9%97%B4%E6%88%B3"><span class="nav-number">1.3.</span> <span class="nav-text">逻辑时间戳</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E6%97%B6%E9%97%B4%E6%88%B3"><span class="nav-number">1.4.</span> <span class="nav-text">向量时间戳</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Simple-Lamport-Clock"><span class="nav-number">1.4.1.</span> <span class="nav-text">Simple Lamport Clock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vector-Clock"><span class="nav-number">1.4.2.</span> <span class="nav-text">Vector Clock</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FLP-impossiblity-result"><span class="nav-number">2.</span> <span class="nav-text">FLP impossiblity result</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CAP-theorem"><span class="nav-number">3.</span> <span class="nav-text">CAP theorem</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E7%B1%BB%E5%B1%9E%E6%80%A7"><span class="nav-number">3.1.</span> <span class="nav-text">三类属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E7%B3%BB%E7%BB%9F%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.2.</span> <span class="nav-text">三系统类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA%E7%BB%93%E8%AE%BA"><span class="nav-number">3.3.</span> <span class="nav-text">导出结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%BA%E4%B8%80%E8%87%B4%E6%80%A7%E4%B8%8E%E5%BC%B1%E4%B8%80%E8%87%B4%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.4.</span> <span class="nav-text">强一致性与弱一致性模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%BA%E4%B8%80%E8%87%B4%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.4.1.</span> <span class="nav-text">强一致性模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%B1%E4%B8%80%E8%87%B4%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.4.2.</span> <span class="nav-text">弱一致性模型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BASE%E7%90%86%E8%AE%BA"><span class="nav-number">4.</span> <span class="nav-text">BASE理论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="nav-number">5.</span> <span class="nav-text">分布式事务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2PC%EF%BC%9A%E5%B0%BD%E9%87%8F%E4%BF%9D%E8%AF%81%E5%BC%BA-%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-number">5.1.</span> <span class="nav-text">2PC：尽量保证强(?)一致性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B%EF%BC%9A"><span class="nav-number">5.1.1.</span> <span class="nav-text">流程：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">5.1.2.</span> <span class="nav-text">存在的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3PC"><span class="nav-number">5.2.</span> <span class="nav-text">3PC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B"><span class="nav-number">5.2.1.</span> <span class="nav-text">流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%EF%BC%88Replication%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">复制（Replication）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E7%9A%84%E6%97%B6%E6%9C%BA%E6%9D%A5%E5%88%86%E7%B1%BB"><span class="nav-number">6.1.</span> <span class="nav-text">复制的时机来分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E5%A4%8D%E5%88%B6"><span class="nav-number">6.1.1.</span> <span class="nav-text">同步复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E5%A4%8D%E5%88%B6"><span class="nav-number">6.1.2.</span> <span class="nav-text">异步复制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E7%85%A7%E5%89%AF%E6%9C%AC%E4%B8%80%E8%87%B4%E6%80%A7%E7%9A%84%E5%BC%BA%E5%BC%B1%E5%88%86%E7%B1%BB"><span class="nav-number">6.2.</span> <span class="nav-text">按照副本一致性的强弱分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%B4%E6%8A%A4%E5%8D%95%E4%B8%80%E5%89%AF%E6%9C%AC%EF%BC%88prevent-divergence%EF%BC%8Csingle-copy%EF%BC%89"><span class="nav-number">6.2.1.</span> <span class="nav-text">维护单一副本（prevent divergence，single copy）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#multi-master-systems%EF%BC%88risk-divergence%EF%BC%89"><span class="nav-number">6.2.2.</span> <span class="nav-text">multi-master systems（risk divergence）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95%EF%BC%9A%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="nav-number">6.3.</span> <span class="nav-text">常见的复制算法：主从复制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E4%B8%8B%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE%EF%BC%9A2PC-2-Phase-Commit"><span class="nav-number">6.3.1.</span> <span class="nav-text">主从复制下的一致性协议：2PC(2 Phase Commit)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">7.</span> <span class="nav-text">共识算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quorum%E6%9C%BA%E5%88%B6"><span class="nav-number">7.1.</span> <span class="nav-text">Quorum机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E6%9E%81%E7%AB%AF%E7%9A%84%E6%83%85%E5%86%B5%EF%BC%9AWrite-All-Read-One"><span class="nav-number">7.1.1.</span> <span class="nav-text">最极端的情况：Write All Read One</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#W-R-N"><span class="nav-number">7.1.2.</span> <span class="nav-text">W R N</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%98%AF%E6%9C%80%E6%96%B0%E7%9A%84%EF%BC%9F"><span class="nav-number">7.1.3.</span> <span class="nav-text">如何判断是否是最新的？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C"><span class="nav-number">8.</span> <span class="nav-text">一致性哈希</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E7%BB%9F%E5%93%88%E5%B8%8C%E6%96%B9%E6%B3%95%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7"><span class="nav-number">8.1.</span> <span class="nav-text">传统哈希方法的局限性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95"><span class="nav-number">8.2.</span> <span class="nav-text">一致性哈希算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E7%82%B9"><span class="nav-number">8.2.1.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">8.2.2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%AA%E5%B4%A9%E9%97%AE%E9%A2%98"><span class="nav-number">8.2.3.</span> <span class="nav-text">雪崩问题</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -450,7 +533,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

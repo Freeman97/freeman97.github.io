@@ -168,6 +168,188 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/Docker-Learning-Notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Freeman Huang">
+      <meta itemprop="description" content="Self-talking of a noob">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Freeman's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/24/Docker-Learning-Notes/" class="post-title-link" itemprop="url">Docker学习笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-24 15:59:41" itemprop="dateCreated datePublished" datetime="2020-12-24T15:59:41+08:00">2020-12-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-26 23:38:04" itemprop="dateModified" datetime="2021-03-26T23:38:04+08:00">2021-03-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <a id="more"></a>
+<h1 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h1><h2 id="Why-Docker"><a href="#Why-Docker" class="headerlink" title="Why Docker?"></a>Why Docker?</h2><h2 id="Docker镜像-Images"><a href="#Docker镜像-Images" class="headerlink" title="Docker镜像(Images)"></a>Docker镜像(Images)</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>一个镜像是一个只读的模板，它包含了创建一个Docker容器的命令。要创建一个新的Docker镜像，编写Dockerfile然后build即可。<br>当运行一个Docker容器时，容器使用一个隔离的文件系统。这一文件系统由容器的镜像来提供。因为镜像包括了容器的文件系统，所以镜像必须包括运行一个应用所需要的所有东西，包括依赖、配置项、脚本、二进制文件等。镜像也包括容器的其它配置，比如环境变量，一个用于运行的默认命令，以及其它元信息。</p>
+<h3 id="层-layer-的概念"><a href="#层-layer-的概念" class="headerlink" title="层(layer)的概念"></a>层(layer)的概念</h3><p>在Dockerfile的每条命令都会为镜像创建一个层(Layer)。当修改Dockerfile并rebuild一个镜像时，只有被修改的层需要rebuild。</p>
+<h2 id="Docker容器-Container"><a href="#Docker容器-Container" class="headerlink" title="Docker容器(Container)"></a>Docker容器(Container)</h2><h3 id="基本概念-1"><a href="#基本概念-1" class="headerlink" title="基本概念"></a>基本概念</h3><p>一个容器是一个镜像的可运行实例，是一个被松散地隔离开的进程。可以通过Docker CLI或Docker API来进行创建(create)、运行(start)、停止(stop)、移动(move)或删除(delete)。默认情况下，一个容器和其它容器以及宿主机是隔离的。一个容器由用于创建它的镜像以及创建时或运行时提供的配置选项来定义。</p>
+<h1 id="常用命令及工作流程"><a href="#常用命令及工作流程" class="headerlink" title="常用命令及工作流程"></a>常用命令及工作流程</h1><h2 id="Docker镜像加速"><a href="#Docker镜像加速" class="headerlink" title="Docker镜像加速"></a>Docker镜像加速</h2><p>对于Windows 10，在Docker Desktop里修改<code>registry-mirrors</code>即可。阿里云会提供Docker镜像加速服务（容器镜像服务）。</p>
+<h2 id="镜像管理"><a href="#镜像管理" class="headerlink" title="镜像管理"></a>镜像管理</h2><h3 id="Build-an-Image"><a href="#Build-an-Image" class="headerlink" title="Build an Image"></a>Build an Image</h3><p>在Dockerfile的同一目录下运行<code>docker build</code>命令<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build [-t IMAGE_NAME] [DOCKERFILE_DIRECTORY]</span><br></pre></td></tr></table></figure></p>
+<h3 id="查看所有的Image"><a href="#查看所有的Image" class="headerlink" title="查看所有的Image"></a>查看所有的Image</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image ls</span><br></pre></td></tr></table></figure>
+<h2 id="容器管理"><a href="#容器管理" class="headerlink" title="容器管理"></a>容器管理</h2><h3 id="Start-a-Container"><a href="#Start-a-Container" class="headerlink" title="Start a Container"></a>Start a Container</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run [OPTIONS] IMAGE [COMMAND] [ARGS]</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> -p: 端口映射</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> -d: detached mode</span></span><br><span class="line">docker run -dp 3000:3000 getting-started</span><br></pre></td></tr></table></figure>
+<h3 id="查看Container运行情况"><a href="#查看Container运行情况" class="headerlink" title="查看Container运行情况"></a>查看Container运行情况</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+<h3 id="Stop-a-Container"><a href="#Stop-a-Container" class="headerlink" title="Stop a Container"></a>Stop a Container</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop CONTAINER_ID</span><br></pre></td></tr></table></figure>
+<h3 id="Remove-a-Container"><a href="#Remove-a-Container" class="headerlink" title="Remove a Container"></a>Remove a Container</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker rm CONTAINER_ID</span><br><span class="line"><span class="meta">#</span><span class="bash"> Remove a running container</span></span><br><span class="line">docker rm -f CONTAINER_ID</span><br></pre></td></tr></table></figure>
+<h2 id="Docker容器卷-Container-Volumes"><a href="#Docker容器卷-Container-Volumes" class="headerlink" title="Docker容器卷(Container Volumes)"></a>Docker容器卷(Container Volumes)</h2><p>每个容器都持有自己的暂存空间来创建、存储、修改和删除文件，任何容器内的改变都不会影响其它容器。一般情况下容器被删除时容器内所有文件都不复存在。可以使用容器卷(Container Volumes)来让容器的特定系统路径连接回宿主机。如果一个容器内的目录被挂载，在这一目录中的修改可以在宿主机上观察到。同时如果我们在容器重启时挂载相同的目录，就能在容器中看到相同的文件。</p>
+<h3 id="具名容器卷-Named-Volume"><a href="#具名容器卷-Named-Volume" class="headerlink" title="具名容器卷(Named Volume)"></a>具名容器卷(Named Volume)</h3><p>可以认为这是一个数据桶，Docker会负责维护硬盘上的物理位置，用户只需要知道这个数据桶的名称，只要提供这个名称就能得到对应位置的正确数据。</p>
+<h4 id="创建卷"><a href="#创建卷" class="headerlink" title="创建卷"></a>创建卷</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker volume create VOLUME_NAME</span><br><span class="line"><span class="meta">#</span><span class="bash"> docker volume create todo-db</span></span><br></pre></td></tr></table></figure>
+<h4 id="为容器挂载卷"><a href="#为容器挂载卷" class="headerlink" title="为容器挂载卷"></a>为容器挂载卷</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run -v VOLUME_NAME:DIRECTORY IMAGE</span><br><span class="line"><span class="meta">#</span><span class="bash"> VOLUME_NAME: 卷名</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> DIRECOTRY: 将卷挂在到容器内的指定目录</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> docker run -dp 3000:3000 -v todo-db:/etc/todos getting-started</span></span><br></pre></td></tr></table></figure>
+<h4 id="查看所有卷"><a href="#查看所有卷" class="headerlink" title="查看所有卷"></a>查看所有卷</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker volume ls</span><br></pre></td></tr></table></figure>
+<h4 id="查看指定卷的详细信息"><a href="#查看指定卷的详细信息" class="headerlink" title="查看指定卷的详细信息"></a>查看指定卷的详细信息</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker volume inspect VOLUME_NAME</span><br><span class="line"><span class="meta">#</span><span class="bash"> VOLUME_NAME: 卷名，可以通过docker volume ls找到</span></span><br></pre></td></tr></table></figure>
+<p>其中<code>Mountpoint</code>是数据在硬盘上存储的实际位置。<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">&quot;CreatedAt&quot;</span>: <span class="string">&quot;2020-12-25T15:31:19+08:00&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;Driver&quot;</span>: <span class="string">&quot;local&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;Labels&quot;</span>: &#123;&#125;,</span><br><span class="line">        <span class="attr">&quot;Mountpoint&quot;</span>: <span class="string">&quot;/var/lib/docker/volumes/todo-db/_data&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;Name&quot;</span>: <span class="string">&quot;todo-db&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;Options&quot;</span>: &#123;&#125;,</span><br><span class="line">        <span class="attr">&quot;Scope&quot;</span>: <span class="string">&quot;local&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<h3 id="绑定挂载-Bind-Mount"><a href="#绑定挂载-Bind-Mount" class="headerlink" title="绑定挂载(Bind Mount)"></a>绑定挂载(Bind Mount)</h3><p>使用绑定挂载可以控制宿主机上的具体挂载点，bind mount通常用于为容器内的应用提供额外数据。bind mount不支持容器内容写入宿主目录，也不支持volume driver。<br>应用场景:在本地设置开发环境。开发机器不需要安装所有的构建工具和环境，而是可以通过Docker构建一个可以分发的开发环境并分发给开发人员(包括数据库开发环境也可以进行分发，但是数据库开发环境应该使用named volume)。</p>
+<h2 id="Docker网络配置"><a href="#Docker网络配置" class="headerlink" title="Docker网络配置"></a>Docker网络配置</h2><h3 id="容器之间的通信"><a href="#容器之间的通信" class="headerlink" title="容器之间的通信"></a>容器之间的通信</h3><p>只要容器处于同一个Docker网络内，就可以进行通信。</p>
+<h3 id="创建网络"><a href="#创建网络" class="headerlink" title="创建网络"></a>创建网络</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker network create [ARGS] NETWORK_NAME</span><br><span class="line"><span class="meta">#</span><span class="bash"> 可以在ARGS中提供各种参数</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> --driver=bridge 指定网络类型</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> --subnet=192.168.6.0/24 指定子网划分</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> --ip-range=192.168.6.0/24 指定IP范围</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> --gateway=192.168.6.1 指定网关, 可以不提供</span></span><br></pre></td></tr></table></figure>
+<h3 id="查看当前Docker网络"><a href="#查看当前Docker网络" class="headerlink" title="查看当前Docker网络"></a>查看当前Docker网络</h3><ul>
+<li>如果要查看当前所有的网络<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker network ls</span><br><span class="line"><span class="meta">#</span><span class="bash"> 大概会出现四栏的表格：</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> NETWORK ID    NAME    DRIVER    SCOPE</span></span><br></pre></td></tr></table></figure></li>
+<li>如果要查看某个网络的详细情况（子网、默认网关等），可以使用<code>inspect</code>命令。可以看到连接到某一网络的所有容器信息，包括它们各自的IP地址。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network inspect [NETWORK ID | NAME]</span><br></pre></td></tr></table></figure></li>
+<li>节选一段返回信息。<strong>如果不想让Docker容器直接通过iptables进行端口映射，或者iptables的端口映射出现问题，可以通过使用nginx反向代理等手段，让请求直接转发到 容器IP:端口 上</strong><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">&quot;Name&quot;</span>: <span class="string">&quot;bridge&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;Id&quot;</span>: <span class="string">&quot;ca18bdeb0aea357f983a90012ce2245670597495d3bc824f4d86f2cf81f75800&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;Created&quot;</span>: <span class="string">&quot;2020-12-24T21:53:47.388294816+08:00&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;Scope&quot;</span>: <span class="string">&quot;local&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;Driver&quot;</span>: <span class="string">&quot;bridge&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;EnableIPv6&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">&quot;IPAM&quot;</span>: &#123;</span><br><span class="line">            <span class="attr">&quot;Driver&quot;</span>: <span class="string">&quot;default&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;Options&quot;</span>: <span class="literal">null</span>,</span><br><span class="line">            <span class="attr">&quot;Config&quot;</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">&quot;Subnet&quot;</span>: <span class="string">&quot;192.168.5.0/24&quot;</span>,</span><br><span class="line">                    <span class="attr">&quot;Gateway&quot;</span>: <span class="string">&quot;192.168.5.1&quot;</span>,</span><br><span class="line">                    <span class="attr">&quot;AuxiliaryAddresses&quot;</span>: &#123;</span><br><span class="line">                        <span class="attr">&quot;DefaultGatewayIPv4&quot;</span>: <span class="string">&quot;192.168.5.2&quot;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;Internal&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">&quot;Attachable&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">&quot;Ingress&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">&quot;ConfigFrom&quot;</span>: &#123;</span><br><span class="line">            <span class="attr">&quot;Network&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;ConfigOnly&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">&quot;Containers&quot;</span>: &#123;</span><br><span class="line">            <span class="attr">&quot;a41a18d43c71e52843f07683d1f672e241afaa922510c46934da2bcd71caaf1e&quot;</span>: &#123;</span><br><span class="line">                <span class="attr">&quot;Name&quot;</span>: <span class="string">&quot;vigilant_jang&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;EndpointID&quot;</span>: <span class="string">&quot;fe6dcd7083dd9bc8484e77b96ecf7bb82b241d4d0b2069e7012a315fc09b48ef&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;MacAddress&quot;</span>: <span class="string">&quot;02:42:c0:a8:05:03&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;IPv4Address&quot;</span>: <span class="string">&quot;192.168.5.3/24&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;IPv6Address&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">&quot;b484dc156df6f30de8f4c13fff4a8cfbe31177a475d66f69c6efb16dfa2af8f5&quot;</span>: &#123;</span><br><span class="line">                <span class="attr">&quot;Name&quot;</span>: <span class="string">&quot;hardcore_goldberg&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;EndpointID&quot;</span>: <span class="string">&quot;50a6883e77447d0e21765f42daacbcaa0f435eea558e5d670ff785bec75e97da&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;MacAddress&quot;</span>: <span class="string">&quot;02:42:c0:a8:05:04&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;IPv4Address&quot;</span>: <span class="string">&quot;192.168.5.4/24&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;IPv6Address&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;Options&quot;</span>: &#123;</span><br><span class="line">            <span class="attr">&quot;com.docker.network.bridge.default_bridge&quot;</span>: <span class="string">&quot;true&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;com.docker.network.bridge.enable_icc&quot;</span>: <span class="string">&quot;true&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;com.docker.network.bridge.enable_ip_masquerade&quot;</span>: <span class="string">&quot;true&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;com.docker.network.bridge.host_binding_ipv4&quot;</span>: <span class="string">&quot;0.0.0.0&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;com.docker.network.bridge.name&quot;</span>: <span class="string">&quot;docker0&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;com.docker.network.driver.mtu&quot;</span>: <span class="string">&quot;1500&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;Labels&quot;</span>: &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h3 id="在启动时让容器连接到指定网络"><a href="#在启动时让容器连接到指定网络" class="headerlink" title="在启动时让容器连接到指定网络"></a>在启动时让容器连接到指定网络</h3>在执行<code>docer run</code>时提供<code>--network</code>参数即可。还可以提供<code>--network-alias</code>来为该容器在该网络上指定host名称，其他容器可以使用Docker提供的DNS服务，使用这一主机名来与该容器通信。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">    --network todo-app --network-alias mysql \</span><br><span class="line">    -v todo-mysql-data:/var/lib/mysql \</span><br><span class="line">    -e MYSQL_ROOT_PASSWORD=secret \</span><br><span class="line">    -e MYSQL_DATABASE=todos \</span><br><span class="line">    mysql:5.7</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/04/Algorithm-SumUp-TwoPointers/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Freeman Huang">
+      <meta itemprop="description" content="Self-talking of a noob">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Freeman's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/04/Algorithm-SumUp-TwoPointers/" class="post-title-link" itemprop="url">算法专题 - 双指针</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-04 17:34:41" itemprop="dateCreated datePublished" datetime="2020-10-04T17:34:41+08:00">2020-10-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-10 13:17:11" itemprop="dateModified" datetime="2020-10-10T13:17:11+08:00">2020-10-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据结构与算法</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>分类刷题归集，总结遇到的各种双指针问题</strong><br><strong>题目描述和编号来自Leetcode中文站</strong><br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/10/04/Algorithm-SumUp-TwoPointers/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/13/JZoffer-JZ21toJZ30/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -788,78 +970,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/26/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Freeman Huang">
-      <meta itemprop="description" content="Self-talking of a noob">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Freeman's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/10/26/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2018-10-26 00:00:00 / 修改时间：15:12:31" itemprop="dateCreated datePublished" datetime="2018-10-26T00:00:00+08:00">2018-10-26</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Diary/" itemprop="url" rel="index"><span itemprop="name">Diary</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><strong>这是一个心血来潮搭建的个人博客。</strong><br>一直在零零碎碎地学习一些东西，之前完全没有把自己的学习系统地整理一遍的习惯。以搭个人博客为契机，今后将自己学习的各方面知识整理到这里吧。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -925,7 +1039,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

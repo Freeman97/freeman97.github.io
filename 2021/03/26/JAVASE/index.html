@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://yoursite.com/2021/03/26/JAVASE/pics/JAVASE/java-collection-hierarchy.png">
 <meta property="og:image" content="http://yoursite.com/2021/03/26/JAVASE/pics/jdk1.8之后的内部结构-HashMap.png">
 <meta property="article:published_time" content="2021-03-26T15:30:01.000Z">
-<meta property="article:modified_time" content="2021-03-26T15:38:12.007Z">
+<meta property="article:modified_time" content="2021-04-04T10:43:54.774Z">
 <meta property="article:author" content="Freeman Huang">
 <meta property="article:tag" content="2021春招">
 <meta name="twitter:card" content="summary">
@@ -197,10 +197,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-26 23:30:01 / 修改时间：23:38:12" itemprop="dateCreated datePublished" datetime="2021-03-26T23:30:01+08:00">2021-03-26</time>
+              <time title="创建时间：2021-03-26 23:30:01" itemprop="dateCreated datePublished" datetime="2021-03-26T23:30:01+08:00">2021-03-26</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-04 18:43:54" itemprop="dateModified" datetime="2021-04-04T18:43:54+08:00">2021-04-04</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -293,14 +299,126 @@
 <li><code>HashTable</code>：内部方法都是synchronized的，线程安全。</li>
 <li><code>HashMap</code>: 底层数据结构是数组+链表/红黑树。使用拉链法解决哈希冲突，JDK 1.8引入红黑树来优化过长的链表。HashMap会重新计算键的哈希值而不是使用hashCode。<ul>
 <li>初始大小(<code>capacity</code>)为16，每次扩容时容量为原来的2倍。<code>HashMap</code>会让集合中的元素保持在一个合理的范围内（由装填因子load factor限制），如果元素数超过指定的阈值<code>this.threshold</code>时，则需要进行扩容并进行rehash。</li>
-<li><code>HashMap</code>总是使用2的幂作为哈希表<code>threshold</code>的大小。<code>threshold</code>的值为大于或等于<code>capacity</code>的最小的2的n次幂。</li>
+<li><code>HashMap</code>总是使用2的幂作为哈希表<code>capacity</code>的大小。目的是为了加快通过hash计算KV对存储位置的速度。</li>
 <li>使用Key来计算hashcode。通过key的hashcode经过<code>HashMap</code>的扰动函数<code>hash()</code>处理(防止较差的<code>hashCode()</code>实现导致<code>HashMap</code>性能下降)后得到真正的hash值，然后通过<code>(n - 1) &amp; hash</code>（<code>n</code>为HashMap数组的长度，该运算等价于用hash对长度取余）的方式计算当前元素要存储的位置。</li>
-<li>Table数组：hash表的桶(bucket)。数组的每个位置上都是一个链表。当链表长度大于阈值（默认为8）时，如果当前数组长度小于64，则进行数组扩容，否则将这个链表转换为红黑树。<br><img src="pics/jdk1.8之后的内部结构-HashMap.png" alt="HashMap"></li>
+<li>Table数组：hash表的桶(bucket)。数组的每个位置上都是一个链表。当链表长度大于阈值（默认为8）时，如果当前数组长度小于64，则进行数组扩容，否则将这个链表转换为红黑树。<br><img src="pics/jdk1.8之后的内部结构-HashMap.png" alt="HashMap"><ul>
+<li>红黑树：<ul>
+<li>首先是一种二叉搜索树：左子树小于根小于右子树</li>
+<li>根节点是黑色，叶子节点（Nil）是黑色</li>
+<li>每个红色节点的叶子节点都是黑色</li>
+<li>任意节点到每个叶子节点的路径都有数量相同的黑色节点</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li><code>TreeMap</code>实现了<code>NavigableMap</code>实现对集合内元素的搜索能力，实现<code>SortedMap</code>来实现对元素根据key进行排序的能力。</li>
 <li><code>HashMap</code>不是线程安全的</li>
 </ul>
+<h3 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h3><h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><ul>
+<li>初始容量<code>initialCapacity</code></li>
+<li>负载因子<code>loadFactor</code></li>
+<li>阈值<code>threshold</code>: 键值对数超过这个值要扩容</li>
+</ul>
+<h4 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h4><ul>
+<li>需要用插入键值对的key的hashCode进行再次hash<ul>
+<li>hash方法的规则：如果key为null则返回0。否则计算<code>hashcode ^ (hashcode &gt;&gt;&gt; 16)</code></li>
+<li>目的：<ol>
+<li>对hashCode进行扰动，防止分布性不佳的hashCode影响HashMap的性能</li>
+<li>当数组长度n比较小时可能只有hashCode的低位信息能参与计算，用hashcode的高16位和低16位进行异或，变相让hashcode的高位参与计算，提高了hash值的随机性。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>用<code>(n - 1) &amp; hash</code>的方法将hash对数组长度进行求余，效率高。但这要求数组长度必须是2的幂</li>
+</ul>
+<h4 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h4><ul>
+<li>迭代器<code>HashIterator</code>：<ul>
+<li>构造方法：找到第一个包含链表节点引用的桶</li>
+<li><code>nextNode</code>方法：如果当前节点非空，则返回的是当前节点，同时如果当前节点的next字段为空（当前桶没有下一个元素了），则寻找下一个包含节点引用的桶。</li>
+</ul>
+</li>
+</ul>
+<h4 id="插入（重点）"><a href="#插入（重点）" class="headerlink" title="插入（重点）"></a>插入（重点）</h4><h5 id="插入操作总体逻辑"><a href="#插入操作总体逻辑" class="headerlink" title="插入操作总体逻辑"></a>插入操作总体逻辑</h5><ol>
+<li>首先通过hash方法（<code>hashcode ^ (hashcode &gt;&gt;&gt; 16)</code>）计算出真正要使用的<code>hash</code>值</li>
+<li>HashMap桶数组初始化可以延迟到第一次插入时。开始插入时首先判断table是否被初始化。如果没有则需要初始化。</li>
+<li>通过<code>(n - 1) &amp; hash</code>计算出桶的位置，如果此处还没有节点，直接新建节点存入该桶即可。</li>
+<li>否则，开始查找该桶中存不存在Key相同的节点<code>e</code><ul>
+<li>如果节点是链表节点，则对链表进行遍历，找不到key相同的节点时将节点插入到链表的尾部。如果链表的长度在插入后大于等于树化阈值，则要将链表转换为红黑树。</li>
+<li>如果节点是树节点，则调用红黑树的插入方法。</li>
+<li>如果在定位插入位置的时候找到了Key相同的节点，则会返回Key相同的节点而不会进行插入。</li>
+</ul>
+</li>
+<li>判断要插入的键值对是否已经存在(<code>e != null</code>)。如果已经存在，则用新的值替换旧的值，并返回旧的值。否则，说明上一步进行过插入操作，如果插入后节点数量大于阈值，则需要对数组进行扩容。</li>
+</ol>
+<h5 id="链表树化机制"><a href="#链表树化机制" class="headerlink" title="链表树化机制"></a>链表树化机制</h5><ul>
+<li>如果只使用链表，当发生碰撞的次数过多性能会下降，JDK1.8引入红黑树来处理这个问题</li>
+<li>树化链表需要满足：<ol>
+<li>桶数组长度大于等于<code>MIN_TREEIFY_CAPACITY = 64</code>。原因可能是因为当桶数组容量较小时，键值对出现哈希冲突的概率会比较高，较容易导致链表长度较长。高碰撞率是因为桶数组容量较小时，应该有限扩容桶数组。并且桶容量较小时，扩容会比较频繁，而扩容时需要拆分红黑树并且进行重新映射。</li>
+<li>链表长度大于等于<code>TREEIFY_THRESHOLD = 8</code>。</li>
+</ol>
+</li>
+<li>链表树化的比较依据（Key不要求实现Comparable接口）：<ol>
+<li>比较key之间的hash大小，如果hash相同则继续</li>
+<li>检测键是否实现了Comparable接口，如果实现则调用compareTo进行比较，否则继续</li>
+<li>如果仍不能比较出大小，使用tieBreakOrder进行仲裁确定顺序</li>
+</ol>
+</li>
+<li>TreeNode节点仍保持了next引用和prev引用（链表型节点是单链表，TreeNode才会有prev引用），链表树化之后原链表的顺序会得到保留</li>
+</ul>
+<h5 id="桶数组扩容机制"><a href="#桶数组扩容机制" class="headerlink" title="桶数组扩容机制"></a>桶数组扩容机制</h5><ul>
+<li>使用<code>resize</code>方法进行扩容</li>
+<li>计算出新数组容量和新阈值</li>
+<li>根据新容量创建新的桶数组</li>
+<li>将键值对节点重新映射到新的桶数组。如果节点是TreeNode类型，则需要拆分红黑树。如果是普通节点，则节点按原顺序进行分组。</li>
+</ul>
+<ol>
+<li>计算出新数组容量和新阈值<ol>
+<li>当<code>oldCap &gt; 0</code>时，桶数组<code>table</code>已经被初始化<ol>
+<li>当<code>oldCap &gt;= MAXIMUM_CAPACITY</code>(2^30)时，不再扩容</li>
+<li>当<code>newCap &lt; MAXIMUM_CAPACITY &amp;&amp; oldCap &gt;= DEFAULT_INITIAL_CAPACITY</code>时，会通过乘以2的方式计算新阈值，此时新阈值<code>newThr = oldThr &lt;&lt; 1</code>可能会溢出。（<code>loadFactor</code>可能大于1）</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>创建数组</li>
+<li>键值对节点的重新映射：对于树形节点，需要先拆分红黑树再进行映射。对于链表型节点，需要先对链表进行分组再映射。<ul>
+<li>扩容后的数组长度为原数组长度的两倍，并且数组的长度永远是2的幂</li>
+<li>对链表型节点的分组映射<ul>
+<li>对于扩容前的长度<code>m</code>和扩容后的长度<code>n</code>，<code>n - 1</code>比<code>m - 1</code>在最高有效位上多一位1。</li>
+<li>举例：如果原容量为16，扩容后为32，那么<code>16 - 1 = 15</code>的二进制表示为<code>0000 1111</code>, <code>32 - 1 = 31</code>的二进制表示为<code>0001 1111</code></li>
+<li>因此可知扩容后，链表中的元素会根据第5位为1还是0被分成两组。使用<code>m &amp; hash</code>(即<code>oldCap &amp; hash</code>)的值即可判断元素应该属于哪一组</li>
+<li>遍历旧链表，根据当前元素<code>oldCap &amp; hash</code>的计算结果是否为0，可以将链表中的旧元素使用尾插法插入两个新链表中，完成链表分组。</li>
+<li>最后将两条新链表分别确定插入位置后插入桶中即可完成扩容中的重新映射步骤。<ul>
+<li>确定的方式：假设原链表所在的数组位置为<code>index</code>。对于新参与<code>hash &amp; (n - 1)</code>计算的位为1的所有节点，该位的新结果必定为1。因此这些节点的新位置应该为<code>index + m</code>，即<code>index + oldCap</code>。相对的，对于该位为0的所有节点，扩容后<code>hash &amp; (n - 1)</code>的计算结果会与原来保持不变，因此这些节点的位置不会改变。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>对树形节点的拆分和重映射<ul>
+<li>树形节点的分组方式和链表型节点是一样的，也是通过<code>oldCap &amp; hash</code>的方式确定分组。然后以遍历链表的方式(利用next引用)遍历红黑树，将树中的节点用尾插法插入到两个链表中。</li>
+<li>分别确定两个链表的新插入位置并将两个链表插入新位置。</li>
+<li>如果链表长度小于等于<code>UNTREEIFY_THRESHOLD = 6</code>，则将原本的红黑树转换为链表。</li>
+<li>否则，如果另一个链表不为空，说明当前链表中的一部分节点重新分组到了另一个链表，需要对当前链表重新进行树化。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h4><ol>
+<li>定位桶的位置</li>
+<li>如果是TreeNode类型，用红黑树的查找逻辑定位到待删除节点，调用删除方法</li>
+<li>如果是链表类型，找到待删除节点和它的前驱节点，删除待删除结点。</li>
+</ol>
+<h4 id="为什么桶数组table被transient修饰"><a href="#为什么桶数组table被transient修饰" class="headerlink" title="为什么桶数组table被transient修饰"></a>为什么桶数组table被transient修饰</h4><ul>
+<li>HashMap不使用默认的序列化机制，而是使用<code>readObject</code>/<code>writeObject</code>两个方法定制了序列化和反序列化的过程。</li>
+<li>只要保存了键值对，桶数组可以根据键值对的数据重建HashMap</li>
+<li>由于装填因子的设置，多数情况下table无法被存满，保存table会浪费空间</li>
+<li>如果键对象没有重写hashCode方法，计算hash时需要使用<code>Object</code>类的hashCode方法，而该方法不同的JVM的实现可能不同。如果同一个键产生了不同的Hash，原本的table就无法继续使用了。</li>
+</ul>
+<h4 id="为什么TREEIFY-THRESHOLD的取值是8"><a href="#为什么TREEIFY-THRESHOLD的取值是8" class="headerlink" title="为什么TREEIFY_THRESHOLD的取值是8"></a>为什么TREEIFY_THRESHOLD的取值是8</h4><p>理想状态下，在默认装填因子为0.75时，容器中的节点遵循参数λ=5的泊松分布。链表中的元素达到8个的概率是非常低的。</p>
+<h4 id="为什么UNTREEIFY-THRESHOLD的取值是6（而不是7）"><a href="#为什么UNTREEIFY-THRESHOLD的取值是6（而不是7）" class="headerlink" title="为什么UNTREEIFY_THRESHOLD的取值是6（而不是7）"></a>为什么UNTREEIFY_THRESHOLD的取值是6（而不是7）</h4><p>如果为7，删除一个元素就会转换成链表，插入一个元素又会转换成红黑树。</p>
 
     </div>
 
@@ -322,7 +440,10 @@
     <a href="/2021/03/26/JMM/" rel="prev" title="Java内存模型(JMM)">
       <i class="fa fa-chevron-left"></i> Java内存模型(JMM)
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/30/linux/" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -381,7 +502,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">动态代理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">JDK动态代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CGLIB%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">CGLIB动态代理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E5%90%88"><span class="nav-number">2.</span> <span class="nav-text">集合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E6%A6%82%E8%BF%B0"><span class="nav-number">2.1.</span> <span class="nav-text">集合概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Comparable%E5%92%8CComparator"><span class="nav-number">2.2.</span> <span class="nav-text">Comparable和Comparator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">2.3.</span> <span class="nav-text">集合底层数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#List"><span class="nav-number">2.3.1.</span> <span class="nav-text">List</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Set"><span class="nav-number">2.3.2.</span> <span class="nav-text">Set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Map-%E9%9C%80%E8%A6%81%E9%87%8D%E6%96%B0%E7%9C%8B"><span class="nav-number">2.3.3.</span> <span class="nav-text">Map(需要重新看)</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">动态代理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">JDK动态代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CGLIB%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">CGLIB动态代理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E5%90%88"><span class="nav-number">2.</span> <span class="nav-text">集合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E6%A6%82%E8%BF%B0"><span class="nav-number">2.1.</span> <span class="nav-text">集合概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Comparable%E5%92%8CComparator"><span class="nav-number">2.2.</span> <span class="nav-text">Comparable和Comparator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">2.3.</span> <span class="nav-text">集合底层数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#List"><span class="nav-number">2.3.1.</span> <span class="nav-text">List</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Set"><span class="nav-number">2.3.2.</span> <span class="nav-text">Set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Map-%E9%9C%80%E8%A6%81%E9%87%8D%E6%96%B0%E7%9C%8B"><span class="nav-number">2.3.3.</span> <span class="nav-text">Map(需要重新看)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap"><span class="nav-number">2.3.4.</span> <span class="nav-text">HashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">2.3.4.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE"><span class="nav-number">2.3.4.2.</span> <span class="nav-text">查找</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%81%8D%E5%8E%86"><span class="nav-number">2.3.4.3.</span> <span class="nav-text">遍历</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="nav-number">2.3.4.4.</span> <span class="nav-text">插入（重点）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%93%8D%E4%BD%9C%E6%80%BB%E4%BD%93%E9%80%BB%E8%BE%91"><span class="nav-number">2.3.4.4.1.</span> <span class="nav-text">插入操作总体逻辑</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8%E6%A0%91%E5%8C%96%E6%9C%BA%E5%88%B6"><span class="nav-number">2.3.4.4.2.</span> <span class="nav-text">链表树化机制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A1%B6%E6%95%B0%E7%BB%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="nav-number">2.3.4.4.3.</span> <span class="nav-text">桶数组扩容机制</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A0%E9%99%A4"><span class="nav-number">2.3.4.5.</span> <span class="nav-text">删除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%A1%B6%E6%95%B0%E7%BB%84table%E8%A2%ABtransient%E4%BF%AE%E9%A5%B0"><span class="nav-number">2.3.4.6.</span> <span class="nav-text">为什么桶数组table被transient修饰</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88TREEIFY-THRESHOLD%E7%9A%84%E5%8F%96%E5%80%BC%E6%98%AF8"><span class="nav-number">2.3.4.7.</span> <span class="nav-text">为什么TREEIFY_THRESHOLD的取值是8</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88UNTREEIFY-THRESHOLD%E7%9A%84%E5%8F%96%E5%80%BC%E6%98%AF6%EF%BC%88%E8%80%8C%E4%B8%8D%E6%98%AF7%EF%BC%89"><span class="nav-number">2.3.4.8.</span> <span class="nav-text">为什么UNTREEIFY_THRESHOLD的取值是6（而不是7）</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -395,7 +516,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
