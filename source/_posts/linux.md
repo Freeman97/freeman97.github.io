@@ -1,3 +1,13 @@
+---
+title: 'Linux 基础'
+date: 2020-11-21
+categories:
+- 操作系统
+tags:
+- Linux
+- 操作系统
+---
+
 # 常用命令
 ## 进程管理
 ### `ps`
